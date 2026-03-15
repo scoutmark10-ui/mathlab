@@ -1,0 +1,134 @@
+/* ============================================
+   MÓDULO 16: MATRIZES (matrizes.html)
+   ============================================ */
+
+.matriz-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+}
+
+.matriz-tamanho {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin: 30px 0;
+}
+
+.tamanho-btn {
+    padding: 15px 30px;
+    background: var(--bg-primary);
+    border: 2px solid var(--accent-primary);
+    color: var(--text-primary);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: var(--transition-speed);
+}
+
+.tamanho-btn:hover {
+    background: rgba(155, 89, 182, 0.2);
+}
+
+.tamanho-btn.active {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    border: none;
+}
+
+.matriz-grid {
+    display: grid;
+    gap: 15px;
+    justify-content: center;
+    margin: 30px 0;
+}
+
+.matriz-grid.matriz-2x2 {
+    grid-template-columns: repeat(2, 100px);
+}
+
+.matriz-grid.matriz-3x3 {
+    grid-template-columns: repeat(3, 90px);
+}
+
+.matriz-input {
+    width: 100%;
+    height: 70px;
+    text-align: center;
+    font-size: 1.5rem;
+    background: var(--bg-primary);
+    border: 2px solid var(--accent-primary);
+    color: var(--text-primary);
+    border-radius: 10px;
+    transition: var(--transition-speed);
+    font-weight: bold;
+}
+
+.matriz-input:focus {
+    border-color: var(--accent-secondary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(155, 89, 182, 0.2);
+}
+
+.matriz-operacoes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin: 30px 0;
+}
+
+.operacao-btn {
+    padding: 15px;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: var(--transition-speed);
+}
+
+.operacao-btn:hover {
+    transform: scale(1.05);
+    box-shadow: var(--accent-glow);
+}
+
+.operacao-btn.secondary {
+    background: var(--bg-primary);
+    border: 1px solid var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+.resultado-matriz {
+    background: var(--bg-secondary);
+    padding: 25px;
+    border-radius: 15px;
+    margin: 20px 0;
+    border-left: 4px solid var(--accent-primary);
+}
+
+.determinante-box {
+    background: linear-gradient(135deg, rgba(155, 89, 182, 0.15), rgba(142, 68, 173, 0.15));
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 2rem;
+    margin: 20px 0;
+    border: 2px solid var(--accent-primary);
+}
+
+.determinante-box .valor {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--accent-primary);
+}
+
+.exemplos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 20px 0;
+}

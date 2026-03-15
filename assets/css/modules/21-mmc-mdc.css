@@ -1,0 +1,127 @@
+/* ============================================
+   MÓDULO 21: MMC E MDC (mmc-mdc.html)
+   ============================================ */
+
+.mmc-container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 30px;
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+}
+
+.tab-mmc {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.tab-btn-mmc {
+    flex: 1;
+    padding: 15px;
+    background: var(--bg-primary);
+    border: 2px solid var(--accent-primary);
+    color: var(--text-primary);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: var(--transition-speed);
+}
+
+.tab-btn-mmc:hover {
+    background: rgba(155, 89, 182, 0.2);
+}
+
+.tab-btn-mmc.active {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    border: none;
+}
+
+.tab-btn-mmc i {
+    margin-right: 8px;
+}
+
+.numero-input {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin: 30px 0;
+    flex-wrap: wrap;
+}
+
+.numero-input div {
+    text-align: center;
+}
+
+.numero-input label {
+    display: block;
+    color: var(--accent-primary);
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.numero-input input {
+    width: 150px;
+    padding: 15px;
+    font-size: 1.5rem;
+    text-align: center;
+    background: var(--bg-primary);
+    border: 2px solid var(--accent-primary);
+    color: var(--text-primary);
+    border-radius: 10px;
+    transition: var(--transition-speed);
+}
+
+.numero-input input:focus {
+    outline: none;
+    border-color: var(--accent-secondary);
+    box-shadow: 0 0 0 3px rgba(155, 89, 182, 0.2);
+}
+
+.algoritmo-box {
+    background: var(--bg-primary);
+    padding: 25px;
+    border-radius: 12px;
+    margin: 30px 0;
+    border: 1px solid var(--border-color);
+}
+
+.algoritmo-box h4 {
+    color: var(--accent-primary);
+    margin-bottom: 15px;
+}
+
+.algoritmo-box pre {
+    color: var(--text-primary);
+    font-family: monospace;
+    font-size: 1.1rem;
+    background: var(--bg-secondary);
+    padding: 15px;
+    border-radius: 8px;
+    line-height: 1.8;
+}
+
+.fatoracao-box {
+    background: var(--bg-secondary);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.fatoracao-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.fatoracao-item:last-child {
+    border-bottom: none;
+}
+
+.fatoracao-item span:first-child {
+    color: var(--accent-primary);
+    font-weight: bold;
+}

@@ -1,0 +1,225 @@
+# ============================================
+# MATHLAB - .GITIGNORE
+# ============================================
+#
+# 🛡️ SEGURANÇA E PRIVACIDADE
+# =========================
+# Este arquivo protege informações sensíveis
+# Impede commit de credenciais e dados privados
+# Mantém o repositório limpo e seguro
+#
+# ⚠️ IMPORTANTE:
+# ================
+# - Nunca remova entradas de segurança
+# - Adicione novos arquivos sensíveis conforme necessário
+# - Revise periodicamente as regras
+
+# ============================================
+# VARIÁVEIS DE AMBIENTE E CONFIGURAÇÕES
+# ============================================
+.env
+.env.local
+.env.development
+.env.production
+.env.staging
+.env.test
+!.env.example
+
+# ============================================
+# CREDENCIAIS FIREBASE
+# ============================================
+firebase-credentials.json
+firebase-service-account.json
+google-credentials.json
+service-account.json
+
+# ============================================
+# LOGS E DEBUG
+# ============================================
+logs/
+*.log
+debug.log
+error.log
+access.log
+manutencao-*.log
+
+# ============================================
+# DEPENDÊNCIAS E NODE MODULES
+# ============================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# ============================================
+# BUILD E DIST
+# ============================================
+dist/
+build/
+out/
+.next/
+.nuxt/
+.cache/
+
+# ============================================
+# IDE E EDITORES
+# ============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ============================================
+# BACKUPS E TEMP
+# ============================================
+backups/
+*.backup
+*.bak
+*.tmp
+*.temp
+temp/
+
+# ============================================
+# COVERAGE E TESTES
+# ============================================
+coverage/
+.nyc_output/
+*.lcov
+test-results/
+
+# ============================================
+# BANCO DE DADOS LOCAIS
+# ============================================
+*.db
+*.sqlite
+*.sqlite3
+database/
+db/
+
+# ============================================
+# CACHE E PERFORMANCE
+# ============================================
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+
+# ============================================
+# ARQUIVOS DE SISTEMA
+# ============================================
+.DS_Store?
+ehthumbs.db
+Icon?
+Thumbs.db
+
+# ============================================
+# CONFIGURAÇÕES LOCAIS
+# ============================================
+config/local.json
+local.config.js
+user-settings.json
+
+# ============================================
+# DOCUMENTAÇÃO TEMPORÁRIA
+# ============================================
+docs/temp/
+docs/draft/
+*.md.tmp
+
+# ============================================
+# FIREBASE SPECIFIC
+# ============================================
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+
+# ============================================
+# DEPLOYMENT
+# ============================================
+.vercel/
+.netlify/
+.github/workflows/temp/
+
+# ============================================
+# ANALYTICS E MONITORING
+# ============================================
+analytics-data/
+monitoring/
+traces/
+
+# ============================================
+# SEGURANÇA ADICIONAL
+# ============================================
+*.pem
+*.key
+*.crt
+*.p12
+secrets/
+private/
+
+# ============================================
+# USER GENERATED CONTENT
+# ============================================
+uploads/
+user-content/
+generated/
+
+# ============================================
+# SPECIFIC TO MATHLAB
+# ============================================
+# Arquivos de configuração do usuário
+user-config.json
+local-settings.json
+
+# Arquivos de cálculo temporários
+*.calc
+calc-temp/
+
+# Históricos locais
+history-local/
+local-history/
+
+# Dados de teste
+test-data/
+mock-data/
+
+# Scripts de desenvolvimento
+dev-scripts/
+temp-scripts/
+
+# ============================================
+# EXCEÇÕES (ARQUIVOS PERMITIDOS)
+# ============================================
+# Mantém arquivos importantes mesmo que correspondam a padrões
+!.gitkeep
+!.gitignore
+!.env.example
+!README.md
+!LICENSE
+!vercel.json
+
+# ============================================
+# INSTRUÇÕES
+# ============================================
+#
+# Para adicionar novas regras:
+# 1. Identifique arquivos sensíveis
+# 2. Adicione padrão correspondente
+# 3. Teste com git status
+# 4. Commit as alterações
+#
+# Para verificar segurança:
+# git check-ignore --verbose nome_do_arquivo
+#
+# Para limpar arquivos já commitados:
+# git rm --cached nome_do_arquivo
+# echo "nome_do_arquivo" >> .gitignore
+# git add .gitignore
+# git commit -m "Add sensitive file to gitignore"
+#
+# ============================================

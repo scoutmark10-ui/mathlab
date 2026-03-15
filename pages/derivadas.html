@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpg" href="../assets/images/logo.png">
+    <title>Derivadas - MathLab</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="../assets/js/script.js" type="module"></script>
+
+</head>
+
+<body>
+    <div class="page-header">
+        <a href="../index.html" class="back-arrow" title="Voltar">
+            <i class="fas fa-arrow-left"></i>
+            <span class="sr-only">Voltar</span>
+        </a>
+
+        <h1 class="page-title">📈 Derivadas</h1>
+        <div class="placeholder"></div>
+    </div>
+
+    <main class="container">
+
+        <header class="tool-header-section">
+            <p class="tool-description">
+                Calcule derivadas e visualize a reta tangente no plano cartesiano diretamente no gráfico interativo.
+            </p>
+        </header>
+
+        <div class="tool-grid">
+            <!-- Coluna do Gráfico -->
+            <div class="tool-visual-side card-section">
+                <div class="controles-grafico">
+                    <button type="button" class="btn btn-secondary btn-small zoom-btn ativo" onclick="zoomGrafico(1)"
+                        id="zoom1">Zoom 1:1</button>
+                    <button type="button" class="btn btn-secondary btn-small zoom-btn" onclick="zoomGrafico(2)"
+                        id="zoom2">Zoom 2x</button>
+                    <button type="button" class="btn btn-secondary btn-small" onclick="centralizarGrafico()"
+                        id="centralizar">Centralizar</button>
+                </div>
+
+                <div class="grafico-wrapper">
+                    <canvas id="graficoDerivadas" class="chart-canvas-small"></canvas>
+                </div>
+
+                <div class="info-eixos group-spacing">
+                    <span><i class="fas fa-arrow-left"></i> Eixo X</span>
+                    <span>Origem (0,0) <i class="fas fa-circle accent-dot"></i></span>
+                    <span>Eixo Y <i class="fas fa-arrow-up"></i></span>
+                </div>
+
+                <div class="legenda-grafico">
+                    <div class="legenda-item">
+                        <div class="legenda-cor color-fn"></div>
+                        <span>f(x)</span>
+                    </div>
+                    <div class="legenda-item">
+                        <div class="legenda-cor color-tg"></div>
+                        <span>Tangente</span>
+                    </div>
+                    <div class="legenda-item">
+                        <div class="legenda-cor color-pt"></div>
+                        <span>Ponto</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna de Inputs -->
+            <div class="tool-input-side card-section">
+                <div class="input-group">
+                    <label for="funcao"><i class="fas fa-function"></i> Escolha a função</label>
+                    <select class="funcao-select" id="funcao" onchange="atualizarGrafico()">
+                        <option value="x^2">f(x) = x² (parábola)</option>
+                        <option value="x^3">f(x) = x³ (cúbica)</option>
+                        <option value="sin">f(x) = sen(x) (seno)</option>
+                        <option value="cos">f(x) = cos(x) (cosseno)</option>
+                        <option value="exp">f(x) = eˣ (exponencial)</option>
+                        <option value="ln">f(x) = ln(x) (logaritmo natural)</option>
+                    </select>
+                </div>
+
+                <div class="input-group group-spacing">
+                    <label for="pontoDerivada"><i class="fas fa-map-marker-alt"></i> Ponto de cálculo (x)</label>
+                    <div class="ponto-input-wrapper">
+                        <span>f'(</span>
+                        <input type="number" id="pontoDerivada" value="2" step="0.1" oninput="atualizarGrafico()"
+                            class="input-modern" placeholder="x">
+                        <span>)</span>
+                    </div>
+                </div>
+
+                <div class="exemplos-rapidos group-spacing">
+                    <p class="text-secondary small">Exemplos rápidos:</p>
+                    <div class="exemplos-grid">
+                        <button type="button" class="btn btn-secondary btn-small" onclick="usarExemplo('x^2', 2)">x²
+                            (2)</button>
+                        <button type="button" class="btn btn-secondary btn-small" onclick="usarExemplo('sin', 0)">sen
+                            (0)</button>
+                        <button type="button" class="btn btn-secondary btn-small" onclick="usarExemplo('exp', 1)">eˣ
+                            (1)</button>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-primary-action w-100 group-spacing" onclick="calcularDerivada()">
+                    <i class="fas fa-calculator"></i> Calcular Derivada
+                </button>
+
+                <div id="derivadaResultado" class="result-box result-spacing">
+                    <div class="result-main">f'(x) = ?</div>
+                    <div class="result-detail">Aguardando cálculo...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Regras de Derivação -->
+        <h2 class="section-title group-spacing"><i class="fas fa-lightbulb"></i> Regras de Derivação</h2>
+
+        <div class="regras-grid">
+            <div class="regra-card">
+                <h4>Potência</h4>
+                <p>d/dx [xⁿ] = n·xⁿ⁻¹</p>
+                <small>d/dx [x³] = 3x²</small>
+            </div>
+            <div class="regra-card">
+                <h4>Seno</h4>
+                <p>d/dx [sen(x)] = cos(x)</p>
+                <small>d/dx [sen(0)] = 1</small>
+            </div>
+            <div class="regra-card">
+                <h4>Cosseno</h4>
+                <p>d/dx [cos(x)] = -sen(x)</p>
+                <small>d/dx [cos(0)] = 0</small>
+            </div>
+            <div class="regra-card">
+                <h4>Exponencial</h4>
+                <p>d/dx [eˣ] = eˣ</p>
+                <small>d/dx [e¹] = e ≈ 2.718</small>
+            </div>
+            <div class="regra-card">
+                <h4>Logaritmo</h4>
+                <p>d/dx [ln(x)] = 1/x</p>
+                <small>d/dx [ln(2)] = 0.5</small>
+            </div>
+            <div class="regra-card">
+                <h4>Constante</h4>
+                <p>d/dx [c] = 0</p>
+                <small>d/dx [5] = 0</small>
+            </div>
+        </div>
+
+        <!-- Exercícios -->
+        <h2 class="section-title group-spacing"><i class="fas fa-pencil-alt"></i> Exercícios</h2>
+
+        <div class="exercicios-grid">
+            <div class="exercise-card">
+                <h3>Exercício 1</h3>
+                <p>f(x) = x², f'(2) = ?</p>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-small" onclick="mostrarResposta(1)">Ver Resposta</button>
+                    <button type="button" class="btn btn-secondary btn-small"
+                        onclick="usarExemplo('x^2', 2)">Testar</button>
+                </div>
+                <div id="resp1" class="answer">
+                    <i class="fas fa-check-circle"></i> f'(x) = 2x<br>
+                    f'(2) = 2·2 = <strong>4</strong>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <h3>Exercício 2</h3>
+                <p>f(x) = sen(x), f'(0) = ?</p>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-small" onclick="mostrarResposta(2)">Ver Resposta</button>
+                    <button type="button" class="btn btn-secondary btn-small"
+                        onclick="usarExemplo('sin', 0)">Testar</button>
+                </div>
+                <div id="resp2" class="answer">
+                    <i class="fas fa-check-circle"></i> f'(x) = cos(x)<br>
+                    f'(0) = cos(0) = <strong>1</strong>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <h3>Exercício 3</h3>
+                <p>f(x) = eˣ, f'(1) = ?</p>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-small" onclick="mostrarResposta(3)">Ver Resposta</button>
+                    <button type="button" class="btn btn-secondary btn-small"
+                        onclick="usarExemplo('exp', 1)">Testar</button>
+                </div>
+                <div id="resp3" class="answer">
+                    <i class="fas fa-check-circle"></i> f'(x) = eˣ<br>
+                    f'(1) = e ≈ <strong>2.718</strong>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <h3>Exercício 4</h3>
+                <p>f(x) = ln(x), f'(2) = ?</p>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-small" onclick="mostrarResposta(4)">Ver Resposta</button>
+                    <button type="button" class="btn btn-secondary btn-small"
+                        onclick="usarExemplo('ln', 2)">Testar</button>
+                </div>
+                <div id="resp4" class="answer">
+                    <i class="fas fa-check-circle"></i> f'(x) = 1/x<br>
+                    f'(2) = 1/2 = <strong>0.5</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dicas Rápidas -->
+        <div class="info-box group-spacing">
+            <h4><i class="fas fa-info-circle"></i> Dicas Rápidas</h4>
+            <ul class="dicas-lista">
+                <li><i class="fas fa-check"></i> A derivada é a inclinação da reta tangente</li>
+                <li><i class="fas fa-check"></i> No gráfico, a reta roxa tracejada mostra a tangente</li>
+                <li><i class="fas fa-check"></i> Se f'(x) &gt; 0, a função é crescente</li>
+                <li><i class="fas fa-check"></i> Se f'(x) &lt; 0, a função é decrescente</li>
+                <li><i class="fas fa-check"></i> Se f'(x) = 0, pode ser ponto de máximo/mínimo</li>
+            </ul>
+        </div>
+
+        <!-- Histórico -->
+        <div class="historico-container group-spacing">
+            <h3 class="section-title"><i class="fas fa-history"></i> Histórico Recentemente</h3>
+            <div id="historico-lista" class="historico-lista"></div>
+            <div class="btn-group group-spacing">
+                <button type="button" class="btn btn-secondary btn-small" onclick="limparHistorico()">Limpar
+                    Histórico</button>
+                <button type="button" class="btn btn-secondary btn-small"
+                    onclick="atualizarHistorico()">Atualizar</button>
+            </div>
+        </div>
+    </main>
+
+
+    <script>
+        let meuGrafico;
+        let fatorZoom = 1;
+
+        // Função para calcular a função selecionada
+        function calcularFuncao(x, tipo) {
+            switch (tipo) {
+                case 'x^2': return x * x;
+                case 'x^3': return x * x * x;
+                case 'sin': return Math.sin(x);
+                case 'cos': return Math.cos(x);
+                case 'exp': return Math.exp(x);
+                case 'ln': return x > 0 ? Math.log(x) : NaN;
+                default: return 0;
+            }
+        }
+
+        // Função para calcular a derivada
+        function calcularDerivadaFunc(x, tipo) {
+            switch (tipo) {
+                case 'x^2': return 2 * x;
+                case 'x^3': return 3 * x * x;
+                case 'sin': return Math.cos(x);
+                case 'cos': return -Math.sin(x);
+                case 'exp': return Math.exp(x);
+                case 'ln': return x > 0 ? 1 / x : NaN;
+                default: return 0;
+            }
+        }
+
+        // Função para controlar zoom
+        function zoomGrafico(fator) {
+            fatorZoom = fator;
+            document.getElementById('zoom1').classList.remove('ativo');
+            document.getElementById('zoom2').classList.remove('ativo');
+            document.getElementById(`zoom${fator}`).classList.add('ativo');
+            atualizarGrafico();
+        }
+
+        // Função para centralizar gráfico
+        function centralizarGrafico() {
+            const funcao = document.getElementById('funcao').value;
+            const ponto = parseFloat(document.getElementById('pontoDerivada').value) || 0;
+
+            // Recalcular com intervalo padrão
+            atualizarGrafico();
+        }
+
+        // Função para atualizar o gráfico
+        function atualizarGrafico() {
+            const funcao = document.getElementById('funcao').value;
+            const ponto = parseFloat(document.getElementById('pontoDerivada').value) || 0;
+
+            // Gerar dados para o gráfico
+            const labels = [];
+            const dadosFuncao = [];
+            const dadosTangente = [];
+
+            // Definir intervalo baseado na função e zoom
+            let minX, maxX;
+            const zoom = fatorZoom;
+
+            if (funcao === 'ln') {
+                minX = 0.1;
+                maxX = 4 / zoom;
+            } else {
+                minX = -3 / zoom;
+                maxX = 3 / zoom;
+            }
+
+            // Ajustar para que o ponto esteja sempre visível
+            if (ponto < minX) minX = ponto - 1;
+            if (ponto > maxX) maxX = ponto + 1;
+
+            // Gerar pontos
+            const passo = (maxX - minX) / 100;
+            for (let x = minX; x <= maxX; x += passo) {
+                labels.push(x.toFixed(2));
+
+                // Valor da função
+                let y = calcularFuncao(x, funcao);
+                dadosFuncao.push(isNaN(y) ? null : y);
+
+                // Valor da reta tangente
+                let y0 = calcularFuncao(ponto, funcao);
+                let derivada = calcularDerivadaFunc(ponto, funcao);
+
+                if (!isNaN(y0) && !isNaN(derivada) && Math.abs(x - ponto) < 2) {
+                    let yTangente = y0 + derivada * (x - ponto);
+                    dadosTangente.push(yTangente);
+                } else {
+                    dadosTangente.push(null);
+                }
+            }
+
+            // Configurar o gráfico
+            const ctx = document.getElementById('graficoDerivadas').getContext('2d');
+
+            if (meuGrafico) {
+                meuGrafico.destroy();
+            }
+
+            meuGrafico = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'f(x)',
+                            data: dadosFuncao,
+                            borderColor: '#9b59b6',
+                            backgroundColor: 'transparent',
+                            borderWidth: 3,
+                            pointRadius: 0,
+                            tension: 0.1
+                        },
+                        {
+                            label: 'Reta Tangente',
+                            data: dadosTangente,
+                            borderColor: '#8e44ad',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            pointRadius: 0,
+                            tension: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function (context) {
+                                    return `${context.dataset.label}: ${context.raw?.toFixed(3) || 'indefinido'}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            grid: {
+                                color: 'rgba(255,255,255,0.1)'
+                            },
+                            ticks: {
+                                color: 'var(--text-secondary)',
+                                callback: function (value) {
+                                    return value.toFixed(1);
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Y',
+                                color: 'var(--text-secondary)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255,255,255,0.1)'
+                            },
+                            ticks: {
+                                color: 'var(--text-secondary)',
+                                maxRotation: 45,
+                                minRotation: 45
+                            },
+                            title: {
+                                display: true,
+                                text: 'X',
+                                color: 'var(--text-secondary)'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Adicionar marcador do ponto
+            const pontoY = calcularFuncao(ponto, funcao);
+            if (!isNaN(pontoY)) {
+                // Encontrar índice do ponto mais próximo
+                let pontoIndex = -1;
+                let menorDiferenca = Infinity;
+
+                for (let i = 0; i < labels.length; i++) {
+                    const diff = Math.abs(parseFloat(labels[i]) - ponto);
+                    if (diff < menorDiferenca) {
+                        menorDiferenca = diff;
+                        pontoIndex = i;
+                    }
+                }
+
+                if (pontoIndex !== -1) {
+                    const pontoDataset = {
+                        label: 'Ponto',
+                        data: Array(labels.length).fill(null),
+                        borderColor: '#e74c3c',
+                        backgroundColor: '#e74c3c',
+                        pointRadius: 8,
+                        pointStyle: 'circle',
+                        showLine: false
+                    };
+                    pontoDataset.data[pontoIndex] = pontoY;
+                    meuGrafico.data.datasets.push(pontoDataset);
+                    meuGrafico.update();
+                }
+            }
+        }
+
+        // Função para calcular derivada
+        function calcularDerivada() {
+            const funcao = document.getElementById('funcao').value;
+            const ponto = parseFloat(document.getElementById('pontoDerivada').value);
+            const resultadoDiv = document.getElementById('derivadaResultado');
+
+            if (isNaN(ponto)) {
+                resultadoDiv.innerHTML = `
+                    <div class="result-main" style="color: #e74c3c;">❌</div>
+                    <div class="result-detail">Digite um ponto válido!</div>
+                `;
+                return;
+            }
+
+            let derivadaFunc;
+            let valorDerivada;
+            let explicacao;
+
+            switch (funcao) {
+                case 'x^2':
+                    derivadaFunc = '2x';
+                    valorDerivada = 2 * ponto;
+                    explicacao = `f(x) = x² → f'(x) = 2x<br>f'(${ponto}) = 2·${ponto} = ${valorDerivada}`;
+                    break;
+
+                case 'x^3':
+                    derivadaFunc = '3x²';
+                    valorDerivada = 3 * ponto * ponto;
+                    explicacao = `f(x) = x³ → f'(x) = 3x²<br>f'(${ponto}) = 3·${ponto}² = ${valorDerivada}`;
+                    break;
+
+                case 'sin':
+                    derivadaFunc = 'cos(x)';
+                    valorDerivada = Math.cos(ponto);
+                    explicacao = `f(x) = sen(x) → f'(x) = cos(x)<br>f'(${ponto}) = cos(${ponto.toFixed(2)}) = ${valorDerivada.toFixed(6)}`;
+                    break;
+
+                case 'cos':
+                    derivadaFunc = '-sen(x)';
+                    valorDerivada = -Math.sin(ponto);
+                    explicacao = `f(x) = cos(x) → f'(x) = -sen(x)<br>f'(${ponto}) = -sen(${ponto.toFixed(2)}) = ${valorDerivada.toFixed(6)}`;
+                    break;
+
+                case 'exp':
+                    derivadaFunc = 'eˣ';
+                    valorDerivada = Math.exp(ponto);
+                    explicacao = `f(x) = eˣ → f'(x) = eˣ<br>f'(${ponto}) = e^${ponto} = ${valorDerivada.toFixed(6)}`;
+                    break;
+
+                case 'ln':
+                    if (ponto <= 0) {
+                        resultadoDiv.innerHTML = `
+                            <div class="result-main" style="color: #e74c3c;">❌</div>
+                            <div class="result-detail">ln(x) só é definido para x > 0!</div>
+                        `;
+                        return;
+                    }
+                    derivadaFunc = '1/x';
+                    valorDerivada = 1 / ponto;
+                    explicacao = `f(x) = ln(x) → f'(x) = 1/x<br>f'(${ponto}) = 1/${ponto} = ${valorDerivada}`;
+                    break;
+            }
+
+            // Formatar valor
+            if (Number.isInteger(valorDerivada)) {
+                valorDerivada = valorDerivada.toString();
+            } else {
+                valorDerivada = valorDerivada.toFixed(6);
+            }
+
+            resultadoDiv.innerHTML = `
+                <div class="result-main">f'(${ponto}) = ${valorDerivada}</div>
+                <div class="result-detail">
+                    <i class="fas fa-info-circle"></i> ${explicacao}
+                </div>
+            `;
+
+            salvarHistorico('derivada', `${funcao} em x=${ponto}`, valorDerivada);
+        }
+
+        // Função para usar exemplos
+        function usarExemplo(funcao, ponto) {
+            document.getElementById('funcao').value = funcao;
+            document.getElementById('pontoDerivada').value = ponto;
+            calcularDerivada();
+            atualizarGrafico();
+        }
+
+        // Função para mostrar resposta
+        function mostrarResposta(num) {
+            const resp = document.getElementById('resp' + num);
+            resp.classList.toggle('show');
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(() => {
+                calcularDerivada();
+                atualizarGrafico();
+            }, 100);
+        });
+    </script>
+</body>
+
+</html>

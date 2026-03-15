@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpg" href="../assets/images/logo.png">
+    <title>Bhaskara - MathLab</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <!-- Font Awesome 6.4.2 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+
+<body class="tool-page">
+    <div class="page-header">
+        <a href="../index.html" class="back-arrow" title="Voltar para Início">
+            <i class="fas fa-arrow-left"></i>
+            <span class="sr-only">Voltar</span>
+        </a>
+        <h1 class="page-title">📐 Bhaskara</h1>
+        <div class="placeholder"></div>
+    </div>
+
+    <main class="container">
+        <header class="tool-header-section">
+            <p class="tool-description">
+                Resolva equações do 2º grau rapidamente. Insira os coeficientes <strong>ax² + bx + c = 0</strong> e veja
+                o passo a passo.
+            </p>
+        </header>
+
+        <div class="tool-grid">
+            <!-- Calculadora -->
+            <div class="tool-input-side card-section">
+                <div class="info-box-modern group-spacing center">
+                    <code>x = (-b ± √Δ) / 2a</code> | <small>Δ = b² - 4ac</small>
+                </div>
+
+                <div class="bhaskara-inputs group-spacing">
+                    <div class="input-modern-group">
+                        <label for="bhaskara-a">Coeficiente a</label>
+                        <input type="number" id="bhaskara-a" class="input-modern" value="1" step="any">
+                    </div>
+                    <div class="input-modern-group">
+                        <label for="bhaskara-b">Coeficiente b</label>
+                        <input type="number" id="bhaskara-b" class="input-modern" value="-5" step="any">
+                    </div>
+                    <div class="input-modern-group">
+                        <label for="bhaskara-c">Coeficiente c</label>
+                        <input type="number" id="bhaskara-c" class="input-modern" value="6" step="any">
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-primary-action group-spacing" onclick="calcularBhaskara()">
+                    <i class="fas fa-calculator"></i> Resolver Equação
+                </button>
+
+                <div id="bhaskaraResultado" class="result-box result-spacing">
+                    Aguardando entrada...
+                </div>
+            </div>
+
+            <!-- Informações e Dicas -->
+            <div class="tool-visual-side">
+                <div class="card-section">
+                    <h2 class="section-title"><i class="fas fa-info-circle"></i> O papel do Δ</h2>
+                    <div class="properties-side-list">
+                        <div class="prop-item-mini">
+                            <span class="badge success">Δ &gt; 0</span> Duas raízes reais e distintas.
+                        </div>
+                        <div class="prop-item-mini">
+                            <span class="badge warning">Δ = 0</span> Duas raízes reais e iguais.
+                        </div>
+                        <div class="prop-item-mini">
+                            <span class="badge error">Δ &lt; 0</span> Não existem raízes reais.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box-modern group-spacing">
+                    <p><i class="fas fa-lightbulb"></i> <strong>Soma:</strong> -b/a | <strong>Produto:</strong> c/a</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exercícios -->
+        <h2 class="section-title group-spacing center"><i class="fas fa-pencil-alt"></i> Pratique</h2>
+        <div class="exercicios-grid-modern">
+            <div class="exercise-card-modern">
+                <div class="ex-eq">x² - 5x + 6 = 0</div>
+                <div class="ex-actions">
+                    <button type="button" class="btn btn-small" onclick="mostrarResposta(1)">Resposta</button>
+                    <button type="button" class="btn btn-secondary btn-small"
+                        onclick="usarExemploBhaskara(1, -5, 6)">Testar</button>
+                </div>
+                <div id="resp1" class="answer-hidden">
+                    <i class="fas fa-check"></i> x₁=3, x₂=2
+                </div>
+            </div>
+
+            <div class="exercise-card-modern">
+                <div class="ex-eq">x² - 6x + 9 = 0</div>
+                <div class="ex-actions">
+                    <button type="button" class="btn btn-small" onclick="mostrarResposta(2)">Resposta</button>
+                    <button type="button" class="btn btn-secondary btn-small"
+                        onclick="usarExemploBhaskara(1, -6, 9)">Testar</button>
+                </div>
+                <div id="resp2" class="answer-hidden">
+                    <i class="fas fa-check"></i> x=3 (raiz única)
+                </div>
+            </div>
+
+            <div class="exercise-card-modern">
+                <div class="ex-eq">2x² + 3x - 5 = 0</div>
+                <div class="ex-actions">
+                    <button type="button" class="btn btn-small" onclick="mostrarResposta(3)">Resposta</button>
+                    <button type="button" class="btn btn-secondary btn-small"
+                        onclick="usarExemploBhaskara(2, 3, -5)">Testar</button>
+                </div>
+                <div id="resp3" class="answer-hidden">
+                    <i class="fas fa-check"></i> x₁=1, x₂=-2.5
+                </div>
+            </div>
+        </div>
+
+        <!-- Histórico -->
+        <div class="card-section group-spacing">
+            <h2 class="section-title"><i class="fas fa-history"></i> Histórico</h2>
+            <div id="historico-lista" class="historico-lista"></div>
+            <div class="btn-group group-spacing">
+                <button type="button" class="btn btn-secondary btn-small" onclick="limparHistorico()">Limpar</button>
+                <button type="button" class="btn btn-secondary btn-small"
+                    onclick="atualizarHistorico()">Atualizar</button>
+            </div>
+        </div>
+    </main>
+
+
+    <footer>
+        <p>MathLab &copy; 2026 - O seu laboratório matemático</p>
+    </footer>
+
+    <script src="../assets/js/script.js" type="module"></script>
+    <script>
+        function usarExemploBhaskara(a, b, c) {
+            document.getElementById('bhaskara-a').value = a;
+            document.getElementById('bhaskara-b').value = b;
+            document.getElementById('bhaskara-c').value = c;
+
+            // Disparar o cálculo (função global disponível via módulo ou script)
+            if (typeof calcularBhaskara === 'function') {
+                calcularBhaskara();
+            } else {
+                console.warn('Função calcularBhaskara não encontrada no escopo global.');
+            }
+
+            // Scroll suave até a calculadora
+            document.querySelector('.bhaskara-container').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Calcular automaticamente se os campos já tiverem valores
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(() => {
+                if (typeof calcularBhaskara === 'function') calcularBhaskara();
+            }, 500);
+        });
+    </script>
+</body>
+
+</html>

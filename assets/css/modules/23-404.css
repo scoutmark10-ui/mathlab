@@ -1,0 +1,297 @@
+/* ============================================
+   MÓDULO 23: PÁGINA 404
+   ============================================ */
+
+.error-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-primary);
+    position: relative;
+    overflow: hidden;
+}
+
+.error-page::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(155,89,182,0.05) 0%, transparent 70%);
+    animation: rotateBg 30s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes rotateBg {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Container principal */
+.error-container {
+    text-align: center;
+    padding: 60px 20px;
+    max-width: 700px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+    animation: fadeInUp 0.6s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Ícone de erro */
+.error-icon {
+    font-size: 5rem;
+    color: var(--accent-primary);
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 20px var(--accent-primary));
+    animation: floatIcon 3s ease-in-out infinite;
+}
+
+@keyframes floatIcon {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Código de erro */
+.error-code {
+    font-size: 10rem;
+    font-weight: 900;
+    color: var(--accent-primary);
+    line-height: 1;
+    text-shadow: 0 0 30px var(--accent-glow);
+    margin-bottom: 20px;
+    animation: pulseGlow 2s ease-in-out infinite;
+    font-family: 'Space Mono', monospace;
+}
+
+@keyframes pulseGlow {
+    0%, 100% {
+        text-shadow: 0 0 30px var(--accent-glow);
+        transform: scale(1);
+    }
+    50% {
+        text-shadow: 0 0 50px var(--accent-glow);
+        transform: scale(1.05);
+    }
+}
+
+/* Título */
+.error-title {
+    font-size: 2.5rem;
+    color: var(--text-primary);
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+/* Mensagem */
+.error-message {
+    color: var(--text-secondary);
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Caixa de sugestões */
+.error-suggestions {
+    background: var(--card-bg);
+    border-radius: var(--border-radius-lg);
+    padding: 35px 30px;
+    margin: 40px 0;
+    border: 1px solid var(--border-color);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-lg);
+}
+
+.error-suggestions h3 {
+    color: var(--accent-primary);
+    margin-bottom: 25px;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.error-suggestions h3 i {
+    font-size: 1.5rem;
+}
+
+/* Grid de sugestões */
+.suggestions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+.suggestion-item {
+    background: var(--bg-secondary);
+    padding: 15px;
+    border-radius: var(--border-radius);
+    transition: var(--transition-smooth);
+    border: 1px solid var(--border-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.suggestion-item::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(155,89,182,0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity var(--transition-speed);
+    pointer-events: none;
+}
+
+.suggestion-item:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-primary);
+    box-shadow: var(--accent-glow);
+}
+
+.suggestion-item:hover::before {
+    opacity: 1;
+}
+
+.suggestion-item a {
+    color: var(--text-primary);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-weight: 500;
+    position: relative;
+    z-index: 1;
+}
+
+.suggestion-item i {
+    color: var(--accent-primary);
+    font-size: 1.1rem;
+    transition: transform var(--transition-speed);
+}
+
+.suggestion-item:hover i {
+    transform: scale(1.2);
+}
+
+/* Botão principal */
+.home-button {
+    display: inline-block;
+    padding: 16px 45px;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: var(--transition-smooth);
+    border: none;
+    cursor: pointer;
+    margin: 20px 0;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+}
+
+.home-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.home-button:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: var(--accent-glow);
+}
+
+.home-button:hover::before {
+    left: 100%;
+}
+
+.home-button i {
+    margin-right: 10px;
+}
+
+/* Rodapé do erro */
+.error-footer {
+    margin-top: 30px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.error-footer a {
+    color: var(--accent-primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: var(--transition-smooth);
+}
+
+.error-footer a:hover {
+    text-decoration: underline;
+    color: var(--accent-secondary);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .error-code {
+        font-size: 7rem;
+    }
+    
+    .error-title {
+        font-size: 2rem;
+    }
+    
+    .error-suggestions {
+        padding: 25px 20px;
+    }
+    
+    .suggestions-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .error-code {
+        font-size: 5rem;
+    }
+    
+    .error-title {
+        font-size: 1.5rem;
+    }
+    
+    .error-message {
+        font-size: 1rem;
+    }
+    
+    .suggestions-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .home-button {
+        padding: 14px 35px;
+        font-size: 1rem;
+    }
+}

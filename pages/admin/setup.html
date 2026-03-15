@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../../assets/images/logo.png">
+    <title>Setup Firestore - MathLab</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/modules/24-admin.css">
+    <style>
+        .setup-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 40px;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-lg);
+            text-align: center;
+        }
+
+        .step-card {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: left;
+            border-left: 4px solid var(--accent-primary);
+        }
+
+        #log {
+            background: #000;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            height: 150px;
+            overflow-y: auto;
+            margin-top: 20px;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+
+<body class="admin-body">
+    <div class="setup-container">
+        <i class="fas fa-database fa-3x color-primary group-spacing"></i>
+        <h1>Inicialização do Firestore</h1>
+        <p class="group-spacing">Este assistente criará as coleções e documentos base necessários para o MathLab.</p>
+
+        <div class="step-card">
+            <h3>1. Configurações Administrativas</h3>
+            <p>Criará a coleção <code>config</code> com as chaves para o sistema de mensagens.</p>
+            <button id="btnConfig" class="btn btn-primary btn-small">Criar Configurações</button>
+        </div>
+
+        <div class="step-card">
+            <h3>2. Primeiro Administrador</h3>
+            <p>Se você já estiver logado, este botão tornará seu usuário um <strong>Administrador</strong>.</p>
+            <button id="btnAdmin" class="btn btn-secondary btn-small">Me tornar Admin</button>
+        </div>
+
+        <div id="log">Aguardando ação...</div>
+
+        <div class="group-spacing">
+            <a href="../../index.html" class="color-secondary">Voltar ao Início</a>
+        </div>
+    </div>
+
+    <script type="module">
+        import { getFirestore, doc, setDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+        import app from '../../assets/js/firebase/config.js';
+
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        const logDiv = document.getElementById('log');
+
+        function addLog(msg, type = 'info') {
+            const span = document.createElement('div');
+            span.style.color = type === 'error' ? '#ff4757' : (type === 'success' ? '#2ed573' : '#0f0');
+            span.innerText = `[${new Date().toLocaleTimeString()}] ${msg}`;
+            logDiv.appendChild(span);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        // 1. Setup Config
+        document.getElementById('btnConfig').addEventListener('click', async () => {
+            try {
+                addLog('Iniciando criação de config...');
+                await setDoc(doc(db, 'config', 'admin_secrets'), {
+                    url: 'https://script.google.com/macros/s/AKfycbzHitkzwLKkHnkBfsmQtRwsVjSvOWUhCUaaEMUNFupeVqjkpUdLicZETn6082c2rsfj/exec',
+                    senha: 'mathlab2026',
+                    updatedAt: serverTimestamp()
+                });
+                addLog('✅ Coleção "config" criada com sucesso!', 'success');
+                addLog('Verifique seu console do Firebase.');
+            } catch (e) {
+                addLog(`❌ Erro: ${e.message}`, 'error');
+            }
+        });
+
+        // 2. Setup Admin
+        document.getElementById('btnAdmin').addEventListener('click', async () => {
+            const user = auth.currentUser;
+            if (!user) {
+                addLog('❌ Erro: Você precisa estar logado na conta que deseja tornar admin!', 'error');
+                return;
+            }
+
+            try {
+                addLog(`Promovendo UID: ${user.uid}...`);
+                await setDoc(doc(db, 'usuarios', user.uid), {
+                    cargo: 'admin',
+                    nome: user.displayName || user.email.split('@')[0],
+                    email: user.email,
+                    aprovado: true,
+                    ultimoAcesso: serverTimestamp()
+                }, { merge: true });
+
+                addLog('✅ PERMISSÃO CONCEDIDA!', 'success');
+                addLog('Você agora é Administrador do MathLab.');
+                addLog('Faça logout e login novamente para aplicar os dados.');
+            } catch (e) {
+                addLog(`❌ Erro de permissão: ${e.message}`, 'error');
+                addLog('Certifique-se que as regras do seu Firestore permitem escrita.', 'info');
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpg" href="../assets/images/logo.png">
+    <title>Porcentagem - MathLab</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+
+</head>
+
+<body>
+    <div class="page-header">
+        <a href="../index.html" class="back-arrow" title="Voltar para Início">
+            <i class="fas fa-arrow-left"></i>
+            <span class="sr-only">Voltar</span>
+        </a>
+        <h1 class="page-title">% Porcentagem</h1>
+        <div class="placeholder"></div>
+    </div>
+
+    <main class="container">
+        <header class="tool-header-section">
+            <p class="tool-description">
+                Calcule aumentos, descontos, diferenças percentuais e muito mais com extrema facilidade.
+            </p>
+        </header>
+
+        <div class="tool-grid">
+            <!-- Coluna de Inputs -->
+            <div class="tool-input-side card-section">
+                <div class="input-group">
+                    <label for="tipoPorcentagem"><i class="fas fa-sliders-h"></i> Tipo de Cálculo</label>
+                    <select class="tipo-select" id="tipoPorcentagem" onchange="calcularPorcentagem()">
+                        <option value="percentual">📊 % de um valor</option>
+                        <option value="aumento">📈 Aumento percentual</option>
+                        <option value="desconto">📉 Desconto percentual</option>
+                        <option value="diferenca">🔄 Diferença percentual</option>
+                    </select>
+                </div>
+
+                <div class="input-group group-spacing">
+                    <label for="valorPorcentagem"><i class="fas fa-dollar-sign"></i> Valor Base</label>
+                    <input type="number" id="valorPorcentagem" class="input-modern" value="1000" step="any"
+                        placeholder="100.00">
+                </div>
+
+                <div class="input-group group-spacing">
+                    <label for="percentual"><i class="fas fa-percent"></i> Porcentagem</label>
+                    <input type="number" id="percentual" class="input-modern" value="15" step="any" placeholder="15">
+                </div>
+
+                <button type="button" class="btn btn-primary-action w-100 group-spacing"
+                    onclick="calcularPorcentagem()">
+                    <i class="fas fa-calculator"></i> Calcular Agora
+                </button>
+
+                <div id="porcentagemResultado" class="result-box result-spacing">
+                    <div class="result-main">150</div>
+                    <div class="result-detail">15% de 1000 é 150</div>
+                </div>
+            </div>
+
+            <!-- Coluna de Testes Rápidos e Fórmulas -->
+            <div class="tool-visual-side">
+                <div class="card-section">
+                    <h3 class="section-title"><i class="fas fa-bolt"></i> Testes Rápidos</h3>
+                    <div class="exemplos-grid-modern">
+                        <button type="button" class="btn btn-secondary btn-small"
+                            onclick="usarExemploPorcentagem(200, 10, 'percentual')">10% de 200</button>
+                        <button type="button" class="btn btn-secondary btn-small"
+                            onclick="usarExemploPorcentagem(500, 20, 'aumento')">+20% em 500</button>
+                        <button type="button" class="btn btn-secondary btn-small"
+                            onclick="usarExemploPorcentagem(300, 15, 'desconto')">-15% em 300</button>
+                    </div>
+                </div>
+
+                <div class="formulas-side group-spacing">
+                    <div class="formula-card-compact">
+                        <span class="formula-label">Direto:</span>
+                        <code class="formula-code">(V × %) / 100</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exemplos do Dia a Dia -->
+        <div class="daily-examples group-spacing">
+            <h2 class="section-title"><i class="fas fa-shopping-cart"></i> Exemplos Cotidianos</h2>
+            <div class="examples-modern-grid">
+                <div class="example-box">
+                    <i class="fas fa-utensils"></i>
+                    <span>Gorjeta (10%)</span>
+                    <strong>R$ 50 → R$ 5</strong>
+                </div>
+                <div class="example-box">
+                    <i class="fas fa-tag"></i>
+                    <span>Desconto (20%)</span>
+                    <strong>R$ 100 → R$ 80</strong>
+                </div>
+                <div class="example-box">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Comissão (5%)</span>
+                    <strong>R$ 1k → R$ 50</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dicas -->
+        <div class="info-box group-spacing">
+            <h4><i class="fas fa-info-circle"></i> Atalhos Mentais</h4>
+            <ul class="dicas-lista">
+                <li><i class="fas fa-check"></i> 10%: dividir por 10</li>
+                <li><i class="fas fa-check"></i> 25%: dividir por 4</li>
+                <li><i class="fas fa-check"></i> 50%: dividir pela metade</li>
+            </ul>
+        </div>
+
+        <!-- Histórico -->
+        <div class="historico-container group-spacing">
+            <h3 class="section-title"><i class="fas fa-history"></i> Histórico</h3>
+            <div id="historico-lista" class="historico-lista"></div>
+            <div class="btn-group group-spacing">
+                <button type="button" class="btn btn-secondary btn-small" onclick="limparHistorico()">Limpar</button>
+                <button type="button" class="btn btn-secondary btn-small"
+                    onclick="atualizarHistorico()">Atualizar</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="../assets/js/script.js" type="module"></script>
+    <script>
+        // Função melhorada para calcular porcentagem
+        function calcularPorcentagem() {
+            const valor = parseFloat(document.getElementById('valorPorcentagem').value);
+            const percentual = parseFloat(document.getElementById('percentual').value);
+            const tipo = document.getElementById('tipoPorcentagem').value;
+            const resultadoDiv = document.getElementById('porcentagemResultado');
+
+            // Validações
+            if (isNaN(valor) || isNaN(percentual)) {
+                resultadoDiv.innerHTML = `
+                    <div class="valor" style="color: #e74c3c;">❌</div>
+                    <div class="descricao">Digite valores válidos!</div>
+                `;
+                return;
+            }
+
+            let resultado, explicacao;
+
+            switch (tipo) {
+                case 'percentual':
+                    resultado = (valor * percentual) / 100;
+                    explicacao = `${percentual}% de ${formatarValor(valor)} = ${formatarValor(resultado)}`;
+                    break;
+
+                case 'aumento':
+                    resultado = valor * (1 + percentual / 100);
+                    explicacao = `${formatarValor(valor)} com aumento de ${percentual}% = ${formatarValor(resultado)}`;
+                    break;
+
+                case 'desconto':
+                    resultado = valor * (1 - percentual / 100);
+                    explicacao = `${formatarValor(valor)} com desconto de ${percentual}% = ${formatarValor(resultado)}`;
+                    break;
+
+                case 'diferenca':
+                    const diferenca = valor - percentual;
+                    const percentualDiff = (diferenca / percentual) * 100;
+                    resultado = percentualDiff;
+                    explicacao = `Diferença de ${formatarValor(valor)} para ${formatarValor(percentual)} = ${percentualDiff.toFixed(2)}%`;
+                    break;
+
+                case 'valor_original':
+                    const original = valor / (1 - percentual / 100);
+                    resultado = original;
+                    explicacao = `Valor original (com ${percentual}% de desconto) = ${formatarValor(original)}`;
+                    break;
+            }
+
+            // Atualizar display
+            resultadoDiv.innerHTML = `
+                <div class="valor">${formatarValor(resultado)}</div>
+                <div class="descricao">${explicacao}</div>
+            `;
+
+            // Salvar no histórico
+            salvarHistorico('porcentagem', `${percentual}% de ${valor}`, formatarValor(resultado));
+        }
+
+        // Função para formatar valores
+        function formatarValor(valor) {
+            if (Number.isInteger(valor)) {
+                return valor.toString();
+            }
+            return valor.toFixed(2).replace('.', ',');
+        }
+
+        // Função para exemplos
+        function usarExemploPorcentagem(valor, percentual, tipo) {
+            document.getElementById('valorPorcentagem').value = valor;
+            document.getElementById('percentual').value = percentual;
+            document.getElementById('tipoPorcentagem').value = tipo;
+            calcularPorcentagem();
+        }
+
+        // Calcular ao carregar
+        document.addEventListener('DOMContentLoaded', function () {
+            calcularPorcentagem();
+        });
+    </script>
+</body>
+
+</html>

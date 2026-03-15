@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpg" href="../assets/images/logo.png">
+    <title>Conversões - MathLab</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <!-- Font Awesome 6.4.2 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+
+<body class="tool-page">
+    <div class="page-header">
+        <a href="../index.html" class="back-arrow" title="Voltar para Início">
+            <i class="fas fa-arrow-left"></i>
+            <span class="sr-only">Voltar</span>
+        </a>
+        <h1 class="page-title">🔄 Conversões</h1>
+        <div class="placeholder"></div>
+    </div>
+
+    <main class="container">
+        <header class="tool-header-section">
+            <p class="tool-description">
+                Converta instantaneamente entre unidades de comprimento, massa, temperatura, volume e muito mais.
+            </p>
+        </header>
+
+        <div class="tool-grid">
+            <!-- Configuração da Conversão -->
+            <div class="tool-input-side card-section">
+                <div class="input-modern-group">
+                    <label for="tipoConversao"><i class="fas fa-list"></i> Categoria</label>
+                    <select class="tipo-select" id="tipoConversao" onchange="atualizarOpcoesConversao()">
+                        <option value="comprimento">📏 Comprimento</option>
+                        <option value="massa">⚖️ Massa</option>
+                        <option value="temperatura">🌡️ Temperatura</option>
+                        <option value="volume">🧪 Volume</option>
+                        <option value="tempo">⏱️ Tempo</option>
+                        <option value="velocidade">🚀 Velocidade</option>
+                    </select>
+                </div>
+
+                <div class="input-modern-group group-spacing">
+                    <label for="valorConversao">Valor Original</label>
+                    <input type="number" id="valorConversao" class="input-modern" value="1" step="any">
+                </div>
+
+                <div class="conversion-flow group-spacing">
+                    <div class="unit-box">
+                        <label for="converterDe">De</label>
+                        <select id="converterDe" class="unit-select-modern"></select>
+                    </div>
+                    <div class="flow-icon">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="unit-box">
+                        <label for="converterPara">Para</label>
+                        <select id="converterPara" class="unit-select-modern"></select>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-primary-action w-100 group-spacing" onclick="converterUnidade()">
+                    <i class="fas fa-sync-alt"></i> Converter Agora
+                </button>
+
+                <div id="conversaoResultado" class="result-box result-spacing">
+                    Aguardando entrada...
+                </div>
+            </div>
+
+            <!-- Referência e Atalhos -->
+            <div class="tool-visual-side">
+                <div class="card-section">
+                    <h3 class="section-title"><i class="fas fa-bolt"></i> Testes Rápidos</h3>
+                    <div class="exemplos-grid-modern">
+                        <button type="button" class="btn btn-secondary btn-small"
+                            onclick="usarExemploConversao(10, 'km', 'm')">10km → m</button>
+                        <button type="button" class="btn btn-secondary btn-small"
+                            onclick="usarExemploConversao(100, 'celsius', 'fahrenheit')">100°C → °F</button>
+                        <button type="button" class="btn btn-secondary btn-small"
+                            onclick="usarExemploConversao(1, 'horas', 'segundos')">1h → s</button>
+                    </div>
+                </div>
+
+                <div class="card-section group-spacing">
+                    <h3 class="section-title"><i class="fas fa-info-circle"></i> Fatores Comuns</h3>
+                    <div class="factors-mini-list">
+                        <div class="factor-item"><span>1 km</span> ➔ <span>1000 m</span></div>
+                        <div class="factor-item"><span>1 kg</span> ➔ <span>1000 g</span></div>
+                        <div class="factor-item"><span>1 h</span> ➔ <span>60 min</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Histórico -->
+        <div class="historico-container group-spacing">
+            <h3 class="section-title"><i class="fas fa-history"></i> Histórico</h3>
+            <div id="historico-lista" class="historico-lista"></div>
+            <div class="btn-group group-spacing">
+                <button type="button" class="btn btn-secondary btn-small" onclick="limparHistorico()">Limpar</button>
+                <button type="button" class="btn btn-secondary btn-small"
+                    onclick="atualizarHistorico()">Atualizar</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>MathLab &copy; 2026 - O seu laboratório matemático</p>
+    </footer>
+
+    <script src="../assets/js/script.js" type="module"></script>
+
+    <script>
+        // Lógica local para exemplos mantida
+        function usarExemploConversao(valor, de, para) {
+            let tipo = 'comprimento';
+            if (['celsius', 'fahrenheit', 'kelvin'].includes(de)) tipo = 'temperatura';
+            else if (['kg', 'g', 'mg', 'lb', 'oz'].includes(de)) tipo = 'massa';
+            else if (['horas', 'minutos', 'segundos', 'dias'].includes(de)) tipo = 'tempo';
+            else if (['litros', 'ml', 'm3', 'galao'].includes(de)) tipo = 'volume';
+
+            document.getElementById('tipoConversao').value = tipo;
+            // Se a função estiver disponível no módulo ou global
+            if (typeof atualizarOpcoesConversao === 'function') atualizarOpcoesConversao();
+
+            setTimeout(() => {
+                document.getElementById('valorConversao').value = valor;
+                document.getElementById('converterDe').value = de;
+                document.getElementById('converterPara').value = para;
+                if (typeof converterUnidade === 'function') converterUnidade();
+            }, 150);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                if (typeof atualizarOpcoesConversao === 'function') atualizarOpcoesConversao();
+            }, 500);
+        });
+    </script>
+</body>
+
+</html>

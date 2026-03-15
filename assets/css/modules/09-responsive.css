@@ -1,0 +1,699 @@
+/* ============================================
+   MÓDULO 09: RESPONSIVIDADE
+   ============================================ */
+
+/* --------------------------------------------
+   TABLETS E TELAS MÉDIAS (até 992px)
+   -------------------------------------------- */
+@media screen and (max-width: 992px) {
+
+    /* Header e Navegação */
+    .menu-toggle {
+        display: flex !important;
+    }
+
+    .nav-menu {
+        display: none !important;
+        position: absolute;
+        top: var(--header-height);
+        left: 0;
+        right: 0;
+        background: var(--card-bg);
+        flex-direction: column;
+        padding: var(--spacing-md);
+        border-radius: 0 0 var(--border-radius) var(--border-radius);
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-md);
+        z-index: 99;
+    }
+
+    .nav-menu.active {
+        display: flex !important;
+        animation: slideInDown 0.3s ease;
+    }
+
+    .nav-menu a {
+        width: 100%;
+        justify-content: center;
+        padding: var(--spacing-md);
+    }
+
+    .main-header {
+        padding: 0 var(--spacing-md);
+    }
+
+    /* Sidebar */
+    .sidebar {
+        width: 260px;
+    }
+
+    /* Stats */
+    .stats-container {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    /* Container */
+    .container,
+    .main-content {
+        max-width: 960px;
+        padding: 0 var(--spacing-md);
+    }
+
+    /* Grids */
+    .tools-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-md);
+    }
+
+    .propriedades-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Page header */
+    .page-header {
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+
+    .header-logo span {
+        font-size: 1.1rem;
+    }
+
+    .page-title {
+        font-size: 1.3rem;
+    }
+}
+
+/* --------------------------------------------
+   MOBILES GRANDES (até 768px)
+   -------------------------------------------- */
+@media screen and (max-width: 768px) {
+
+    /* Body */
+    body {
+        padding-top: var(--header-height);
+    }
+
+    /* Tipografia */
+    h1 {
+        font-size: 2rem;
+    }
+
+    .section-title {
+        font-size: 1.6rem;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+    }
+
+    /* Header */
+    .page-header {
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+
+    .header-logo i {
+        font-size: 1.5rem;
+    }
+
+    .header-logo span {
+        display: none;
+        /* esconde o texto do logo em mobile */
+    }
+
+    .back-arrow {
+        width: 36px;
+        height: 36px;
+        font-size: 1.1rem;
+    }
+
+    .page-title {
+        font-size: 1.1rem;
+    }
+
+    .header-user .user-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .logo-area h2 {
+        font-size: 1.2rem;
+    }
+
+    .user-menu {
+        gap: var(--spacing-xs);
+    }
+
+    /* Grids */
+    .preview-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .tools-grid {
+        grid-template-columns: 1fr !important;
+        gap: var(--spacing-md);
+    }
+
+    .propriedades-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+
+    .stats-container {
+        gap: var(--spacing-sm);
+    }
+
+    /* Cards */
+    .card {
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .tool-card {
+        padding: var(--spacing-lg);
+    }
+
+    .calculator-preview {
+        padding: 20px;
+    }
+
+    .quick-calc {
+        padding: 20px;
+    }
+
+    /* Exemplos rápidos */
+    .exemplos-rapidos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Footer */
+    .footer-links {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        align-items: center;
+    }
+
+    .footer-links a {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+
+    /* Calculadoras */
+    .coeficientes {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
+    }
+
+    .angulo-input input {
+        width: 180px;
+    }
+
+    .trig-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .circulo-trig {
+        width: 200px;
+        height: 200px;
+    }
+
+    /* Matrizes */
+    .matriz-grid.matriz-2x2 {
+        grid-template-columns: repeat(2, 80px);
+    }
+
+    .matriz-grid.matriz-3x3 {
+        grid-template-columns: repeat(3, 70px);
+    }
+
+    .matriz-input {
+        height: 60px;
+        font-size: 1.2rem;
+    }
+
+    .matriz-operacoes {
+        grid-template-columns: 1fr;
+    }
+
+    /* Conversões */
+    .conversao-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .conversao-seta {
+        transform: rotate(90deg);
+        margin: var(--spacing-sm) 0;
+    }
+
+    /* Primos */
+    .primo-input input {
+        width: 200px;
+        font-size: 2rem;
+    }
+
+    .curiosidades-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Histórico */
+    .historico-container {
+        padding: 20px;
+    }
+
+    .historico-item {
+        padding: 12px;
+    }
+
+    .historico-item-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .historico-item-data {
+        align-self: flex-end;
+    }
+
+    /* Container */
+    .container,
+    .main-content {
+        padding: 0 var(--spacing-md);
+    }
+
+    /* Info box */
+    .info-box {
+        padding: var(--spacing-md);
+    }
+
+    .info-box li {
+        font-size: 0.9rem;
+    }
+}
+
+/* --------------------------------------------
+   MOBILES PEQUENOS (até 576px)
+   -------------------------------------------- */
+@media screen and (max-width: 576px) {
+
+    /* Header */
+    .logo-area h2 {
+        display: none;
+    }
+
+    .logo-area i {
+        font-size: 1.5rem;
+    }
+
+    .main-header {
+        padding: 0 var(--spacing-sm);
+    }
+
+    .user-menu {
+        gap: var(--spacing-xs);
+    }
+
+    .theme-toggle,
+    .menu-toggle {
+        width: 36px;
+        height: 36px;
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+    }
+
+    /* Stats */
+    .stats-container {
+        grid-template-columns: 1fr !important;
+        gap: var(--spacing-sm);
+    }
+
+    .stat-number {
+        font-size: 2rem;
+    }
+
+    /* Guest banner */
+    .guest-banner {
+        flex-direction: column;
+        text-align: center;
+        padding: var(--spacing-md);
+    }
+
+    .guest-banner p {
+        margin-bottom: var(--spacing-sm);
+    }
+
+    /* Modal */
+    .modal-content {
+        width: 95%;
+        padding: var(--spacing-lg);
+    }
+
+    .modal-buttons {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .modal-btn {
+        width: 100%;
+    }
+
+    /* Tipografia */
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .section-title {
+        font-size: 1.4rem;
+        padding-left: var(--spacing-md);
+    }
+
+    .page-title {
+        font-size: 1rem;
+    }
+
+    .back-arrow {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+    }
+
+    .header-user .user-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    /* Cards */
+    .card {
+        padding: var(--spacing-lg);
+    }
+
+    .tool-card {
+        padding: var(--spacing-md);
+    }
+
+    .tool-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .tool-icon {
+        margin: 0 auto;
+    }
+
+    .tool-title {
+        font-size: 1.2rem;
+    }
+
+    /* Botões */
+    .btn-group {
+        flex-direction: column;
+    }
+
+    .btn-group .btn {
+        width: 100%;
+    }
+
+    .exemplos-rapidos {
+        grid-template-columns: 1fr;
+    }
+
+    .exemplo-btn {
+        width: 100%;
+    }
+
+    /* Inputs */
+    .primo-input input {
+        width: 180px;
+        font-size: 1.8rem;
+        padding: var(--spacing-md);
+    }
+
+    .angulo-input input {
+        width: 150px;
+        font-size: 1.5rem;
+    }
+
+    .ponto-input input {
+        padding: var(--spacing-sm);
+        font-size: 1rem;
+    }
+
+    /* Matrizes */
+    .matriz-grid.matriz-2x2 {
+        grid-template-columns: repeat(2, 65px);
+    }
+
+    .matriz-grid.matriz-3x3 {
+        grid-template-columns: repeat(3, 55px);
+    }
+
+    .matriz-input {
+        height: 50px;
+        font-size: 1rem;
+    }
+
+    .tamanho-btn {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: 1rem;
+    }
+
+    /* Lista de primos */
+    .lista-primos-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .primo-item {
+        padding: var(--spacing-xs);
+        font-size: 0.9rem;
+    }
+
+    /* Histórico */
+    .historico-container .btn-group {
+        flex-direction: column;
+    }
+
+    .historico-item-conteudo {
+        font-size: 0.9rem;
+    }
+
+    /* Footer */
+    .footer-icons {
+        gap: var(--spacing-sm);
+    }
+
+    .footer-icons i {
+        font-size: 1.1rem;
+    }
+
+    /* Stats específicos */
+    .stats-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .stat-card {
+        padding: 1rem;
+    }
+
+    .stat-number {
+        font-size: 1.8rem;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+    }
+
+    /* Info box */
+    .info-box li {
+        font-size: 0.9rem;
+    }
+}
+
+/* --------------------------------------------
+   TELAS MUITO PEQUENAS (até 360px)
+   -------------------------------------------- */
+@media screen and (max-width: 360px) {
+    .logo-area i {
+        font-size: 1.2rem;
+    }
+
+    .theme-toggle,
+    .menu-toggle {
+        width: 32px;
+        height: 32px;
+    }
+
+    .user-avatar {
+        width: 36px;
+        height: 36px;
+    }
+
+    .matriz-grid.matriz-2x2 {
+        grid-template-columns: repeat(2, 50px);
+        gap: var(--spacing-xs);
+    }
+
+    .matriz-grid.matriz-3x3 {
+        grid-template-columns: repeat(3, 45px);
+        gap: var(--spacing-xs);
+    }
+
+    .matriz-input {
+        height: 40px;
+        font-size: 0.9rem;
+    }
+
+    .primo-input input {
+        width: 150px;
+        font-size: 1.5rem;
+    }
+
+    .lista-primos-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .stat-number {
+        font-size: 1.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
+    }
+}
+
+/* --------------------------------------------
+   ORIENTAÇÃO PAISAGEM (landscape)
+   -------------------------------------------- */
+@media (orientation: landscape) and (max-height: 500px) {
+    .main-header {
+        height: 60px;
+    }
+
+    .modal-content {
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    .sidebar {
+        padding-bottom: 60px;
+    }
+}
+
+/* --------------------------------------------
+   ALTURAS ESPECÍFICAS
+   -------------------------------------------- */
+@media (max-height: 600px) {
+    .sidebar {
+        overflow-y: auto;
+        padding-bottom: var(--spacing-xl);
+    }
+
+    .modal-content {
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+}
+
+/* --------------------------------------------
+   IMPRESSÃO
+   -------------------------------------------- */
+@media print {
+
+    .main-header,
+    .sidebar,
+    .theme-toggle,
+    .menu-toggle,
+    .footer-links,
+    .guest-banner,
+    .btn,
+    .tool-button,
+    .exemplo-btn,
+    .back-button {
+        display: none !important;
+    }
+
+    body {
+        background: white;
+        color: black;
+    }
+
+    .card,
+    .tool-card,
+    .calc-card,
+    .result-box {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ccc;
+        background: white;
+    }
+
+    a {
+        color: black;
+        text-decoration: underline;
+    }
+
+    .stat-number,
+    .section-title {
+        color: black;
+    }
+}
+
+/* --------------------------------------------
+   ADAPTATIVIDADE DO PAINEL ADMIN
+   -------------------------------------------- */
+@media screen and (max-width: 768px) {
+    .admin-stats-grid {
+        grid-template-columns: 1fr !important;
+        gap: var(--spacing-md) !important;
+    }
+
+    .admin-stat-card {
+        padding: var(--spacing-md) !important;
+    }
+
+    .admin-stat-number {
+        font-size: 1.5rem !important;
+    }
+
+    .metric-row {
+        grid-template-columns: 1fr !important;
+    }
+
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 0 -15px;
+        padding: 0 15px;
+    }
+
+    .admin-data-table {
+        min-width: 600px;
+    }
+
+    .admin-content {
+        padding: var(--spacing-md) !important;
+    }
+
+    .modal-glass-content {
+        margin: 10px;
+        width: calc(100% - 20px) !important;
+    }
+}
+
+/* --------------------------------------------
+   ANIMAÇÕES PARA RESPONSIVIDADE
+   -------------------------------------------- */
+@keyframes slideInDown {
+    from {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

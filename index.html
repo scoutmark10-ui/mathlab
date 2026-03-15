@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="./assets/images/logo.png">
+  <title>MathLab - Calculadora Matemática</title>
+  <!-- CSS principal -->
+  <link rel="stylesheet" href="./assets/css/style.css">
+  <!-- Font Awesome 6.4.2 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+
+<body>
+  <!-- Modal de confirmação de saída -->
+  <div class="modal" id="logoutModal">
+    <div class="modal-content">
+      <i class="fas fa-sign-out-alt"></i>
+      <h3>Confirmar saída</h3>
+      <p>
+        Tem certeza que deseja sair da sua conta?
+      </p>
+      <div class="modal-buttons">
+        <button type="button" class="modal-btn confirm" onclick="confirmarLogout()">Sair</button>
+        <button type="button" class="modal-btn cancel" onclick="fecharModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <i class="fas fa-calculator"></i>
+      <h3>MathLab</h3>
+    </div>
+
+    <div class="sidebar-user" id="sidebarUser" onclick="irParaPerfil()">
+      <div class="user-avatar-large" id="sidebarAvatar">
+        <i class="fas fa-user"></i>
+      </div>
+      <div class="user-info" id="sidebarUserInfo">
+        <h4>Carregando...</h4>
+        <p>
+          ...
+        </p>
+      </div>
+    </div>
+
+    <div class="sidebar-menu">
+      <a href="#" class="sidebar-menu-item active" onclick="fecharSidebar()">
+        <i class="fas fa-home"></i> Início
+      </a>
+      <a href="#ferramentas" class="sidebar-menu-item" onclick="fecharSidebar()">
+        <i class="fas fa-tools"></i> Ferramentas
+      </a>
+      <a href="./pages/logaritmo.html" class="sidebar-menu-item" onclick="fecharSidebar()">
+        <i class="fas fa-chart-line"></i> Logaritmos
+      </a>
+      <a href="./pages/potencia.html" class="sidebar-menu-item" onclick="fecharSidebar()">
+        <i class="fas fa-exclamation-triangle"></i> Potências
+      </a>
+      <a href="./pages/bhaskara.html" class="sidebar-menu-item" onclick="fecharSidebar()">
+        <i class="fas fa-square-root-alt"></i> Bhaskara
+      </a>
+      <a href="./pages/trigonometria.html" class="sidebar-menu-item" onclick="fecharSidebar()">
+        <i class="fas fa-wave-square"></i> Trigonometria
+      </a>
+      <a href="./pages/matrizes.html" class="sidebar-menu-item" onclick="fecharSidebar()">
+        <i class="fas fa-table"></i> Matrizes
+      </a>
+      <a href="./pages/derivadas.html" class="sidebar-menu-item" onclick="fecharSidebar()">
+        <i class="fas fa-infinity"></i> Derivadas
+      </a>
+
+      <div class="sidebar-divider"></div>
+
+      <a href="./pages/sobre.html" class="sidebar-menu-item" onclick="fecharSidebar()">
+        <i class="fas fa-info-circle"></i> Sobre
+      </a>
+      <a href="./pages/contato.html" class="sidebar-menu-item" onclick="fecharSidebar()">
+        <i class="fas fa-envelope"></i> Contato
+      </a>
+      <a href="./pages/admin/dashboard.html" class="sidebar-menu-item" onclick="fecharSidebar()">
+        <i class="fas fa-crown"></i> Admin
+      </a>
+    </div>
+
+    <div class="sidebar-footer">
+      <button type="button" onclick="window.location.href = './pages/definicoes.html'">
+        <i class="fas fa-cog"></i> Definições
+      </button>
+      <button type="button" id="sidebarLogoutBtn" onclick="mostrarModalLogout()">
+        <i class="fas fa-sign-out-alt"></i> Sair
+      </button>
+    </div>
+  </div>
+
+  <!-- Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="fecharSidebar()"></div>
+
+  <!-- Header -->
+  <header class="main-header">
+    <div class="logo-area">
+      <div class="menu-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+      </div>
+      <h2>MathLab</h2>
+    </div>
+
+    <div class="nav-menu">
+      <a href="#ferramentas"><i class="fas fa-tools"></i> Ferramentas</a>
+      <a href="./pages/sobre.html"><i class="fas fa-info-circle"></i> Sobre</a>
+      <a href="./pages/contato.html"><i class="fas fa-envelope"></i> Contato</a>
+      <a href="./pages/admin/dashboard.html"><i class="fas fa-crown"></i> Admin</a>
+    </div>
+
+    <div class="user-menu">
+      <div class="user-dropdown">
+        <div class="user-avatar" id="userAvatar">
+          <i class="fas fa-user"></i>
+        </div>
+        <div class="dropdown-content" id="dropdownContent"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="hero-section">
+      <div class="hero-overlay"></div>
+      <div class="content-header">
+        <h1>🧮 MathLab</h1>
+        <p class="header-description">
+          <i class="fas fa-calculator"></i>
+          Plataforma completa de ferramentas matemáticas
+          <i class="fas fa-calculator"></i>
+        </p>
+      </div>
+    </div>
+
+    <!-- Banner visitante -->
+    <div class="guest-banner" id="guestBanner">
+      <p>
+        <i class="fas fa-info-circle"></i>
+        Você está navegando como visitante. Faça login para acessar todas as funcionalidades!
+      </p>
+      <a href="./pages/login.html" class="btn-small">
+        <i class="fas fa-sign-in-alt"></i> Fazer Login
+      </a>
+    </div>
+
+    <!-- Estatísticas -->
+    <div class="stats-container">
+      <div class="stat-card">
+        <div class="stat-number">
+          12+
+        </div>
+        <div class="stat-label">
+          Ferramentas
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">
+          ∞
+        </div>
+        <div class="stat-label">
+          Cálculos
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">
+          24/7
+        </div>
+        <div class="stat-label">
+          Disponível
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">
+          💜
+        </div>
+        <div class="stat-label">
+          Open Source
+        </div>
+      </div>
+    </div>
+
+    <!-- Ferramentas -->
+    <div class="featured-section" id="ferramentas">
+      <h2 class="section-title">
+        <i class="fas fa-tools"></i> Ferramentas Matemáticas
+      </h2>
+
+      <div class="tools-grid">
+        <!-- Logaritmo -->
+        <div class="tool-card">
+          <div class="tool-header">
+            <div class="tool-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h3 class="tool-title">Logaritmos</h3>
+          </div>
+          <p class="tool-description">
+            Calcule logaritmos em qualquer base com explicações passo a passo.
+          </p>
+          <ul class="tool-features">
+            <li><i class="fas fa-check"></i> Base personalizada</li>
+            <li><i class="fas fa-check"></i> Propriedades dos logs</li>
+            <li><i class="fas fa-check"></i> Exemplos práticos</li>
+          </ul>
+          <a href="./pages/logaritmo.html" class="tool-button"><i class="fas fa-arrow-right"></i> Acessar</a>
+        </div>
+
+        <!-- Potência -->
+        <div class="tool-card">
+          <div class="tool-header">
+            <div class="tool-icon">
+              <i class="fas fa-bolt"></i>
+            </div>
+            <h3 class="tool-title">Potências</h3>
+          </div>
+          <p class="tool-description">
+            Calcule potências com expoentes positivos, negativos e fracionários.
+          </p>
+          <ul class="tool-features">
+            <li><i class="fas fa-check"></i> Expoentes negativos</li>
+            <li><i class="fas fa-check"></i> Raízes Fracionárias</li>
+            <li><i class="fas fa-check"></i> Processo Detalhado</li>
+          </ul>
+          <a href="./pages/potencia.html" class="tool-button"><i class="fas fa-arrow-right"></i> Acessar</a>
+        </div>
+
+
+        <!-- Bhaskara -->
+        <div class="tool-card">
+          <div class="tool-header">
+            <div class="tool-icon">
+              <i class="fas fa-square-root-alt"></i>
+            </div>
+            <h3 class="tool-title">Bhaskara</h3>
+          </div>
+          <p class="tool-description">
+            Resolva equações do 2° grau com a fórmula de Bhaskara.
+          </p>
+          <ul class="tool-features">
+            <li><i class="fas fa-check"></i> ax² + bx + c = 0</li>
+            <li><i class="fas fa-check"></i> Raízes reais</li>
+            <li><i class="fas fa-check"></i> Delta (discriminante)</li>
+          </ul>
+          <a href="./pages/bhaskara.html" class="tool-button"><i class="fas fa-arrow-right"></i> Calcular</a>
+        </div>
+
+        <!-- Trigonometria -->
+        <div class="tool-card">
+          <div class="tool-header">
+            <div class="tool-icon">
+              <i class="fas fa-wave-square"></i>
+            </div>
+            <h3 class="tool-title">Trigonometria</h3>
+          </div>
+          <p class="tool-description">
+            Calcule seno, cosseno, tangente e muito mais.
+          </p>
+          <ul class="tool-features">
+            <li><i class="fas fa-check"></i> Seno | Cosseno | Tangente</li>
+            <li><i class="fas fa-check"></i> Graus | Radianos</li>
+            <li><i class="fas fa-check"></i> Identidades</li>
+          </ul>
+          <a href="./pages/trigonometria.html" class="tool-button"><i class="fas fa-arrow-right"></i> Calcular</a>
+        </div>
+
+        <!-- Matrizes -->
+        <div class="tool-card">
+          <div class="tool-header">
+            <div class="tool-icon">
+              <i class="fas fa-table"></i>
+            </div>
+            <h3 class="tool-title">Matrizes</h3>
+          </div>
+          <p class="tool-description">
+            Operações com matrizes 2x2 e 3x3.
+          </p>
+          <ul class="tool-features">
+            <li><i class="fas fa-check"></i> Soma | Subtração</li>
+            <li><i class="fas fa-check"></i> Multiplicação</li>
+            <li><i class="fas fa-check"></i> Determinante</li>
+          </ul>
+          <a href="./pages/matrizes.html" class="tool-button"><i class="fas fa-arrow-right"></i> Calcular</a>
+        </div>
+
+        <!-- Derivadas -->
+        <div class="tool-card">
+          <div class="tool-header">
+            <div class="tool-icon">
+              <i class="fas fa-infinity"></i>
+            </div>
+            <h3 class="tool-title">Derivadas</h3>
+          </div>
+          <p class="tool-description">
+            Calcule derivadas de funções básicas.
+          </p>
+          <ul class="tool-features">
+            <li><i class="fas fa-check"></i> Polinômios</li>
+            <li><i class="fas fa-check"></i> Trigonométricas</li>
+            <li><i class="fas fa-check"></i> Regras básicas</li>
+          </ul>
+          <a href="./pages/derivadas.html" class="tool-button"><i class="fas fa-arrow-right"></i> Calcular</a>
+        </div>
+
+        <!-- Porcentagem -->
+        <div class="tool-card">
+          <div class="tool-header">
+            <div class="tool-icon">
+              <i class="fas fa-percent"></i>
+            </div>
+            <h3 class="tool-title">Porcentagem</h3>
+          </div>
+          <p class="tool-description">
+            Cálculos de porcentagem e juros simples.
+          </p>
+          <ul class="tool-features">
+            <li><i class="fas fa-check"></i> % de um valor</li>
+            <li><i class="fas fa-check"></i> Aumento | Desconto</li>
+            <li><i class="fas fa-check"></i> Juros simples</li>
+          </ul>
+          <a href="./pages/porcentagem.html" class="tool-button"><i class="fas fa-arrow-right"></i> Calcular</a>
+        </div>
+
+        <!-- Conversões -->
+        <div class="tool-card">
+          <div class="tool-header">
+            <div class="tool-icon">
+              <i class="fas fa-exchange-alt"></i>
+            </div>
+            <h3 class="tool-title">Conversões</h3>
+          </div>
+          <p class="tool-description">
+            Converta unidades de medida e escalas.
+          </p>
+          <ul class="tool-features">
+            <li><i class="fas fa-check"></i> Comprimento | Massa</li>
+            <li><i class="fas fa-check"></i> Temperatura</li>
+            <li><i class="fas fa-check"></i> Tempo | Velocidade</li>
+          </ul>
+          <a href="./pages/conversoes.html" class="tool-button"><i class="fas fa-arrow-right"></i> Converter</a>
+        </div>
+
+        <!-- Números Primos -->
+        <div class="tool-card">
+          <div class="tool-header">
+            <div class="tool-icon">
+              <i class="fas fa-hashtag"></i>
+            </div>
+            <h3 class="tool-title">Números Primos</h3>
+          </div>
+          <p class="tool-description">
+            Verifique se um número é primo e liste primos.
+          </p>
+          <ul class="tool-features">
+            <li><i class="fas fa-check"></i> Verificação primalidade</li>
+            <li><i class="fas fa-check"></i> Fatoração</li>
+            <li><i class="fas fa-check"></i> Lista de primos</li>
+          </ul>
+          <a href="./pages/primos.html" class="tool-button"><i class="fas fa-arrow-right"></i> Verificar</a>
+        </div>
+
+        <!-- MMC e MDC -->
+        <div class="tool-card">
+          <div class="tool-header">
+            <div class="tool-icon">
+              <i class="fas fa-divide"></i>
+            </div>
+            <h3 class="tool-title">MMC e MDC</h3>
+          </div>
+          <p class="tool-description">
+            Calcule mínimo múltiplo comum e máximo divisor comum.
+          </p>
+          <ul class="tool-features">
+            <li><i class="fas fa-check"></i> MMC de números</li>
+            <li><i class="fas fa-check"></i> MDC de números</li>
+            <li><i class="fas fa-check"></i> Frações equivalentes</li>
+          </ul>
+          <a href="./pages/mmc-mdc.html" class="tool-button"><i class="fas fa-arrow-right"></i> Calcular</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calculadora Rápida -->
+    <div class="calculator-preview">
+      <h2 class="preview-title">
+        <i class="fas fa-bolt"></i> Calculadora Rápida
+      </h2>
+
+      <div class="preview-grid">
+        <div class="quick-calc">
+          <h3><i class="fas fa-square-root-alt"></i> Bhaskara</h3>
+          <input type="number" id="quick-a" placeholder="a (coeficiente)" step="any">
+          <input type="number" id="quick-b" placeholder="b (coeficiente)" step="any">
+          <input type="number" id="quick-c" placeholder="c (coeficiente)" step="any">
+          <button type="button" onclick="calcularQuickBhaskara()"><i class="fas fa-calculator"></i> Calcular</button>
+          <div id="quick-bhaskara-result" class="quick-result"></div>
+        </div>
+
+        <div class="quick-calc">
+          <h3><i class="fas fa-percent"></i> Porcentagem</h3>
+          <input type="number" id="quick-value" placeholder="Valor" step="any">
+          <input type="number" id="quick-percent" placeholder="Porcentagem %" step="any">
+          <button type="button" onclick="calcularQuickPercent()"><i class="fas fa-calculator"></i> Calcular</button>
+          <div id="quick-percent-result" class="quick-result"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer>
+      <div class="footer-icons">
+        <i class="fas fa-calculator"></i>
+        <i class="fas fa-square-root-alt"></i>
+        <i class="fas fa-chart-line"></i>
+        <i class="fas fa-infinity"></i>
+        <i class="fas fa-percent"></i>
+      </div>
+
+      <div class="footer-links">
+        <a href="./pages/sobre.html"><i class="fas fa-info-circle"></i> Sobre</a>
+        <a href="./pages/contato.html"><i class="fas fa-envelope"></i> Contato</a>
+        <a href="./pages/admin/dashboard.html"><i class="fas fa-crown"></i> Admin</a>
+        <a href="./pages/login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+        <a href="./pages/definicoes.html"><i class="fas fa-cog"></i> Definições</a>
+      </div>
+
+      <p>
+        MathLab &copy; 2026 - Todas as ferramentas matemáticas que você precisa
+      </p>
+      <p>
+        Feito com <span class="heart"><i class="fas fa-heart"></i></span> por Zinko Dev
+      </p>
+    </footer>
+  </main>
+
+  <!-- ===== SISTEMA MODULAR MATHLAB ===== -->
+  <script src="./assets/js/script.js" type="module"></script>
+</body>
+
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpg" href="../assets/images/logo.png">
+    <title>Números Primos - MathLab</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body>
+    <div class="page-header">
+        <a href="../index.html" class="back-arrow" title="Voltar para Início">
+            <i class="fas fa-arrow-left"></i>
+            <span class="sr-only">Voltar</span>
+        </a>
+        <h1 class="page-title">🔢 Números Primos</h1>
+        <div class="placeholder"></div>
+    </div>
+
+    <main class="container">
+        <header class="tool-header-section">
+            <p class="tool-description">
+                Explore o fascinante mundo da primalidade. Verifique números, fatore compostos e gere listas completas.
+            </p>
+        </header>
+
+        <div class="tool-grid">
+            <!-- Verificação Individual -->
+            <div class="tool-input-side card-section">
+                <h2 class="section-title"><i class="fas fa-search"></i> Verificação</h2>
+
+                <div class="input-group">
+                    <label for="numeroPrimo">Digite um número (≥ 2)</label>
+                    <input type="number" id="numeroPrimo" class="input-modern" min="2" value="17" step="1">
+                </div>
+
+                <div class="btn-group group-spacing">
+                    <button type="button" class="btn btn-primary-action" onclick="verificarPrimo()">
+                        <i class="fas fa-check-circle"></i> Verificar
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="testarNumeros()">
+                        <i class="fas fa-flask"></i> Exemplos
+                    </button>
+                </div>
+
+                <div id="primoResultado" class="result-box result-spacing">
+                    Aguardando entrada...
+                </div>
+
+                <div id="fatoracaoDiv" class="fator-box group-spacing" style="display: none;">
+                    <div class="fator-label"><i class="fas fa-times"></i> Fatoração Prima:</div>
+                    <div id="fatoresLista" class="fatores-grid-modern"></div>
+                </div>
+            </div>
+
+            <!-- Listagem em Massa -->
+            <div class="tool-visual-side card-section">
+                <h2 class="section-title"><i class="fas fa-list"></i> Gerar Lista</h2>
+
+                <div class="input-group">
+                    <label for="primosAte">Até qual número?</label>
+                    <input type="number" id="primosAte" class="input-modern" min="2" value="50" step="1">
+                </div>
+
+                <div class="btn-group group-spacing">
+                    <button type="button" class="btn btn-primary-action" onclick="listarPrimos()">
+                        <i class="fas fa-play"></i> Gerar
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="listarPrimosAte(100)">100</button>
+                    <button type="button" class="btn btn-secondary" onclick="listarPrimosAte(200)">200</button>
+                </div>
+
+                <div class="lista-info-bar">
+                    <span class="info-badge">Total: <strong id="totalPrimos">0</strong></span>
+                    <span class="info-badge">Último: <strong id="ultimoPrimo">-</strong></span>
+                </div>
+
+                <div class="list-container-modern group-spacing">
+                    <div id="primosLista" class="primos-chips-grid">
+                        <div class="empty-list">A lista aparecerá aqui...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Curiosidades -->
+        <h2 class="section-title group-spacing center"><i class="fas fa-brain"></i> Curiosidades Matemáticas</h2>
+        <div class="curiosidades-grid-modern">
+            <div class="curio-card">
+                <div class="curio-icon"><i class="fas fa-hashtag"></i></div>
+                <h4>O único par</h4>
+                <p>O número <strong>2</strong> é o único primo par existente.</p>
+            </div>
+            <div class="curio-card">
+                <div class="curio-icon"><i class="fas fa-infinity"></i></div>
+                <h4>Infinitude</h4>
+                <p>Euclides provou que existem <strong>infinitos</strong> números primos.</p>
+            </div>
+            <div class="curio-card">
+                <div class="curio-icon"><i class="fas fa-lock"></i></div>
+                <h4>Segurança</h4>
+                <p>Eles são o pilar da <strong>criptografia</strong> RSA moderna.</p>
+            </div>
+        </div>
+
+        <!-- Histórico -->
+        <div class="historico-container group-spacing">
+            <h3 class="section-title"><i class="fas fa-history"></i> Histórico</h3>
+            <div id="historico-lista" class="historico-lista"></div>
+            <div class="btn-group group-spacing">
+                <button type="button" class="btn btn-secondary btn-small" onclick="limparHistorico()">Limpar</button>
+                <button type="button" class="btn btn-secondary btn-small"
+                    onclick="atualizarHistorico()">Atualizar</button>
+            </div>
+        </div>
+    </main>
+
+
+    <script src="../assets/js/script.js" type="module"></script>
+    <script>
+        // Função para verificar se é primo (já existe no script.js, mas vou reforçar)
+        function verificarPrimo() {
+            const numero = parseInt(document.getElementById('numeroPrimo').value);
+            const resultadoDiv = document.getElementById('primoResultado');
+            const fatoracaoDiv = document.getElementById('fatoracaoDiv');
+            const fatoresLista = document.getElementById('fatoresLista');
+
+            if (isNaN(numero) || numero < 2) {
+                resultadoDiv.className = 'primo-result-box nao-primo';
+                resultadoDiv.innerHTML = '❌ Digite um número ≥ 2';
+                fatoracaoDiv.style.display = 'none';
+                return;
+            }
+
+            let isPrimo = true;
+            const divisores = [];
+
+            for (let i = 2; i <= Math.sqrt(numero); i++) {
+                if (numero % i === 0) {
+                    isPrimo = false;
+                    divisores.push(i);
+                    if (i !== numero / i) {
+                        divisores.push(numero / i);
+                    }
+                }
+            }
+
+            divisores.sort((a, b) => a - b);
+
+            if (isPrimo) {
+                resultadoDiv.className = 'primo-result-box primo';
+                resultadoDiv.innerHTML = `
+                    <i class="fas fa-check-circle" style="font-size: 3rem; margin-bottom: 10px;"></i><br>
+                    ${numero} <strong>É PRIMO!</strong> ✅
+                `;
+                fatoracaoDiv.style.display = 'none';
+                salvarHistorico('primos', numero, 'primo');
+            } else {
+                resultadoDiv.className = 'primo-result-box nao-primo';
+
+                // Calcular fatoração
+                let n = numero;
+                const fatores = [];
+                let divisor = 2;
+
+                while (n > 1) {
+                    if (n % divisor === 0) {
+                        fatores.push(divisor);
+                        n = n / divisor;
+                    } else {
+                        divisor++;
+                    }
+                }
+
+                // Mostrar fatoração
+                let fatoresHtml = '';
+                const contagem = {};
+                fatores.forEach(f => contagem[f] = (contagem[f] || 0) + 1);
+
+                for (let [f, count] of Object.entries(contagem)) {
+                    fatoresHtml += `<span class="fator-item">${f}${count > 1 ? `<sup>${count}</sup>` : ''}</span>`;
+                }
+
+                fatoresLista.innerHTML = fatoresHtml;
+                fatoracaoDiv.style.display = 'block';
+
+                resultadoDiv.innerHTML = `
+                    <i class="fas fa-times-circle" style="font-size: 3rem; margin-bottom: 10px;"></i><br>
+                    ${numero} <strong>NÃO É PRIMO</strong> ❌<br>
+                    <div class="divisores-info">
+                        Divisores: 1, ${divisores.join(', ')}, ${numero}
+                    </div>
+                `;
+                salvarHistorico('primos', numero, 'não primo');
+            }
+        }
+
+        // Função para listar primos
+        function listarPrimos() {
+            const ate = parseInt(document.getElementById('primosAte').value);
+            const listaDiv = document.getElementById('primosLista');
+            const totalSpan = document.getElementById('totalPrimos');
+            const ultimoSpan = document.getElementById('ultimoPrimo');
+
+            if (isNaN(ate) || ate < 2) {
+                listaDiv.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: #e74c3c;">❌ Digite um número ≥ 2</div>';
+                totalSpan.textContent = '0';
+                ultimoSpan.textContent = '-';
+                return;
+            }
+
+            const primos = [];
+            for (let num = 2; num <= ate; num++) {
+                let isPrimo = true;
+                for (let i = 2; i <= Math.sqrt(num); i++) {
+                    if (num % i === 0) {
+                        isPrimo = false;
+                        break;
+                    }
+                }
+                if (isPrimo) primos.push(num);
+            }
+
+            if (primos.length === 0) {
+                listaDiv.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: var(--text-secondary);">Nenhum primo encontrado</div>';
+            } else {
+                let html = '';
+                primos.forEach(primo => {
+                    html += `<div class="primo-item">${primo}</div>`;
+                });
+                listaDiv.innerHTML = html;
+            }
+
+            totalSpan.textContent = primos.length;
+            ultimoSpan.textContent = primos.length > 0 ? primos[primos.length - 1] : '-';
+
+            salvarHistorico('lista_primos', `até ${ate}`, `${primos.length} primos`);
+        }
+
+        // Funções auxiliares
+        function testarNumeros() {
+            const exemplos = [2, 3, 4, 5, 7, 11, 13, 15, 17, 19, 23, 29, 30, 31, 37, 41, 43, 47];
+            const random = exemplos[Math.floor(Math.random() * exemplos.length)];
+            document.getElementById('numeroPrimo').value = random;
+            verificarPrimo();
+        }
+
+        function listarPrimosAte(valor) {
+            document.getElementById('primosAte').value = valor;
+            listarPrimos();
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mostrar exemplo inicial
+            setTimeout(() => {
+                listarPrimosAte(50);
+            }, 500);
+        });
+    </script>
+</body>
+
+</html>

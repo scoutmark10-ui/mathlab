@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpg" href="../assets/images/logo.png">
+    <title>Potências - MathLab</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+
+</head>
+
+<body>
+
+    <div class="page-header">
+        <a href="../index.html" class="back-arrow" title="Voltar para Início">
+            <i class="fas fa-arrow-left"></i>
+            <span class="sr-only">Voltar</span>
+        </a>
+        <h1 class="page-title">⚡ Potências</h1>
+        <div class="placeholder"></div>
+    </div>
+
+    <main class="container">
+        <header class="tool-header-section">
+            <p class="tool-description">
+                Calcule potências com qualquer expoente (inteiro, negativo ou fracional). Entenda o processo de
+                multiplicação repetida.
+            </p>
+        </header>
+
+        <div class="tool-grid">
+            <!-- Calculadora -->
+            <div class="tool-input-side card-section">
+                <div class="input-modern-group">
+                    <label for="base"><i class="fas fa-cube"></i> Base (a)</label>
+                    <input type="number" id="base" class="input-modern" value="2" step="any">
+                </div>
+
+                <div class="input-modern-group group-spacing">
+                    <label for="expoente"><i class="fas fa-superscript"></i> Expoente (n)</label>
+                    <input type="number" id="expoente" class="input-modern" value="3" step="any">
+                </div>
+
+                <div class="exemplos-grid-modern group-spacing">
+                    <button type="button" class="btn btn-secondary btn-small" onclick="usarExemplo(2, 3)">2³</button>
+                    <button type="button" class="btn btn-secondary btn-small" onclick="usarExemplo(5, 2)">5²</button>
+                    <button type="button" class="btn btn-secondary btn-small" onclick="usarExemplo(10, 4)">10⁴</button>
+                    <button type="button" class="btn btn-secondary btn-small" onclick="usarExemplo(2, -2)">2⁻²</button>
+                </div>
+
+                <button type="button" class="btn btn-primary-action group-spacing" onclick="calcularPotencia()">
+                    <i class="fas fa-calculator"></i> Calcular
+                </button>
+
+                <div id="resultado" class="result-box result-spacing">
+                    <div class="result-main">2³ = 8</div>
+                    <div class="result-detail">
+                        <i class="fas fa-info-circle"></i> 2 × 2 × 2 = 8
+                    </div>
+                </div>
+            </div>
+
+            <!-- Propriedades -->
+            <div class="tool-visual-side">
+                <div class="card-section">
+                    <h2 class="section-title"><i class="fas fa-lightbulb"></i> Regras de Ouro</h2>
+                    <div class="properties-mini-grid">
+                        <div class="prop-badge">aᵐ × aⁿ = aᵐ⁺ⁿ</div>
+                        <div class="prop-badge">aᵐ ÷ aⁿ = aᵐ⁻ⁿ</div>
+                        <div class="prop-badge">(aᵐ)ⁿ = aᵐˣⁿ</div>
+                        <div class="prop-badge">a⁰ = 1</div>
+                    </div>
+                </div>
+
+                <div class="info-box-modern group-spacing">
+                    <p><i class="fas fa-magic"></i> <strong>Dica:</strong> Expoente 0.5 é o mesmo que Raiz Quadrada!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pratique -->
+        <h2 class="section-title group-spacing center"><i class="fas fa-pencil-alt"></i> Pratique Agora</h2>
+        <div class="exercicios-grid-modern">
+            <div class="exercise-card-modern">
+                <div class="ex-eq">2⁴ = ?</div>
+                <div class="ex-actions">
+                    <button type="button" class="btn btn-small" onclick="mostrarResposta(1)">Resposta</button>
+                    <button type="button" class="btn btn-secondary btn-small"
+                        onclick="usarNaCalculadora(2, 4)">Testar</button>
+                </div>
+                <div id="resp1" class="answer-hidden">2⁴ = 16</div>
+            </div>
+
+            <div class="exercise-card-modern">
+                <div class="ex-eq">5³ = ?</div>
+                <div class="ex-actions">
+                    <button type="button" class="btn btn-small" onclick="mostrarResposta(2)">Resposta</button>
+                    <button type="button" class="btn btn-secondary btn-small"
+                        onclick="usarNaCalculadora(5, 3)">Testar</button>
+                </div>
+                <div id="resp2" class="answer-hidden">5³ = 125</div>
+            </div>
+        </div>
+
+        <!-- Histórico -->
+        <div class="card-section group-spacing">
+            <h2 class="section-title"><i class="fas fa-history"></i> Histórico</h2>
+            <div id="historico-lista" class="historico-lista"></div>
+            <div class="btn-group group-spacing">
+                <button type="button" class="btn btn-secondary btn-small" onclick="limparHistorico()">Limpar</button>
+                <button type="button" class="btn btn-secondary btn-small"
+                    onclick="atualizarHistorico()">Atualizar</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>MathLab &copy; 2026 - O seu laboratório matemático</p>
+    </footer>
+
+    <script src="../assets/js/script.js" type="module"></script>
+    <script>
+        // Função para usar exemplos rápidos
+        function usarExemplo(base, expoente) {
+            document.getElementById('base').value = base;
+            document.getElementById('expoente').value = expoente;
+            if (typeof calcularPotencia === 'function') calcularPotencia();
+        }
+
+        // Função para mostrar resposta
+        function mostrarResposta(num) {
+            const resp = document.getElementById('resp' + num);
+            resp.classList.toggle('show');
+        }
+
+        // Função para usar na calculadora
+        function usarNaCalculadora(base, expoente) {
+            document.getElementById('base').value = base;
+            document.getElementById('expoente').value = expoente;
+            if (typeof calcularPotencia === 'function') calcularPotencia();
+
+            // Scroll suave até a calculadora
+            document.querySelector('.card-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Calcular ao carregar
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(() => {
+                if (typeof calcularPotencia === 'function') calcularPotencia();
+            }, 500);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,144 @@
+/* ============================================
+   MÓDULO 15: TRIGONOMETRIA (trigonometria.html)
+   ============================================ */
+
+.trig-container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 30px;
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+}
+
+.angulo-input {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.angulo-input input {
+    width: 200px;
+    padding: 15px;
+    font-size: 2rem;
+    text-align: center;
+    background: var(--bg-primary);
+    border: 2px solid var(--accent-primary);
+    color: var(--text-primary);
+    border-radius: 10px;
+    transition: var(--transition-speed);
+}
+
+.angulo-input input:focus {
+    outline: none;
+    border-color: var(--accent-secondary);
+    box-shadow: 0 0 0 3px rgba(155, 89, 182, 0.2);
+}
+
+.trig-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.trig-card {
+    background: var(--bg-primary);
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    border: 2px solid transparent;
+    transition: var(--transition-speed);
+}
+
+.trig-card.seno { border-color: var(--accent-primary); }
+.trig-card.cosseno { border-color: var(--accent-secondary); }
+.trig-card.tangente { border-color: var(--text-secondary); }
+
+.trig-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--accent-glow);
+}
+
+.trig-valor {
+    font-size: 2rem;
+    margin: 15px 0;
+    font-weight: bold;
+    color: var(--text-primary);
+}
+
+.circulo-trig {
+    width: 250px;
+    height: 250px;
+    margin: 40px auto;
+    border: 3px solid var(--accent-primary);
+    border-radius: 50%;
+    position: relative;
+    background: radial-gradient(circle at 30% 30%, rgba(155,89,182,0.1), transparent 70%);
+}
+
+.circulo-trig::before {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 125px;
+    background: linear-gradient(to top, var(--accent-primary), var(--accent-secondary));
+    bottom: 125px;
+    left: 123px;
+    transform-origin: bottom;
+    animation: rotate 10s linear infinite;
+    border-radius: 2px;
+}
+
+.circulo-trig::after {
+    content: '•';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: var(--accent-primary);
+    border-radius: 50%;
+    bottom: 115px;
+    left: 115px;
+    color: transparent;
+}
+
+.tabela-angulos {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 30px 0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.tabela-angulos th {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    padding: 12px;
+    font-weight: 500;
+}
+
+.tabela-angulos td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.tabela-angulos tr:hover {
+    background: rgba(155, 89, 182, 0.1);
+}
+
+.btn-mode {
+    background: var(--bg-primary);
+    border: 1px solid var(--accent-primary);
+    color: var(--text-primary);
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: var(--transition-speed);
+}
+
+.btn-mode.active {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    border: none;
+}

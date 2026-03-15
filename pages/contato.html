@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/jpg" href="../assets/images/logo.png">
+  <title>Contato - MathLab</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <!-- CSS principal (importa todos os módulos) -->
+</head>
+
+<body>
+  <!-- Header da página -->
+  <div class="page-header">
+    <a href="../index.html" class="back-arrow" title="Voltar">
+      <i class="fas fa-arrow-left"></i>
+    </a>
+    <h1 class="page-title">Fale Conosco</h1>
+    <div class="placeholder"></div>
+  </div>
+
+  <div class="container">
+    <div class="contato-container">
+      <div class="contato-card">
+        <!-- Header -->
+        <div class="contato-header">
+          <i class="fas fa-envelope"></i>
+          <p>
+            Tem dúvidas, sugestões ou encontrou algum bug? Mande uma mensagem!
+          </p>
+        </div>
+
+        <!-- Informação do Desenvolvedor -->
+        <div class="developer-info">
+          <i class="fas fa-code"></i>
+          <h3>Desenvolvedor</h3>
+          <p class="dev-name">
+            Zinko Dev
+          </p>
+          <p class="dev-handle">
+            @zinko.dev
+          </p>
+        </div>
+
+        <!-- Grid de contato -->
+        <div class="contato-grid">
+          <!-- Email -->
+          <div class="contato-item">
+            <i class="fas fa-envelope-open-text"></i>
+            <h3>Email</h3>
+            <p>
+              Respondemos em até 24h
+            </p>
+            <a href="mailto:scoutmark10@gmail.com">scoutmark10@gmail.com</a>
+            <button type="button" class="copy-btn" onclick="copiarTexto('scoutmark10@gmail.com')">
+              <i class="fas fa-copy"></i> Copiar
+            </button>
+          </div>
+
+          <!-- GitHub -->
+          <div class="contato-item">
+            <i class="fab fa-github"></i>
+            <h3>GitHub</h3>
+            <p>
+              Código aberto
+            </p>
+            <a href="https://github.com/zinkodev" target="_blank">github.com/zinkodev</a>
+            <button type="button" class="copy-btn" onclick="copiarTexto('github.com/zinkodev')">
+              <i class="fas fa-copy"></i> Copiar
+            </button>
+          </div>
+
+          <!-- Discord -->
+          <div class="contato-item">
+            <i class="fab fa-discord"></i>
+            <h3>Discord</h3>
+            <p>
+              Comunidade
+            </p>
+            <a href="#" target="_blank">zinko.dev</a>
+            <button type="button" class="copy-btn" onclick="copiarTexto('zinko.dev')">
+              <i class="fas fa-copy"></i> Copiar
+            </button>
+          </div>
+        </div>
+
+        <!-- Redes Sociais -->
+        <div class="redes-sociais">
+          <a href="#" class="social-icon" target="_blank" title="Twitter">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a href="#" class="social-icon" target="_blank" title="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://github.com/zinkodev" class="social-icon" target="_blank" title="GitHub">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="#" class="social-icon" target="_blank" title="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+        </div>
+
+        <!-- Formulário de Contato -->
+        <div class="feedback-form">
+          <h3><i class="fas fa-comment"></i> Envie sua mensagem</h3>
+
+          <form id="feedbackForm" onsubmit="enviarFeedback(event)">
+            <div class="form-group">
+              <label><i class="fas fa-user"></i> Nome</label>
+              <input type="text" id="nome" placeholder="Digite seu nome" required>
+            </div>
+
+            <div class="form-group">
+              <label><i class="fas fa-envelope"></i> Email</label>
+              <input type="email" id="email" placeholder="seu@email.com" required>
+            </div>
+
+            <div class="form-group">
+              <label><i class="fas fa-tag"></i> Assunto</label>
+              <select id="assunto" required>
+                <option value="">Selecione...</option>
+                <option value="Sugestão">💡 Sugestão</option>
+                <option value="Bug">🐛 Reportar Bug</option>
+                <option value="Dúvida">❓ Dúvida</option>
+                <option value="Outro">📌 Outro</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label><i class="fas fa-pencil-alt"></i> Mensagem</label>
+              <textarea id="mensagem" placeholder="Digite sua mensagem..." required></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+              <i class="fas fa-paper-plane"></i>
+              <span>Enviar Mensagem</span>
+            </button>
+          </form>
+
+          <div id="feedbackMessage" class="feedback-message"></div>
+        </div>
+
+        <!-- Informações adicionais -->
+        <div class="contato-info">
+          <p>
+            <i class="fas fa-clock"></i>
+            Horário de atendimento: Segunda a Sexta, 9h às 18h
+          </p>
+        </div>
+
+        <!-- Assinatura do dev -->
+        <div class="dev-signature">
+          <p>
+            Desenvolvido com
+            <span class="heart"><i class="fas fa-heart"></i></span>
+            por <strong>Zinko Dev</strong>
+          </p>
+          <p class="dev-icons">
+            <i class="fas fa-code"></i>
+            <i class="fas fa-calculator"></i>
+            <i class="fas fa-square-root-alt"></i>
+          </p>
+          <p class="copyright">
+            © 2026 MathLab - Todos os direitos reservados
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script principal (modular) -->
+  <script src="../assets/js/script.js" type="module"></script>
+  <!-- Script específico da página -->
+</body>
+
+</html>

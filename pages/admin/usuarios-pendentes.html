@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../../assets/images/logo.png">
+    <title>Usuários Pendentes - MathLab Admin</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <!-- Font Awesome 6.4.2 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+
+<body class="admin-body">
+    <!-- Sidebar Admin -->
+    <aside class="admin-sidebar" id="adminSidebar">
+        <div class="admin-sidebar-header">
+            <i class="fas fa-crown"></i>
+            <h2>MathLab Admin</h2>
+        </div>
+
+        <div class="admin-user">
+            <div class="admin-user-avatar">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <div class="admin-user-info">
+                <h4>Zinko Dev</h4>
+                <p>Administrador</p>
+            </div>
+        </div>
+
+        <nav class="admin-nav">
+            <a href="dashboard.html" class="admin-nav-item">
+                <i class="fas fa-chart-pie"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="metricas.html" class="admin-nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>Métricas</span>
+            </a>
+            <a href="usuarios-pendentes.html" class="admin-nav-item active">
+                <i class="fas fa-users"></i>
+                <span>Usuários</span>
+            </a>
+            <a href="mensagens.html" class="admin-nav-item">
+                <i class="fas fa-envelope"></i>
+                <span>Mensagens</span>
+            </a>
+            <a href="logs.html" class="admin-nav-item">
+                <i class="fas fa-history"></i>
+                <span>Logs</span>
+            </a>
+        </nav>
+
+        <div class="admin-sidebar-footer">
+            <a href="../../index.html" class="admin-nav-item">
+                <i class="fas fa-arrow-left"></i>
+                <span>Voltar ao Site</span>
+            </a>
+            <button type="button" onclick="logoutAdmin()" class="admin-nav-item btn-logout-admin">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Sair</span>
+            </button>
+        </div>
+    </aside>
+
+    <main class="admin-main">
+        <header class="admin-header">
+            <div class="admin-header-left">
+                <button type="button" class="admin-menu-toggle" id="adminMenuToggle" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1><i class="fas fa-user-clock"></i> Usuários Pendentes</h1>
+            </div>
+            <div class="admin-header-actions">
+                <span class="badge">Aprovações</span>
+            </div>
+        </header>
+
+        <div class="admin-content">
+            <div class="admin-content-card">
+                <p class="color-secondary">Gerencie as solicitações de novos usuários que aguardam permissão para
+                    acessar a plataforma.</p>
+
+                <div class="table-container group-spacing">
+                    <table class="admin-data-table" id="tabelaPendentes">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nome</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Data Cadastro</th>
+                                <th scope="col">Cargo</th>
+                                <th scope="col">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="5" class="center">Carregando solicitações...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../../assets/js/script.js" type="module"></script>
+    <script src="../../assets/js/modules/20-admin-core.js" type="module"></script>
+    <script type="module">
+        function logoutAdmin() {
+            localStorage.removeItem('admin_logado');
+            window.location.href = '../../index.html';
+        }
+    </script>
+</body>
+
+</html>

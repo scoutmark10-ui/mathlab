@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpg" href="../assets/images/logo.png">
+    <title>Bem-vindo ao MathLab</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <!-- CSS principal (importa todos os módulos) -->
+</head>
+
+<body class="welcome-page">
+    <!-- Blobs decorativos -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <!-- Símbolos matemáticos flutuantes -->
+    <div class="math-symbols" id="mathSymbols"></div>
+
+    <div class="welcome-container">
+        <div class="welcome-card" id="welcomeCard">
+            <!-- Header -->
+            <div class="welcome-header">
+                <div class="welcome-icon-wrapper">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <div class="welcome-logo">MathLab</div>
+                <div class="welcome-subtitle">Plataforma de Ferramentas Matemáticas</div>
+            </div>
+
+            <div class="welcome-divider"></div>
+
+            <!-- Mensagem de boas-vindas -->
+            <div class="welcome-message">
+                <h2>👋 Bem-vindo ao MathLab!</h2>
+                <p>
+                    Olá, <span class="welcome-tag">Zinko Dev</span> 👨‍💻<br>
+                    Sua plataforma completa de ferramentas matemáticas está pronta.
+                </p>
+            </div>
+
+            <!-- Welcome Box -->
+            <div class="welcome-info-box">
+                <i class="fas fa-rocket"></i>
+                <h3>Pronto para começar?</h3>
+                <p>
+                    Explore todas as <span class="welcome-highlight">12+ ferramentas</span> que preparamos para
+                    você.<br>
+                    De logaritmos a derivadas, tudo em um só lugar.
+                </p>
+            </div>
+
+            <!-- Features -->
+            <div class="welcome-features">
+                <div class="welcome-feature">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Logaritmos</span>
+                </div>
+                <div class="welcome-feature">
+                    <i class="fas fa-square-root-alt"></i>
+                    <span>Bhaskara</span>
+                </div>
+                <div class="welcome-feature">
+                    <i class="fas fa-wave-square"></i>
+                    <span>Trigonometria</span>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="welcome-actions">
+                <a href="login.html" class="welcome-action-btn" onclick="marcarBoasVindasComoVisto()">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+                <a href="../index.html" class="welcome-action-btn" onclick="marcarBoasVindasComoVisto()">
+                    <i class="fas fa-home"></i> Início
+                </a>
+            </div>
+
+            <!-- CTA Button -->
+            <a href="login.html" class="welcome-cta-btn" id="btnLogin" onclick="marcarBoasVindasComoVisto()">
+                <i class="fas fa-arrow-right"></i> Explorar Ferramentas
+            </a>
+
+
+            <!-- Footer -->
+            <div class="welcome-footer">
+                <p>
+                    <i class="fas fa-code"></i> Desenvolvido com
+                    <i class="fas fa-heart welcome-heart"></i> por
+                    <span class="welcome-dev">Zinko Dev</span>
+                </p>
+                <p class="welcome-copyright">© 2026 MathLab — Todos os direitos reservados</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script principal (modular) -->
+    <script src="../assets/js/script.js" type="module"></script>
+</body>
+
+</html>

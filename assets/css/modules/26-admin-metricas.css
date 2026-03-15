@@ -1,0 +1,124 @@
+/* ============================================
+   MÓDULO 26: ADMIN - MÉTRICAS (PREMIUM)
+   ============================================ */
+
+/* Overlay de Login Admin */
+.admin-login-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(155, 89, 182, 0.2) 0%, var(--bg-primary) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    backdrop-filter: blur(8px);
+}
+
+.admin-login-box {
+    width: 100%;
+    max-width: 400px;
+    padding: var(--spacing-xl);
+    text-align: center;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--glass-shadow);
+    animation: modalIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.admin-login-box i {
+    font-size: 3rem;
+    color: var(--accent-primary);
+    margin-bottom: var(--spacing-md);
+    filter: drop-shadow(0 0 10px rgba(155, 89, 182, 0.5));
+}
+
+.admin-login-box h2 {
+    font-size: 1.8rem;
+    margin-bottom: var(--spacing-xs);
+    font-weight: 700;
+}
+
+.admin-login-box p {
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-xl);
+}
+
+.admin-login-input {
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: var(--spacing-lg);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius);
+    color: white;
+    font-size: 1rem;
+    text-align: center;
+    transition: var(--transition-smooth);
+}
+
+.admin-login-input:focus {
+    background: rgba(155, 89, 182, 0.1);
+    border-color: var(--accent-primary);
+    outline: none;
+    box-shadow: var(--focus-glow);
+}
+
+.admin-login-error {
+    margin-top: var(--spacing-md);
+    background: rgba(231, 76, 60, 0.1);
+    color: #e74c3c;
+    padding: 10px;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.9rem;
+    display: none;
+}
+
+.admin-login-error.active {
+    display: block;
+    animation: shake 0.5s ease;
+}
+
+/* Gráficos de Métricas */
+.metric-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-xl);
+}
+
+@media (max-width: 600px) {
+    .metric-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+.metric-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-xl);
+    box-shadow: var(--shadow-md);
+}
+
+.metric-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--accent-light);
+}
+
+.metric-chart-container {
+    height: 300px;
+    position: relative;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}

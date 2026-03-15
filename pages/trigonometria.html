@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpg" href="../assets/images/logo.png">
+    <title>Trigonometria - MathLab</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <!-- Font Awesome 6.4.2 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+
+<body class="tool-page">
+    <div class="page-header">
+        <a href="../index.html" class="back-arrow" title="Voltar para Início">
+            <i class="fas fa-arrow-left"></i>
+            <span class="sr-only">Voltar</span>
+        </a>
+        <h1 class="page-title">📐 Trigonometria</h1>
+        <div class="placeholder"></div>
+    </div>
+
+    <main class="container">
+        <header class="tool-header-section">
+            <p class="tool-description">
+                Calcule seno, cosseno e tangente. Escolha entre graus ou radianos e explore os ângulos notáveis.
+            </p>
+        </header>
+
+        <div class="tool-grid">
+            <!-- Calculadora Trig -->
+            <div class="tool-input-side card-section">
+                <!-- Seletor de Unidade -->
+                <div class="tab-controls-modern group-spacing">
+                    <button type="button" class="tab-btn active" onclick="setTrigMode('degrees')" id="modeDegrees">
+                        Graus (°)
+                    </button>
+                    <button type="button" class="tab-btn" onclick="setTrigMode('radians')" id="modeRadians">
+                        Rad (π)
+                    </button>
+                </div>
+
+                <div class="input-modern-group">
+                    <label for="angulo">Ângulo (θ)</label>
+                    <input type="number" id="angulo" class="input-modern" value="30" step="any">
+                </div>
+
+                <button type="button" class="btn btn-primary-action group-spacing" onclick="calcularTrig()">
+                    <i class="fas fa-calculator"></i> Calcular
+                </button>
+
+                <div id="trigResultado" class="trig-results-grid group-spacing">
+                    <div class="trig-res-card seno">
+                        <span class="trig-label">SENO</span>
+                        <span class="trig-val" id="senoValor">0.5000</span>
+                    </div>
+                    <div class="trig-res-card cosseno">
+                        <span class="trig-label">COSSENO</span>
+                        <span class="trig-val" id="cossenoValor">0.8660</span>
+                    </div>
+                    <div class="trig-res-card tangente">
+                        <span class="trig-label">TANGENTE</span>
+                        <span class="trig-val" id="tangenteValor">0.5774</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabela e Referência -->
+            <div class="tool-visual-side">
+                <div class="card-section">
+                    <h2 class="section-title"><i class="fas fa-th"></i> Ângulos Notáveis</h2>
+                    <div class="mini-table-container">
+                        <table class="modern-table-mini">
+                            <thead>
+                                <tr>
+                                    <th>θ</th>
+                                    <th>Sen</th>
+                                    <th>Cos</th>
+                                    <th>Tan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>30°</td>
+                                    <td>1/2</td>
+                                    <td>√3/2</td>
+                                    <td>√3/3</td>
+                                </tr>
+                                <tr>
+                                    <td>45°</td>
+                                    <td>√2/2</td>
+                                    <td>√2/2</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>60°</td>
+                                    <td>√3/2</td>
+                                    <td>1/2</td>
+                                    <td>√3</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="info-box-modern group-spacing">
+                    <p><strong>Identidade:</strong> sen²θ + cos²θ = 1</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Histórico -->
+        <div class="card-section group-spacing">
+            <h2 class="section-title"><i class="fas fa-history"></i> Histórico</h2>
+            <div id="historico-lista" class="historico-lista"></div>
+            <div class="btn-group group-spacing">
+                <button type="button" class="btn btn-secondary btn-small" onclick="limparHistorico()">Limpar</button>
+                <button type="button" class="btn btn-secondary btn-small"
+                    onclick="atualizarHistorico()">Atualizar</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>MathLab &copy; 2026 - O seu laboratório matemático</p>
+    </footer>
+
+    <script src="../assets/js/script.js" type="module"></script>
+
+    <script>
+        // Lógica de Trigonometria integrada via script.js ou definida aqui
+        // (Será chamada a função do módulo se disponível, ou usamos a lógica local abaixo)
+
+        let trigMode = 'degrees';
+
+        function setTrigMode(modo) {
+            trigMode = modo;
+            document.getElementById('modeDegrees').classList.remove('active');
+            document.getElementById('modeRadians').classList.remove('active');
+
+            if (modo === 'degrees') {
+                document.getElementById('modeDegrees').classList.add('active');
+                document.getElementById('modoDisplay').textContent = 'graus';
+            } else {
+                document.getElementById('modeRadians').classList.add('active');
+                document.getElementById('modoDisplay').textContent = 'radianos';
+            }
+            calcularTrig();
+        }
+
+        function calcularTrig() {
+            const anguloInput = document.getElementById('angulo');
+            const angulo = parseFloat(anguloInput.value);
+
+            if (isNaN(angulo)) return;
+
+            let anguloRad = (trigMode === 'degrees') ? (angulo * Math.PI / 180) : angulo;
+
+            const seno = Math.sin(anguloRad);
+            const cosseno = Math.cos(anguloRad);
+            let tangente = Math.abs(cosseno) < 1e-10 ? '∞' : (seno / cosseno).toFixed(6);
+
+            document.getElementById('senoValor').textContent = seno.toFixed(6);
+            document.getElementById('cossenoValor').textContent = cosseno.toFixed(6);
+            document.getElementById('tangenteValor').textContent = tangente;
+
+            // Tenta salvar via módulo se disponível
+            if (typeof salvarHistorico === 'function') {
+                salvarHistorico('trigonometria', `${angulo}${trigMode === 'degrees' ? '°' : ' rad'}`, `Sen: ${seno.toFixed(4)}, Cos: ${cosseno.toFixed(4)}`);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(calcularTrig, 500);
+        });
+    </script>
+</body>
+
+</html>

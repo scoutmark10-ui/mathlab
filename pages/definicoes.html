@@ -1,0 +1,332 @@
+<!-- ============================================
+     PÁGINA DE DEFINIÇÕES - MATHLAB
+     ============================================
+     Funcionalidades:
+     - Configuração de tema (claro/escuro)
+     - Seleção de cor de destaque
+     - Configurações de notificações
+     - Seleção de idioma
+     - Configurações de privacidade
+     - Salvamento automático no localStorage
+-->
+<html lang="pt">
+
+<head>
+  <!-- ============================================
+       METADATA DA PÁGINA
+       ============================================
+  -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/jpg" href="../assets/images/logo.png">
+  <title>MathLab - Definições</title>
+  <!-- ============================================
+       ESTILOS E RECURSOS
+       ============================================
+  -->
+  <!-- Font Awesome para ícones -->
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <!-- CSS principal com todos os módulos importados -->
+</head>
+
+<body>
+  <!-- Modal de confirmação de saída -->
+  <div class="modal" id="logoutModal">
+    <div class="modal-content">
+      <i class="fas fa-sign-out-alt"></i>
+      <h3>Confirmar saída</h3>
+      <p>Tem certeza que deseja sair da sua conta?</p>
+      <div class="modal-buttons">
+        <button type="button" class="modal-btn confirm" onclick="confirmarLogout()">Sair</button>
+        <button type="button" class="modal-btn cancel" onclick="fecharModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <i class="fas fa-calculator"></i>
+      <h3>MathLab</h3>
+    </div>
+
+    <div class="sidebar-user" id="sidebarUser" onclick="irParaPerfil()">
+      <div class="user-avatar-large" id="sidebarAvatar">
+        <i class="fas fa-user"></i>
+      </div>
+      <div class="user-info" id="sidebarUserInfo">
+        <h4>Carregando...</h4>
+        <p>...</p>
+      </div>
+    </div>
+
+    <div class="sidebar-menu">
+      <a href="../index.html" class="sidebar-menu-item">
+        <i class="fas fa-home"></i> Início
+      </a>
+      <a href="../index.html#ferramentas" class="sidebar-menu-item">
+        <i class="fas fa-tools"></i> Ferramentas
+      </a>
+      <a href="logaritmo.html" class="sidebar-menu-item">
+        <i class="fas fa-chart-line"></i> Logaritmos
+      </a>
+      <a href="potencia.html" class="sidebar-menu-item">
+        <i class="fas fa-exclamation-triangle"></i> Potências
+      </a>
+      <a href="bhaskara.html" class="sidebar-menu-item">
+        <i class="fas fa-square-root-alt"></i> Bhaskara
+      </a>
+      <a href="trigonometria.html" class="sidebar-menu-item">
+        <i class="fas fa-wave-square"></i> Trigonometria
+      </a>
+      <a href="matrizes.html" class="sidebar-menu-item">
+        <i class="fas fa-table"></i> Matrizes
+      </a>
+      <a href="derivadas.html" class="sidebar-menu-item">
+        <i class="fas fa-infinity"></i> Derivadas
+      </a>
+
+      <div class="sidebar-divider"></div>
+
+      <a href="sobre.html" class="sidebar-menu-item">
+        <i class="fas fa-info-circle"></i> Sobre
+      </a>
+      <a href="contato.html" class="sidebar-menu-item">
+        <i class="fas fa-envelope"></i> Contato
+      </a>
+      <a href="admin.html" class="sidebar-menu-item">
+        <i class="fas fa-crown"></i> Admin
+      </a>
+
+    </div>
+
+    <div class="sidebar-footer">
+      <a href="definicoes.html" class="sidebar-menu-item active">
+        <i class="fas fa-cog"></i> Definições
+      </a>
+      <button type="button" id="sidebarLogoutBtn" onclick="mostrarModalLogout()">
+        <i class="fas fa-sign-out-alt"></i> Sair
+      </button>
+    </div>
+  </div>
+
+  <!-- Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="fecharSidebar()"></div>
+
+  <!-- Header -->
+  <header class="main-header">
+    <div class="logo-area">
+      <div class="menu-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+      </div>
+      <i class="fas fa-calculator"></i>
+      <h2>MathLab</h2>
+    </div>
+
+    <div class="nav-menu">
+      <a href="../index.html"><i class="fas fa-home"></i> Início</a>
+      <a href="../index.html#ferramentas"><i class="fas fa-tools"></i> Ferramentas</a>
+      <a href="sobre.html"><i class="fas fa-info-circle"></i> Sobre</a>
+      <a href="contato.html"><i class="fas fa-envelope"></i> Contato</a>
+      <a href="admin.html"><i class="fas fa-crown"></i> Admin</a>
+      <a href="definicoes.html" class="active"><i class="fas fa-cog"></i> Definições</a>
+    </div>
+
+    <div class="user-menu">
+      <div class="user-dropdown">
+        <div class="user-avatar" id="userAvatar">
+          <i class="fas fa-user"></i>
+        </div>
+        <div class="dropdown-content" id="dropdownContent"></div>
+      </div>
+    </div>
+  </header>
+
+<!-- ============================================
+     CONTEÚDO PRINCIPAL DA PÁGINA
+     ============================================
+  -->
+  <main class="main-content">
+    <h1>
+      <i class="fas fa-cog"></i> Definições
+    </h1>
+
+    <!-- ============================================
+       SEÇÃO DE APARÊNCIA
+       ============================================
+       Controles visuais do tema e cores
+    -->
+    <div class="settings-section">
+      <h2><i class="fas fa-palette"></i> Aparência</h2>
+
+        <!-- ============================================
+           CONFIGURAÇÃO DE TEMA
+           ============================================
+           Toggle para alternar entre modo claro e escuro
+        -->
+        <div class="settings-item">
+          <div class="settings-item-info">
+            <h3>Tema escuro/claro</h3>
+            <p>Alternar entre tema escuro (padrão) e claro.</p>
+          </div>
+        <label class="switch">
+          <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+        <!-- ============================================
+           CONFIGURAÇÃO DE COR DE DESTAQUE
+           ============================================
+           Seletor de cores para personalizar a interface
+        -->
+        <div class="settings-item">
+          <div class="settings-item-info">
+            <h3>Cor de destaque</h3>
+            <p>Escolha a cor principal da interface (roxo é o padrão).</p>
+          </div>
+        <select class="settings-select" id="accentColor">
+          <option value="#9b59b6" selected>Roxo</option>
+          <option value="#3498db">Azul</option>
+          <option value="#2ecc71">Verde</option>
+          <option value="#e74c3c">Vermelho</option>
+          <option value="#f39c12">Laranja</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- ============================================
+       SEÇÃO DE NOTIFICAÇÕES
+       ============================================
+       Controles para notificações do sistema
+    -->
+    <div class="settings-section">
+      <h2><i class="fas fa-bell"></i> Notificações</h2>
+
+        <!-- ============================================
+           CONFIGURAÇÃO DE NOTIFICAÇÕES DO SISTEMA
+           ============================================
+           Toggle para ativar/desativar notificações
+        -->
+        <div class="settings-item">
+          <div class="settings-item-info">
+            <h3>Notificações do sistema</h3>
+            <p>Receber alertas sobre atualizações e novidades.</p>
+          </div>
+        <label class="switch">
+          <input type="checkbox" id="notifications" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+        <!-- ============================================
+           CONFIGURAÇÃO DE SOM DE NOTIFICAÇÃO
+           ============================================
+           Toggle para ativar/desativar sons
+        -->
+        <div class="settings-item">
+          <div class="settings-item-info">
+            <h3>Som de notificação</h3>
+            <p>Emitir um som ao receber notificações.</p>
+          </div>
+        <label class="switch">
+          <input type="checkbox" id="notificationSound">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ============================================
+       SEÇÃO DE IDIOMA
+       ============================================
+       Seleção de idioma da interface
+    -->
+    <div class="settings-section">
+      <h2><i class="fas fa-language"></i> Idioma</h2>
+
+        <!-- ============================================
+           CONFIGURAÇÃO DE IDIOMA
+           ============================================
+           Seletor de idioma para internacionalização
+        -->
+        <div class="settings-item">
+          <div class="settings-item-info">
+            <h3>Idioma da interface</h3>
+            <p>Selecione o idioma preferido.</p>
+          </div>
+        <select class="settings-select" id="language">
+          <option value="pt" selected>Português (Brasil)</option>
+          <option value="en">English</option>
+          <option value="es">Español</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- ============================================
+       SEÇÃO DE PRIVACIDADE
+       ============================================
+       Controles de privacidade e compartilhamento de dados
+    -->
+    <div class="settings-section">
+      <h2><i class="fas fa-shield-alt"></i> Privacidade</h2>
+
+        <!-- ============================================
+           CONFIGURAÇÃO DE HISTÓRICO
+           ============================================
+           Toggle para salvar histórico de cálculos
+        -->
+        <div class="settings-item">
+          <div class="settings-item-info">
+            <h3>Salvar histórico de cálculos</h3>
+            <p>Manter um registro dos últimos cálculos realizados.</p>
+          </div>
+        <label class="switch">
+          <input type="checkbox" id="saveHistory" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+        <!-- ============================================
+           CONFIGURAÇÃO DE COMPARTILHAMENTO
+           ============================================
+           Toggle para compartilhamento de dados anônimos
+        -->
+        <div class="settings-item">
+          <div class="settings-item-info">
+            <h3>Compartilhar dados anônimos</h3>
+            <p>Ajudar a melhorar o MathLab enviando estatísticas de uso.</p>
+          </div>
+        <label class="switch">
+          <input type="checkbox" id="shareData">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ============================================
+       BOTÃO DE SALVAR CONFIGURAÇÕES
+       ============================================
+       Botão principal para persistir as configurações
+    -->
+    <button type="button" class="save-button" onclick="salvarConfiguracoes()">
+      <i class="fas fa-save"></i> Salvar configurações
+    </button>
+    <!-- ============================================
+       MENSAGEM DE CONFIRMAÇÃO
+       ============================================
+       Feedback visual para o usuário após salvar
+    -->
+    <div id="saveMessage" class="save-message">
+      <i class="fas fa-check-circle"></i> Configurações salvas com sucesso!
+    </div>
+  </main>
+
+  <!-- ============================================
+       SCRIPTS DA PÁGINA
+       ============================================
+       Carrega o sistema modular JavaScript do MathLab
+  -->
+  <script src="../assets/js/script.js" type="module"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,195 @@
+/* ============================================
+   MÓDULO 25: ADMIN - DASHBOARD (PREMIUM)
+   ============================================ */
+
+/* Redefinindo o grid de estatísticas para usar os cards premium */
+.admin-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+.admin-stat-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    transition: var(--transition-smooth);
+    box-shadow: var(--shadow-sm);
+}
+
+.admin-stat-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-primary);
+    box-shadow: var(--accent-glow);
+}
+
+.admin-stat-icon {
+    width: 55px;
+    height: 55px;
+    background: var(--glass-bg-accent);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.admin-stat-icon i {
+    font-size: 1.6rem;
+    color: var(--accent-primary);
+}
+
+.admin-stat-info {
+    flex: 1;
+}
+
+.admin-stat-info h3 {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.admin-stat-number {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+/* Tabelas e Gráficos Side-by-Side */
+.admin-dashboard-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+}
+
+@media (max-width: 1200px) {
+    .admin-dashboard-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Cards de Conteúdo (Tabelas/Gráficos) */
+.admin-content-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-xl);
+    box-shadow: var(--shadow-md);
+}
+
+.admin-content-card h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--accent-light);
+}
+
+/* Estilização de Tabelas de Dados */
+.table-container {
+    overflow-x: auto;
+}
+
+.admin-data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-data-table th {
+    text-align: left;
+    padding: 12px;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.admin-data-table td {
+    padding: 15px 12px;
+    font-size: 0.95rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.admin-data-table tr:hover td {
+    background: rgba(155, 89, 182, 0.05);
+}
+
+/* Botões de Ação na Tabela */
+.admin-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-action {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.btn-action:hover {
+    background: var(--accent-primary);
+    color: white;
+    border-color: var(--accent-primary);
+    transform: scale(1.1);
+}
+
+.btn-action.delete:hover {
+    background: #e74c3c;
+    border-color: #e74c3c;
+}
+
+/* Status Badges */
+.admin-status {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.admin-status.pending {
+    background: rgba(243, 156, 18, 0.1);
+    color: #f39c12;
+}
+
+.admin-status.active {
+    background: rgba(46, 204, 113, 0.1);
+    color: #2ecc71;
+}
+
+.admin-status.error {
+    background: rgba(231, 76, 60, 0.1);
+    color: #e74c3c;
+}
+
+/* Placeholder para Gráficos */
+.chart-wrapper {
+    min-height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: var(--border-radius);
+    margin-top: var(--spacing-md);
+}

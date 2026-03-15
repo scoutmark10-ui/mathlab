@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/jpg" href="../assets/images/logo.png">
+  <title>Logaritmos - MathLab</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <!-- Font Awesome 6.4.2 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+
+<body class="tool-page">
+  <div class="page-header">
+    <a href="../index.html" class="back-arrow" title="Voltar para Início">
+      <i class="fas fa-arrow-left"></i>
+      <span class="sr-only">Voltar</span>
+    </a>
+    <h1 class="page-title">📚 Logaritmos</h1>
+    <div class="placeholder"></div>
+  </div>
+
+  <main class="container">
+    <header class="tool-header-section">
+      <p class="tool-description">
+        Calcule logaritmos em qualquer base. Insira a base (a) e o argumento (x) para encontrar o expoente.
+      </p>
+    </header>
+
+    <div class="tool-grid">
+      <!-- Calculadora -->
+      <div class="tool-input-side card-section">
+        <div class="input-modern-group">
+          <label for="logBase"><i class="fas fa-cube"></i> Base (a)</label>
+          <input type="number" id="logBase" class="input-modern" value="10" step="any" min="0.1">
+          <small class="text-secondary">Base &gt; 0 e ≠ 1</small>
+        </div>
+
+        <div class="input-modern-group group-spacing">
+          <label for="logArgumento"><i class="fas fa-font"></i> Argumento (x)</label>
+          <input type="number" id="logArgumento" class="input-modern" value="100" step="any" min="0.1">
+          <small class="text-secondary">Argumento x &gt; 0</small>
+        </div>
+
+        <div class="exemplos-grid-modern group-spacing">
+          <button type="button" class="btn btn-secondary btn-small" onclick="usarExemplo(2, 32)">log₂ 32</button>
+          <button type="button" class="btn btn-secondary btn-small" onclick="usarExemplo(3, 81)">log₃ 81</button>
+          <button type="button" class="btn btn-secondary btn-small" onclick="usarExemplo(10, 1000)">log₁₀ 1000</button>
+        </div>
+
+        <button type="button" class="btn btn-primary-action w-100 group-spacing" onclick="calcularLog()">
+          <i class="fas fa-calculator"></i> Calcular
+        </button>
+
+        <div id="logResultado" class="result-box result-spacing">
+          <div class="result-main">log₁₀(100) = 2</div>
+          <div class="result-detail"><i class="fas fa-link"></i> 10² = 100</div>
+        </div>
+      </div>
+
+      <!-- Propriedades -->
+      <div class="tool-visual-side">
+        <div class="card-section">
+          <h3 class="section-title"><i class="fas fa-lightbulb"></i> Leis Fundamentais</h3>
+          <div class="properties-side-list">
+            <div class="prop-item-mini">
+              <strong>Produto:</strong> log(x·y) = log x + log y
+            </div>
+            <div class="prop-item-mini">
+              <strong>Quociente:</strong> log(x/y) = log x - log y
+            </div>
+            <div class="prop-item-mini">
+              <strong>Potência:</strong> log(xⁿ) = n·log x
+            </div>
+          </div>
+        </div>
+
+        <div class="info-box-modern group-spacing">
+          <p><i class="fas fa-info-circle"></i> Logaritmos naturais (base <i>e</i>) use <strong>2.718</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pratique -->
+    <h2 class="section-title group-spacing center"><i class="fas fa-pencil-alt"></i> Pratique Agora</h2>
+    <div class="exercicios-grid-modern">
+      <div class="exercise-card-modern">
+        <div class="ex-eq">log₂ 32 = ?</div>
+        <div class="ex-actions">
+          <button type="button" class="btn btn-small" onclick="mostrarResposta(1)">Resposta</button>
+          <button type="button" class="btn btn-secondary btn-small" onclick="usarNaCalculadora(2, 32)">Testar</button>
+        </div>
+        <div id="resp1" class="answer-hidden">log₂ 32 = 5</div>
+      </div>
+
+      <div class="exercise-card-modern">
+        <div class="ex-eq">log₃ 81 = ?</div>
+        <div class="ex-actions">
+          <button type="button" class="btn btn-small" onclick="mostrarResposta(2)">Resposta</button>
+          <button type="button" class="btn btn-secondary btn-small" onclick="usarNaCalculadora(3, 81)">Testar</button>
+        </div>
+        <div id="resp2" class="answer-hidden">log₃ 81 = 4</div>
+      </div>
+    </div>
+
+    <!-- Histórico -->
+    <div class="historico-container group-spacing">
+      <h3 class="section-title"><i class="fas fa-history"></i> Histórico</h3>
+      <div id="historico-lista" class="historico-lista"></div>
+      <div class="btn-group group-spacing">
+        <button type="button" class="btn btn-secondary btn-small" onclick="limparHistorico()">Limpar</button>
+        <button type="button" class="btn btn-secondary btn-small" onclick="atualizarHistorico()">Atualizar</button>
+      </div>
+    </div>
+    <footer>
+      <p>MathLab &copy; 2026 - O seu laboratório matemático</p>
+    </footer>
+  </main>
+
+  <script src="../assets/js/script.js" type="module"></script>
+  <script>
+    // Funções auxiliares mantidas para compatibilidade
+    function usarExemplo(base, arg) {
+      document.getElementById('logBase').value = base;
+      document.getElementById('logArgumento').value = arg;
+      if (typeof calcularLog === 'function') calcularLog();
+    }
+
+    function usarNaCalculadora(base, arg) {
+      usarExemplo(base, arg);
+      document.querySelector('.card-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => { if (typeof calcularLog === 'function') calcularLog(); }, 500);
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,765 @@
+/* ============================================
+   MÓDULO 03: COMPONENTES REUTILIZÁVEIS
+   ============================================ */
+
+/* --------------------------------------------
+   BOTÕES
+   -------------------------------------------- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    padding: 0.8rem 1.8rem;
+    background: var(--grad-primary);
+    color: white;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    transition: var(--transition-smooth);
+    border: none;
+    cursor: pointer;
+    min-width: 140px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: var(--glass-blur);
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--accent-glow), var(--glass-shadow);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Botão outline com glass */
+.btn-outline {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    box-shadow: var(--glass-shadow);
+}
+
+.btn-outline:hover {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    border-color: transparent;
+    color: white;
+}
+
+/* Botão pequeno */
+.btn-small {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    min-width: auto;
+}
+
+/* Botão secundário (versão glass) */
+.btn-secondary {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    box-shadow: var(--glass-shadow);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    transform: scale(1.02);
+    border-color: transparent;
+}
+
+/* Grupo de botões */
+.btn-group {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+    flex-wrap: wrap;
+}
+
+.btn-group .btn {
+    flex: 1;
+    min-width: 100px;
+}
+
+/* --------------------------------------------
+   HEADER 01: HEADER PRINCIPAL (com menu, logo e user)
+   Usado na página inicial
+   -------------------------------------------- */
+.main-header {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 0 var(--spacing-lg);
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    box-shadow: var(--glass-shadow);
+}
+
+/* Efeito de brilho na borda inferior */
+.main-header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 10%;
+    width: 80%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+    opacity: 0.5;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.logo-area i {
+    font-size: 2rem;
+    color: var(--accent-primary);
+    filter: drop-shadow(0 0 8px var(--accent-primary));
+}
+
+.logo-area h2 {
+    font-size: 1.5rem;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Menu de navegação */
+.nav-menu {
+    display: flex;
+    gap: var(--spacing-sm);
+    background: rgba(155, 89, 182, 0.1);
+    backdrop-filter: var(--glass-blur);
+    padding: var(--spacing-sm);
+    border-radius: 40px;
+    border: 1px solid var(--glass-border);
+}
+
+.nav-menu a {
+    padding: 0.5rem 1.5rem;
+    border-radius: 30px;
+    color: var(--text-secondary);
+    transition: var(--transition-speed);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    text-decoration: none;
+}
+
+.nav-menu a:hover,
+.nav-menu a.active {
+    background: rgba(155, 89, 182, 0.2);
+    color: var(--accent-primary);
+}
+
+/* Menu Toggle (Hamburger) */
+.menu-toggle {
+    display: none;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border-radius: var(--border-radius);
+    color: var(--text-secondary);
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: var(--transition-speed);
+    border: 1px solid var(--glass-border);
+}
+
+.menu-toggle:hover {
+    color: var(--accent-primary);
+    background: rgba(155, 89, 182, 0.2);
+}
+
+/* User Menu */
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+/* Theme Toggle */
+.theme-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-speed);
+    border: 1px solid var(--glass-border);
+}
+
+.theme-toggle:hover {
+    color: var(--accent-primary);
+    background: rgba(155, 89, 182, 0.2);
+    transform: scale(1.1);
+    box-shadow: var(--accent-glow);
+}
+
+/* User Avatar */
+.user-avatar {
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: var(--transition-speed);
+    box-shadow: var(--accent-glow);
+}
+
+.user-avatar:hover {
+    transform: scale(1.05);
+    border-color: white;
+}
+
+/* Dropdown */
+.user-dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    min-width: 220px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--glass-shadow);
+    border: 1px solid var(--glass-border);
+    z-index: 1000;
+    overflow: hidden;
+    display: none;
+}
+
+.user-dropdown:hover .dropdown-content {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.dropdown-content a,
+.dropdown-content button {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-md);
+    color: var(--text-primary);
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: var(--transition-speed);
+    border-left: 3px solid transparent;
+    text-decoration: none;
+}
+
+.dropdown-content a:hover,
+.dropdown-content button:hover {
+    background: rgba(155, 89, 182, 0.2);
+    border-left-color: var(--accent-primary);
+}
+
+.dropdown-content i {
+    width: 20px;
+    color: var(--accent-primary);
+}
+
+/* --------------------------------------------
+   HEADER 02: HEADER DE FERRAMENTAS (com seta e título)
+   Usado nas páginas de ferramentas (logaritmo, bhaskara, etc.)
+   -------------------------------------------- */
+.page-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--header-height);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-bottom: 1px solid var(--glass-border);
+    z-index: 1000;
+    box-shadow: var(--glass-shadow);
+    display: flex;
+    align-items: center;
+}
+
+.top-header {
+    text-align: center;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    margin-top: 4rem;
+}
+
+/* Container interno para alinhamento */
+.page-header .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+}
+
+/* Efeito de brilho na borda inferior */
+.page-header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 10%;
+    width: 80%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+    opacity: 0.5;
+}
+
+/* Seta de voltar */
+.back-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border-radius: 50%;
+    color: var(--accent-primary);
+    font-size: 1.3rem;
+    transition: var(--transition-smooth);
+    text-decoration: none;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+}
+
+.back-arrow:hover {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    transform: translateX(-3px) scale(1.05);
+    border-color: transparent;
+    box-shadow: var(--accent-glow);
+}
+
+/* Título da página */
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    text-align: center;
+    flex: 1;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Placeholder invisível para balancear (mesmo tamanho da seta) */
+.header-placeholder {
+    width: 40px;
+    height: 40px;
+    visibility: hidden;
+}
+
+/* Opcional: menu do usuário simplificado para páginas de ferramentas */
+.page-header .header-user {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.page-header .user-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: var(--transition-speed);
+}
+
+.page-header .user-icon:hover {
+    transform: scale(1.05);
+    border-color: white;
+}
+
+/* --------------------------------------------
+   BADGES COM GLASS
+   -------------------------------------------- */
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    color: var(--accent-primary);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    transition: var(--transition-smooth);
+}
+
+.badge:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--accent-glow);
+}
+
+/* --------------------------------------------
+   TABS COM GLASS
+   -------------------------------------------- */
+.tabs {
+    display: flex;
+    gap: var(--spacing-sm);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    padding: var(--spacing-sm);
+    border-radius: 40px;
+    margin-bottom: var(--spacing-md);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 0.75rem;
+    background: transparent;
+    color: var(--text-secondary);
+    border-radius: 30px;
+    transition: var(--transition-speed);
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.tab-btn.active {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    box-shadow: var(--accent-glow);
+}
+
+.tab-btn:hover:not(.active) {
+    background: rgba(155, 89, 182, 0.2);
+    backdrop-filter: var(--glass-blur);
+}
+
+/* --------------------------------------------
+   INFO BOX COM GLASS
+   -------------------------------------------- */
+.info-box {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    margin: var(--spacing-xl) 0;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    transition: var(--transition-smooth);
+}
+
+.info-box:hover {
+    border-color: var(--accent-primary);
+    box-shadow: var(--accent-glow), var(--glass-shadow);
+    transform: translateY(-2px);
+}
+
+.info-box h4 {
+    color: var(--accent-primary);
+    margin-bottom: var(--spacing-md);
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.info-box ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.info-box li {
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-secondary);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    line-height: 1.5;
+}
+
+.info-box li:last-child {
+    margin-bottom: 0;
+}
+
+.info-box i {
+    color: var(--accent-primary);
+    margin-right: var(--spacing-sm);
+    min-width: 18px;
+    font-size: 1rem;
+    margin-top: 3px;
+}
+
+/* Variação compacta da info-box */
+.info-box.compact {
+    padding: var(--spacing-md);
+    margin: var(--spacing-lg) 0;
+}
+
+.info-box.compact h4 {
+    margin-bottom: var(--spacing-sm);
+    font-size: 1.1rem;
+}
+
+.info-box.compact li {
+    margin-bottom: var(--spacing-xs);
+    font-size: 0.9rem;
+}
+
+/* --------------------------------------------
+   MODAL COM GLASS
+   -------------------------------------------- */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius-lg);
+    max-width: 400px;
+    width: 90%;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    animation: modalIn 0.3s ease;
+    text-align: center;
+}
+
+.modal-content i {
+    font-size: 3rem;
+    color: var(--accent-primary);
+    margin-bottom: var(--spacing-md);
+}
+
+.modal-content h3 {
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.modal-content p {
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-lg);
+}
+
+.modal-buttons {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
+}
+
+.modal-btn {
+    flex: 1;
+    padding: 0.75rem;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    transition: var(--transition-speed);
+    border: none;
+    cursor: pointer;
+}
+
+.modal-btn.confirm {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+}
+
+.modal-btn.confirm:hover {
+    transform: scale(1.02);
+    box-shadow: var(--accent-glow);
+}
+
+.modal-btn.cancel {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    backdrop-filter: var(--glass-blur);
+}
+
+.modal-btn.cancel:hover {
+    background: var(--bg-primary);
+}
+
+/* --------------------------------------------
+   MENSAGENS DE FEEDBACK
+   -------------------------------------------- */
+.error {
+    color: #e74c3c;
+    font-weight: 500;
+}
+
+.success {
+    color: #2ecc71;
+    font-weight: 500;
+}
+
+.warning {
+    color: #f39c12;
+    font-weight: 500;
+}
+
+/* --------------------------------------------
+   AJUSTE PARA CONTEÚDO ABAIXO DO HEADER FIXO
+   -------------------------------------------- */
+body {
+    padding-top: var(--header-height);
+}
+
+/* --------------------------------------------
+   RESPONSIVIDADE DOS COMPONENTES
+   -------------------------------------------- */
+@media screen and (max-width: 992px) {
+    .nav-menu {
+        display: none;
+        position: absolute;
+        top: var(--header-height);
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        padding: var(--spacing-md);
+        border-radius: 0 0 var(--border-radius) var(--border-radius);
+    }
+
+    .nav-menu.active {
+        display: flex;
+    }
+
+    .nav-menu a {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .menu-toggle {
+        display: flex;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .logo-area h2 {
+        font-size: 1.2rem;
+    }
+
+    .back-arrow {
+        width: 36px;
+        height: 36px;
+        font-size: 1.1rem;
+    }
+
+    .page-title {
+        font-size: 1.1rem;
+    }
+
+    .header-user .user-icon,
+    .page-header .user-icon {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .logo-area h2 {
+        display: none;
+    }
+
+    .back-arrow {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+    }
+
+    .page-title {
+        font-size: 1rem;
+    }
+
+    .header-user .user-icon,
+    .page-header .user-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .btn-group {
+        flex-direction: column;
+    }
+
+    .btn-group .btn {
+        width: 100%;
+    }
+
+    .modal-buttons {
+        flex-direction: column;
+    }
+}

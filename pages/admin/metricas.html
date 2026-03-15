@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../../assets/images/logo.png">
+    <title>Métricas - MathLab Admin</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <!-- Font Awesome 6.4.2 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+
+<body class="admin-body">
+    <!-- Tela de Login (Hacky but kept as per user existing logic if any) -->
+    <div class="admin-login-overlay" id="adminLoginOverlay">
+        <div class="admin-login-box card-section">
+            <i class="fas fa-lock"></i>
+            <h2>Acesso Restrito</h2>
+            <p>Métricas de Sistema</p>
+            <input type="password" id="adminPassword" class="admin-login-input" placeholder="Senha"
+                autocomplete="current-password">
+            <button type="button" class="btn btn-primary-action" onclick="verificarSenhaAdmin()">
+                <i class="fas fa-sign-in-alt"></i> Acessar
+            </button>
+            <div class="admin-login-error error-text" id="adminLoginError">
+                <i class="fas fa-exclamation-circle"></i> Senha incorreta!
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Admin -->
+    <aside class="admin-sidebar" id="adminSidebar">
+        <div class="admin-sidebar-header">
+            <i class="fas fa-crown"></i>
+            <h2>MathLab Admin</h2>
+        </div>
+
+        <div class="admin-user">
+            <div class="admin-user-avatar">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <div class="admin-user-info">
+                <h4>Zinko Dev</h4>
+                <p>Administrador</p>
+            </div>
+        </div>
+
+        <nav class="admin-nav">
+            <a href="dashboard.html" class="admin-nav-item">
+                <i class="fas fa-chart-pie"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="metricas.html" class="admin-nav-item active">
+                <i class="fas fa-chart-line"></i>
+                <span>Métricas</span>
+            </a>
+            <a href="usuarios-pendentes.html" class="admin-nav-item">
+                <i class="fas fa-users"></i>
+                <span>Usuários</span>
+            </a>
+            <a href="mensagens.html" class="admin-nav-item">
+                <i class="fas fa-envelope"></i>
+                <span>Mensagens</span>
+            </a>
+            <a href="logs.html" class="admin-nav-item">
+                <i class="fas fa-history"></i>
+                <span>Logs</span>
+            </a>
+        </nav>
+
+        <div class="admin-sidebar-footer">
+            <a href="../../index.html" class="admin-nav-item">
+                <i class="fas fa-arrow-left"></i>
+                <span>Voltar ao Site</span>
+            </a>
+            <button type="button" onclick="logoutAdmin()" class="admin-nav-item btn-logout-admin">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Sair</span>
+            </button>
+        </div>
+    </aside>
+
+    <main class="admin-main admin-main-content hidden" id="adminMain">
+
+        <header class="admin-header">
+            <div class="admin-header-left">
+                <button type="button" class="admin-menu-toggle" id="adminMenuToggle" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1><i class="fas fa-chart-line"></i> Métricas do Sistema</h1>
+            </div>
+            <div class="admin-header-actions">
+                <span class="badge">Estatísticas Reais</span>
+            </div>
+        </header>
+
+        <div class="admin-content">
+            <div class="admin-stats-grid">
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="admin-stat-info">
+                        <h3>Cálculos/Dia</h3>
+                        <div class="admin-stat-number">1k+</div>
+                    </div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="admin-stat-info">
+                        <h3>Retenção</h3>
+                        <div class="admin-stat-number">85%</div>
+                    </div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <div class="admin-stat-info">
+                        <h3>Latência Média</h3>
+                        <div class="admin-stat-number">200ms</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="metric-row">
+                <div class="metric-card">
+                    <h3><i class="fas fa-chart-area"></i> Tráfego de Usuários</h3>
+                    <div class="metric-chart-container admin-chart-placeholder">
+                        <p><i class="fas fa-chart-bar"></i> Monitoramento Ativo (Chart.js)</p>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <h3><i class="fas fa-server"></i> Performance do Servidor</h3>
+                    <div class="metric-chart-container admin-chart-placeholder">
+                        <p><i class="fas fa-microchip"></i> Recursos do Sistema</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../../assets/js/script.js" type="module"></script>
+    <script src="../../assets/js/modules/20-admin-core.js" type="module"></script>
+    <script>
+        const SENHA_ADMIN = 'zink123';
+
+        function verificarSenhaAdmin() {
+            const senhaInput = document.getElementById('adminPassword').value;
+            const errorDiv = document.getElementById('adminLoginError');
+
+            if (senhaInput === SENHA_ADMIN) {
+                document.getElementById('adminLoginOverlay').classList.add('hidden');
+                document.getElementById('adminMain').classList.remove('hidden');
+                localStorage.setItem('admin_logado', 'true');
+            } else {
+                errorDiv.classList.add('show-error');
+                document.getElementById('adminPassword').value = '';
+                setTimeout(() => errorDiv.classList.remove('show-error'), 3000);
+            }
+        }
+
+        function verificarSessaoAdmin() {
+            if (localStorage.getItem('admin_logado') === 'true') {
+                document.getElementById('adminLoginOverlay').classList.add('hidden');
+                document.getElementById('adminMain').classList.remove('hidden');
+            }
+        }
+
+        function logoutAdmin() {
+            localStorage.removeItem('admin_logado');
+            window.location.href = '../../index.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', verificarSessaoAdmin);
+    </script>
+</body>
+
+</html>

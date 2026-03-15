@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpg" href="../assets/images/logo.png">
+    <title>MMC e MDC - MathLab</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body>
+    <div class="page-header">
+        <a href="../index.html" class="back-arrow" title="Voltar para Início">
+            <i class="fas fa-arrow-left"></i>
+            <span class="sr-only">Voltar</span>
+        </a>
+        <h1 class="page-title">📐 MMC &amp; MDC</h1>
+        <div class="placeholder"></div>
+    </div>
+
+    <main class="container">
+        <header class="tool-header-section">
+            <p class="tool-description">
+                Calcule o Mínimo Múltiplo Comum e o Máximo Divisor Comum entre dois números com explicação detalhada.
+            </p>
+        </header>
+
+        <!-- Abas -->
+        <div class="tab-controls-modern group-spacing">
+            <button type="button" class="tab-btn active" onclick="mudarAbaMMC('mmc')" id="tab-mmc">
+                <i class="fas fa-sort-amount-up"></i> MMC
+            </button>
+            <button type="button" class="tab-btn" onclick="mudarAbaMMC('mdc')" id="tab-mdc">
+                <i class="fas fa-sort-amount-down"></i> MDC
+            </button>
+        </div>
+
+        <div class="tool-grid">
+            <!-- Coluna de Inputs -->
+            <div class="tool-input-side card-section">
+                <div id="identificador-aba" class="aba-label group-spacing">Calculando MMC</div>
+
+                <div class="inputs-row">
+                    <div class="input-modern-group">
+                        <label for="val1">Número 1 (a)</label>
+                        <input type="number" id="val1" class="input-modern" value="12" min="1">
+                    </div>
+                    <div class="input-modern-group">
+                        <label for="val2">Número 2 (b)</label>
+                        <input type="number" id="val2" class="input-modern" value="18" min="1">
+                    </div>
+                </div>
+
+                <div class="exemplos-grid-modern group-spacing" id="exemplos-dinamicos">
+                    <button type="button" class="btn btn-secondary btn-small" onclick="usarExemplo(6, 8)">6, 8</button>
+                    <button type="button" class="btn btn-secondary btn-small" onclick="usarExemplo(10, 15)">10,
+                        15</button>
+                    <button type="button" class="btn btn-secondary btn-small" onclick="usarExemplo(24, 36)">24,
+                        36</button>
+                </div>
+
+                <button type="button" class="btn btn-primary-action w-100 group-spacing" id="btn-calcular"
+                    onclick="executarCalculo()">
+                    <i class="fas fa-calculator"></i> Calcular Agora
+                </button>
+
+                <div id="resultadoFinal" class="result-box result-spacing">
+                    Aguardando...
+                </div>
+            </div>
+
+            <!-- Coluna de Explicação/Passo a Passo -->
+            <div class="tool-visual-side">
+                <div id="passo-a-passo" class="card-section">
+                    <h3 class="section-title"><i class="fas fa-stream"></i> Passo a Passo</h3>
+                    <div id="metodo-exibicao" class="method-box">
+                        <div id="conteudo-metodo" class="method-text">
+                            Aguardando cálculo...
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box-modern group-spacing">
+                    <h4><i class="fas fa-lightbulb"></i> Propriedade Útil</h4>
+                    <code>MMC(a,b) × MDC(a,b) = a × b</code>
+                </div>
+            </div>
+        </div>
+
+        <!-- Propriedades Detalhadas -->
+        <h2 class="section-title group-spacing"><i class="fas fa-star"></i> Propriedades Essenciais</h2>
+        <div class="propriedades-grid-modern">
+            <div class="prop-card">
+                <h4>Primos entre si</h4>
+                <p>Se MDC = 1, então o MMC é o produto dos números.</p>
+                <small>Ex: MMC(7,13) = 91</small>
+            </div>
+            <div class="prop-card">
+                <h4>Múltiplos</h4>
+                <p>Se um divide o outro, o maior é o MMC e o menor o MDC.</p>
+                <small>Ex: 6 e 12 → MMC=12, MDC=6</small>
+            </div>
+        </div>
+
+        <!-- Exercícios -->
+        <h2 class="section-title group-spacing center"><i class="fas fa-pencil-alt"></i> Pratique Agora</h2>
+        <div class="exercicios-grid-modern">
+            <div class="exercise-card-modern">
+                <div class="ex-eq">MMC(8, 12) = ?</div>
+                <div class="ex-actions">
+                    <button type="button" class="btn btn-small" onclick="mostrarResposta(1)">Resposta</button>
+                    <button type="button" class="btn btn-secondary btn-small"
+                        onclick="usarExemplo(8, 12)">Testar</button>
+                </div>
+                <div id="resp1" class="answer-hidden">MMC = 24</div>
+            </div>
+
+            <div class="exercise-card-modern">
+                <div class="ex-eq">MDC(18, 24) = ?</div>
+                <div class="ex-actions">
+                    <button type="button" class="btn btn-small" onclick="mostrarResposta(2)">Resposta</button>
+                    <button type="button" class="btn btn-secondary btn-small"
+                        onclick="usarExemplo(18, 24)">Testar</button>
+                </div>
+                <div id="resp2" class="answer-hidden">MDC = 6</div>
+            </div>
+        </div>
+
+        <!-- Histórico -->
+        <div class="historico-container group-spacing">
+            <h3 class="section-title"><i class="fas fa-history"></i> Histórico</h3>
+            <div id="historico-lista" class="historico-lista"></div>
+            <div class="btn-group group-spacing">
+                <button type="button" class="btn btn-secondary btn-small" onclick="limparHistorico()">Limpar</button>
+                <button type="button" class="btn btn-secondary btn-small"
+                    onclick="atualizarHistorico()">Atualizar</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="../assets/js/script.js" type="module"></script>
+    <script>
+        let abaAtiva = 'mmc';
+
+        function mudarAbaMMC(aba) {
+            abaAtiva = aba;
+            document.getElementById('tab-mmc').classList.toggle('active', aba === 'mmc');
+            document.getElementById('tab-mdc').classList.toggle('active', aba === 'mdc');
+            document.getElementById('identificador-aba').textContent = aba === 'mmc' ? 'Calculando MMC' : 'Calculando MDC';
+
+            const exemplosDiv = document.getElementById('exemplos-dinamicos');
+            if (aba === 'mmc') {
+                exemplosDiv.innerHTML = `
+                    <button type="button" class="btn btn-secondary btn-small" onclick="usarExemplo(6, 8)">6, 8</button>
+                    <button type="button" class="btn btn-secondary btn-small" onclick="usarExemplo(10, 15)">10, 15</button>
+                    <button type="button" class="btn btn-secondary btn-small" onclick="usarExemplo(24, 36)">24, 36</button>
+                `;
+            } else {
+                exemplosDiv.innerHTML = `
+                    <button type="button" class="btn btn-secondary btn-small" onclick="usarExemplo(12, 18)">12, 18</button>
+                    <button type="button" class="btn btn-secondary btn-small" onclick="usarExemplo(24, 36)">24, 36</button>
+                    <button type="button" class="btn btn-secondary btn-small" onclick="usarExemplo(7, 13)">7, 13</button>
+                `;
+            }
+            executarCalculo();
+        }
+
+        function executarCalculo() {
+            if (abaAtiva === 'mmc') calcularMMC();
+            else calcularMDC_Interface();
+        }
+
+        function usarExemplo(a, b) {
+            document.getElementById('val1').value = a;
+            document.getElementById('val2').value = b;
+            executarCalculo();
+        }
+
+        function calcularMMC() {
+            const num1 = parseInt(document.getElementById('val1').value);
+            const num2 = parseInt(document.getElementById('val2').value);
+            const resultadoDiv = document.getElementById('resultadoFinal');
+            const conteudoMetodo = document.getElementById('conteudo-metodo');
+
+            if (isNaN(num1) || isNaN(num2) || num1 <= 0 || num2 <= 0) {
+                resultadoDiv.innerHTML = '<span class="error">❌ Digite números positivos!</span>';
+                return;
+            }
+
+            const mdc = calcularMDC(num1, num2);
+            const mmc = (num1 * num2) / mdc;
+
+            resultadoDiv.innerHTML = `<strong>MMC(${num1}, ${num2}) = ${mmc}</strong>`;
+
+            const f1 = fatorar(num1);
+            const f2 = fatorar(num2);
+            conteudoMetodo.innerHTML = `
+                <div class="fatoracao-step">
+                    <p>${num1} = ${f1}</p>
+                    <p>${num2} = ${f2}</p>
+                    <div class="res-line">MMC = ${mmc}</div>
+                    <small class="formula-info">(${num1} × ${num2}) / ${mdc} = ${mmc}</small>
+                </div>
+            `;
+            if (window.salvarHistorico) salvarHistorico('mmc', `${num1},${num2}`, mmc);
+        }
+
+        function calcularMDC_Interface() {
+            const num1 = parseInt(document.getElementById('val1').value);
+            const num2 = parseInt(document.getElementById('val2').value);
+            const resultadoDiv = document.getElementById('resultadoFinal');
+            const conteudoMetodo = document.getElementById('conteudo-metodo');
+
+            if (isNaN(num1) || isNaN(num2) || num1 <= 0 || num2 <= 0) {
+                resultadoDiv.innerHTML = '<span class="error">❌ Digite números positivos!</span>';
+                return;
+            }
+
+            let a = Math.max(num1, num2);
+            let b = Math.min(num1, num2);
+            let passos = [];
+            while (b !== 0) {
+                const r = a % b;
+                passos.push(`${a} ÷ ${b} = ${Math.floor(a / b)} (resto ${r})`);
+                a = b; b = r;
+            }
+            const mdc = a;
+            resultadoDiv.innerHTML = `<strong>MDC(${num1}, ${num2}) = ${mdc}</strong>`;
+            conteudoMetodo.innerHTML = `<pre class="algoritmo-pre">${passos.join('\n')}\n\n✅ MDC = ${mdc}</pre>`;
+            if (window.salvarHistorico) salvarHistorico('mdc', `${num1},${num2}`, mdc);
+        }
+
+        function calcularMDC(a, b) {
+            a = Math.abs(a); b = Math.abs(b);
+            while (b !== 0) { let t = b; b = a % b; a = t; }
+            return a;
+        }
+
+        function fatorar(n) {
+            let f = []; let d = 2; let temp = n;
+            while (temp > 1) {
+                if (temp % d === 0) { f.push(d); temp /= d; }
+                else d++;
+            }
+            const counts = {}; f.forEach(x => counts[x] = (counts[x] || 0) + 1);
+            return Object.entries(counts).map(([x, c]) => c > 1 ? `${x}^${c}` : x).join(' × ');
+        }
+
+        function mostrarResposta(num) {
+            document.getElementById('resp' + num).classList.toggle('answer-show');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(executarCalculo, 500);
+        });
+    </script>
+</body>
+
+</html>

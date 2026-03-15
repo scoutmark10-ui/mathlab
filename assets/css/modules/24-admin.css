@@ -1,0 +1,386 @@
+/* ============================================
+   MÓDULO 24: ADMIN - ESTILOS GERAIS (PREMIUM)
+   ============================================ */
+
+.admin-body {
+    display: flex;
+    min-height: 100vh;
+    background: var(--bg-primary);
+    font-family: var(--font-main);
+    color: var(--text-primary);
+}
+
+/* Sidebar Admin Premium */
+.admin-sidebar {
+    width: var(--sidebar-width);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border-right: 1px solid var(--glass-border);
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1100;
+    transition: var(--transition-smooth);
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--glass-shadow);
+}
+
+.admin-sidebar.collapsed {
+    width: 80px;
+}
+
+.admin-sidebar.collapsed .admin-sidebar-header h2,
+.admin-sidebar.collapsed .admin-user-info,
+.admin-sidebar.collapsed .admin-nav-item span {
+    display: none;
+}
+
+.admin-sidebar-header {
+    padding: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.admin-sidebar-header i {
+    font-size: 1.8rem;
+    color: var(--accent-primary);
+    filter: drop-shadow(0 0 8px rgba(155, 89, 182, 0.4));
+}
+
+.admin-sidebar-header h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* Local do Usuário no Sidebar */
+.admin-user {
+    padding: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    border-bottom: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.admin-user-avatar {
+    width: 45px;
+    height: 45px;
+    background: var(--grad-primary);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+    box-shadow: var(--accent-glow);
+}
+
+.admin-user-info h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.admin-user-info p {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Navegação Admin */
+.admin-nav {
+    padding: var(--spacing-md) 0;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.admin-nav-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: 12px var(--spacing-lg);
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: var(--transition-smooth);
+    border-left: 3px solid transparent;
+}
+
+.admin-nav-item:hover,
+.admin-nav-item.active {
+    background: var(--glass-bg-accent);
+    color: var(--accent-light);
+    border-left-color: var(--accent-primary);
+}
+
+.admin-nav-item i {
+    width: 20px;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+/* Footer Sidebar */
+.admin-sidebar-footer {
+    padding: var(--spacing-md);
+    border-top: 1px solid var(--glass-border);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.btn-logout-admin {
+    width: 100%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+/* Main Content Area */
+.admin-main {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    transition: margin-left var(--transition-smooth);
+    min-height: 100vh;
+    background: radial-gradient(circle at 10% 20%, rgba(155, 89, 182, 0.05) 0%, transparent 40%);
+}
+
+.admin-sidebar.collapsed+.admin-main {
+    margin-left: 80px;
+}
+
+/* Header fixo do Main */
+.admin-header {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border-bottom: 1px solid var(--glass-border);
+    padding: var(--spacing-md) var(--spacing-xl);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.admin-header h1 {
+    font-size: 1.25rem;
+    margin: 0;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin-header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.admin-menu-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 5px;
+    transition: var(--transition-smooth);
+}
+
+.admin-menu-toggle:hover {
+    color: var(--accent-primary);
+}
+
+/* Responsividade Mobile-First (Base) */
+@media screen and (max-width: 992px) {
+    .admin-sidebar {
+        transform: translateX(-100%);
+        box-shadow: none;
+    }
+
+    .admin-sidebar.active {
+        transform: translateX(0);
+        box-shadow: var(--glass-shadow);
+    }
+
+    .admin-main {
+        margin-left: 0 !important;
+    }
+
+    .admin-menu-toggle {
+        display: block;
+    }
+
+    .admin-header {
+        padding: var(--spacing-md);
+    }
+
+    .admin-header h1 span {
+        display: none;
+        /* Opcional: esconde texto fixo do h1 no mobile se for muito grande */
+    }
+}
+
+.admin-content {
+    padding: var(--spacing-xl);
+    animation: fadeIn 0.5s ease;
+}
+
+/* Utilitários Admin */
+.badge {
+    padding: 4px 12px;
+    background: var(--accent-primary);
+    color: white;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.badge.success {
+    background-color: #2ecc71;
+}
+
+.badge.warning {
+    background-color: #f1c40f;
+    color: #333;
+}
+
+.badge.error {
+    background-color: #e74c3c;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Modais Premium em Vidro */
+.modal-premium {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2100;
+    padding: var(--spacing-md);
+}
+
+.modal-premium.active {
+    display: flex;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-glass-content {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-lg);
+    width: 100%;
+    max-width: 700px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--glass-shadow);
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
+    padding: var(--spacing-lg) var(--spacing-xl);
+    border-bottom: 1px solid var(--glass-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-body {
+    padding: var(--spacing-xl);
+}
+
+.modal-footer {
+    padding: var(--spacing-lg) var(--spacing-xl);
+    border-top: 1px solid var(--glass-border);
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-md);
+}
+
+/* Cards de Mensagem Profissionais */
+.mensagem-item {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.mensagem-item:hover {
+    border-color: var(--accent-primary);
+    transform: translateX(5px);
+    background: var(--glass-bg-accent);
+}
+
+.mensagem-item.nao-respondida {
+    border-left: 4px solid var(--accent-primary);
+}
+
+.status-badge {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+}
+
+.status-nao-respondida {
+    background: var(--accent-primary);
+    color: white;
+}
+
+.status-respondida {
+    background: rgba(46, 204, 113, 0.2);
+    color: #2ecc71;
+}
+
+.mensagem-original-card {
+    background: rgba(0, 0, 0, 0.15);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    border-left: 3px solid var(--accent-primary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.email-preview-box {
+    background: white;
+    color: #333;
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    margin-top: 10px;
+    font-size: 0.9rem;
+    min-height: 100px;
+}
+
+.admin-chart-placeholder {
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    color: var(--text-secondary);
+}
