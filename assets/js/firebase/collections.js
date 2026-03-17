@@ -35,27 +35,45 @@
 
 import { 
     getFirestore, 
+    collection,
     doc, 
     setDoc, 
     getDoc, 
     getDocs, 
     updateDoc, 
     deleteDoc, 
-    collection, 
     query, 
     where, 
     orderBy, 
     limit,
     addDoc,
-    serverTimestamp
+    serverTimestamp,
+    writeBatch
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
+import { getAuth } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 import app from './config.js';
+
+// ============================================
+// VERIFICAÇÃO DE IMPORTAÇÕES
+// ============================================
+console.log('🔍 Verificando imports do Firebase:', {
+    collection: typeof collection,
+    addDoc: typeof addDoc,
+    getFirestore: typeof getFirestore,
+    serverTimestamp: typeof serverTimestamp
+});
+
+if (typeof collection !== 'function') {
+    console.error('❌ ERRO CRÍTICO: collection não é uma função!');
+    console.log('📦 Possível problema: importação do Firebase falhou');
+}
 
 // ============================================
 // INICIALIZAÇÃO DO FIRESTORE
 // ============================================
 const db = getFirestore(app);
+const auth = getAuth(app);
 
 // ============================================
 // FUNÇÕES UTILITÁRIAS
@@ -64,24 +82,30 @@ const db = getFirestore(app);
 /**
  * 📝 logOperation - Registra operação para auditoria
  * @param {string} operation - Tipo da operação
- * @param {string} collection - Nome da coleção
+ * @param {string} collectionName - Nome da coleção
  * @param {string} userId - ID do usuário (opcional)
  * @param {Object} details - Detalhes da operação
  */
-const logOperation = async (operation, collection, userId = null, details = {}) => {
+const logOperation = async (operation, collectionName, userId = null, details = {}) => {
     try {
+        // Verificação de segurança
+        if (typeof collection !== 'function') {
+            console.error('❌ Função collection não disponível para log');
+            return;
+        }
+        
         const logEntry = {
             timestamp: serverTimestamp(),
             operation,
-            collection,
+            collection: collectionName,
             userId,
             details,
-            ip: details.ip || 'unknown', // Será capturado no futuro
-            userAgent: navigator.userAgent
+            userAgent: navigator.userAgent,
+            url: window.location.href
         };
         
         await addDoc(collection(db, 'logs'), logEntry);
-        console.log(`📝 Log registrado: ${operation} em ${collection}`);
+        console.log(`📝 Log registrado: ${operation} em ${collectionName}`);
     } catch (error) {
         console.error('❌ Erro ao registrar log:', error);
     }
@@ -90,10 +114,10 @@ const logOperation = async (operation, collection, userId = null, details = {}) 
 /**
  * 🔍 validateData - Valida e sanitiza dados de entrada
  * @param {Object} data - Dados a validar
- * @param {string} collection - Nome da coleção para regras específicas
+ * @param {string} collectionName - Nome da coleção para regras específicas
  * @returns {Object} Dados validados e erros encontrados
  */
-const validateData = (data, collection) => {
+const validateData = (data, collectionName) => {
     const errors = [];
     const sanitized = { ...data };
     
@@ -104,7 +128,7 @@ const validateData = (data, collection) => {
     }
     
     // Validação específica por coleção
-    switch (collection) {
+    switch (collectionName) {
         case 'usuarios':
             if (!data.email || !data.email.includes('@')) {
                 errors.push('Email inválido');
@@ -137,6 +161,15 @@ const validateData = (data, collection) => {
                 errors.push('Idioma inválido');
             }
             break;
+            
+        case 'feedback':
+            if (!data.mensagem || data.mensagem.length < 10) {
+                errors.push('Mensagem deve ter pelo menos 10 caracteres');
+            }
+            if (!data.tipo) {
+                errors.push('Tipo de feedback é obrigatório');
+            }
+            break;
     }
     
     // Sanitização de strings
@@ -151,6 +184,14 @@ const validateData = (data, collection) => {
         errors,
         data: sanitized
     };
+};
+
+/**
+ * 👤 getCurrentUser - Retorna usuário atual
+ * @returns {Object|null} Usuário atual ou null
+ */
+const getCurrentUser = () => {
+    return auth.currentUser;
 };
 
 // ============================================
@@ -175,7 +216,11 @@ export const createUser = async (userData) => {
             status: 'ativo',
             ultimoAcesso: serverTimestamp(),
             cargo: userData.cargo || 'user',
-            aprovado: userData.aprovado !== undefined ? userData.aprovado : true
+            aprovado: userData.aprovado !== undefined ? userData.aprovado : true,
+            estatisticas: {
+                calculosRealizados: 0,
+                ultimaAtividade: serverTimestamp()
+            }
         };
         
         const docRef = await addDoc(collection(db, 'usuarios'), userDoc);
@@ -207,8 +252,7 @@ export const updateUser = async (userId, updateData) => {
         const userRef = doc(db, 'usuarios', userId);
         await updateDoc(userRef, {
             ...validation.data,
-            atualizadoEm: serverTimestamp(),
-            ultimoAcesso: serverTimestamp()
+            atualizadoEm: serverTimestamp()
         });
         
         await logOperation('update', 'usuarios', userId, { action: 'user_updated' });
@@ -245,6 +289,34 @@ export const getUserById = async (userId) => {
     }
 };
 
+/**
+ * 👤 getAllUsers - Busca todos os usuários (admin apenas)
+ * @param {number} limitCount - Limite de resultados
+ * @returns {Promise<Object>} Lista de usuários
+ */
+export const getAllUsers = async (limitCount = 100) => {
+    try {
+        const q = query(
+            collection(db, 'usuarios'),
+            orderBy('dataCriacao', 'desc'),
+            limit(limitCount)
+        );
+        
+        const querySnapshot = await getDocs(q);
+        const users = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+        
+        await logOperation('read', 'usuarios', 'admin', { action: 'list_users', count: users.length });
+        return { success: true, data: users };
+        
+    } catch (error) {
+        console.error('❌ Erro ao buscar usuários:', error);
+        return { success: false, error: error.message };
+    }
+};
+
 // ============================================
 // COLEÇÃO CÁLCULOS
 // ============================================
@@ -264,10 +336,18 @@ export const saveCalculation = async (calcData) => {
         const calcDoc = {
             ...validation.data,
             timestamp: serverTimestamp(),
-            data: new Date().toISOString().split('T')[0] // Data formatada
+            dataFormatada: new Date().toISOString().split('T')[0]
         };
         
         const docRef = await addDoc(collection(db, 'calculos'), calcDoc);
+        
+        // Atualizar estatísticas do usuário
+        const userRef = doc(db, 'usuarios', calcData.userId);
+        await updateDoc(userRef, {
+            'estatisticas.calculosRealizados': serverTimestamp(),
+            'estatisticas.ultimaAtividade': serverTimestamp()
+        });
+        
         await logOperation('create', 'calculos', calcData.userId, { 
             type: calcData.tipo,
             result: calcData.resultado 
@@ -286,16 +366,16 @@ export const saveCalculation = async (calcData) => {
 /**
  * 📊 getUserCalculations - Busca histórico de cálculos do usuário
  * @param {string} userId - ID do usuário
- * @param {number} limit - Limite de registros (opcional)
+ * @param {number} limitCount - Limite de registros (opcional)
  * @returns {Promise<Array>} Lista de cálculos
  */
-export const getUserCalculations = async (userId, limit = 50) => {
+export const getUserCalculations = async (userId, limitCount = 50) => {
     try {
         const q = query(
             collection(db, 'calculos'),
             where('userId', '==', userId),
             orderBy('timestamp', 'desc'),
-            limit(limit)
+            limit(limitCount)
         );
         
         const querySnapshot = await getDocs(q);
@@ -343,7 +423,7 @@ export const saveUserConfig = async (userId, config) => {
         };
         
         const configRef = doc(db, 'configuracoes', userId);
-        await setDoc(configRef, configDoc);
+        await setDoc(configRef, configDoc, { merge: true });
         
         await logOperation('update', 'configuracoes', userId, { 
             action: 'config_saved',
@@ -382,7 +462,8 @@ export const getUserConfig = async (userId) => {
                 notificationSound: false,
                 language: 'pt',
                 saveHistory: true,
-                shareData: false
+                shareData: false,
+                userId
             };
             
             await saveUserConfig(userId, defaultConfig);
@@ -407,10 +488,20 @@ export const getUserConfig = async (userId) => {
  */
 export const recordMetric = async (metricData) => {
     try {
+        // Verificação de segurança
+        if (typeof collection !== 'function') {
+            console.error('❌ Função collection não disponível');
+            return { success: false, error: 'Firestore não disponível' };
+        }
+        
+        const user = getCurrentUser();
+        
         const metricDoc = {
             ...metricData,
+            userId: user?.uid || 'anonymous',
             timestamp: serverTimestamp(),
-            data: new Date().toISOString().split('T')[0]
+            data: new Date().toISOString().split('T')[0],
+            hora: new Date().toLocaleTimeString('pt-BR')
         };
         
         await addDoc(collection(db, 'metricas'), metricDoc);
@@ -419,7 +510,6 @@ export const recordMetric = async (metricData) => {
         
     } catch (error) {
         console.error('❌ Erro ao registrar métrica:', error);
-        await logOperation('error', 'metricas', null, { error: error.message });
         return { success: false, error: error.message };
     }
 };
@@ -438,7 +528,7 @@ export const getDailyMetrics = async (days = 7) => {
             collection(db, 'metricas'),
             where('timestamp', '>=', cutoffDate),
             orderBy('timestamp', 'desc'),
-            limit(100)
+            limit(1000)
         );
         
         const querySnapshot = await getDocs(q);
@@ -451,7 +541,6 @@ export const getDailyMetrics = async (days = 7) => {
         
     } catch (error) {
         console.error('❌ Erro ao buscar métricas:', error);
-        await logOperation('error', 'metricas', null, { error: error.message });
         return { success: false, error: error.message };
     }
 };
@@ -467,8 +556,14 @@ export const getDailyMetrics = async (days = 7) => {
  */
 export const saveFeedback = async (feedbackData) => {
     try {
+        const validation = validateData(feedbackData, 'feedback');
+        if (!validation.valid) {
+            throw new Error(validation.errors.join(', '));
+        }
+        
         const feedbackDoc = {
-            ...feedbackData,
+            ...validation.data,
+            userId: feedbackData.userId || null,
             timestamp: serverTimestamp(),
             status: 'pendente',
             respondidoEm: null
@@ -512,7 +607,61 @@ export const getPendingFeedback = async () => {
         
     } catch (error) {
         console.error('❌ Erro ao buscar feedbacks:', error);
-        await logOperation('error', 'feedback', null, { error: error.message });
+        return { success: false, error: error.message };
+    }
+};
+
+/**
+ * 💬 respondToFeedback - Marca feedback como respondido
+ * @param {string} feedbackId - ID do feedback
+ * @param {string} resposta - Resposta do admin
+ * @returns {Promise<Object>} Resultado da operação
+ */
+export const respondToFeedback = async (feedbackId, resposta) => {
+    try {
+        const feedbackRef = doc(db, 'feedback', feedbackId);
+        await updateDoc(feedbackRef, {
+            status: 'respondido',
+            resposta,
+            respondidoEm: serverTimestamp()
+        });
+        
+        await logOperation('update', 'feedback', 'admin', { action: 'feedback_responded' });
+        return { success: true };
+        
+    } catch (error) {
+        console.error('❌ Erro ao responder feedback:', error);
+        return { success: false, error: error.message };
+    }
+};
+
+// ============================================
+// COLEÇÃO LOGS
+// ============================================
+
+/**
+ * 📝 getSystemLogs - Busca logs do sistema (admin)
+ * @param {number} limitCount - Limite de logs
+ * @returns {Promise<Array>} Lista de logs
+ */
+export const getSystemLogs = async (limitCount = 100) => {
+    try {
+        const q = query(
+            collection(db, 'logs'),
+            orderBy('timestamp', 'desc'),
+            limit(limitCount)
+        );
+        
+        const querySnapshot = await getDocs(q);
+        const logs = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+        
+        return { success: true, data: logs };
+        
+    } catch (error) {
+        console.error('❌ Erro ao buscar logs:', error);
         return { success: false, error: error.message };
     }
 };
@@ -539,7 +688,7 @@ export const deleteOldCalculations = async (userId, daysToKeep = 30) => {
         );
         
         const querySnapshot = await getDocs(q);
-        const batch = db.batch();
+        const batch = writeBatch(db);
         
         querySnapshot.docs.forEach(doc => {
             batch.delete(doc.ref);
@@ -562,6 +711,42 @@ export const deleteOldCalculations = async (userId, daysToKeep = 30) => {
     }
 };
 
+/**
+ * 🗑️ deleteUser - Remove usuário e todos seus dados
+ * @param {string} userId - ID do usuário
+ * @returns {Promise<Object>} Resultado da operação
+ */
+export const deleteUser = async (userId) => {
+    try {
+        const batch = writeBatch(db);
+        
+        // Remover usuário
+        const userRef = doc(db, 'usuarios', userId);
+        batch.delete(userRef);
+        
+        // Remover cálculos do usuário
+        const calculationsQuery = query(collection(db, 'calculos'), where('userId', '==', userId));
+        const calculationsSnapshot = await getDocs(calculationsQuery);
+        calculationsSnapshot.docs.forEach(doc => {
+            batch.delete(doc.ref);
+        });
+        
+        // Remover configurações
+        const configRef = doc(db, 'configuracoes', userId);
+        batch.delete(configRef);
+        
+        await batch.commit();
+        
+        await logOperation('delete', 'usuarios', userId, { action: 'user_deleted' });
+        console.log('✅ Usuário e todos os dados removidos:', userId);
+        return { success: true };
+        
+    } catch (error) {
+        console.error('❌ Erro ao remover usuário:', error);
+        return { success: false, error: error.message };
+    }
+};
+
 // ============================================
 // EXPORTAÇÕES ADICIONAIS
 // ============================================
@@ -573,8 +758,7 @@ export const deleteOldCalculations = async (userId, daysToKeep = 30) => {
  */
 export const getCollectionStats = async (collectionName) => {
     try {
-        const q = query(collection(db, collectionName), limit(1));
-        const snapshot = await getDocs(q);
+        const snapshot = await getDocs(collection(db, collectionName));
         
         return { 
             success: true, 
@@ -588,4 +772,30 @@ export const getCollectionStats = async (collectionName) => {
     }
 };
 
+/**
+ * 🔄 checkHealth - Verifica saúde da conexão
+ * @returns {Promise<Object>} Status da conexão
+ */
+export const checkHealth = async () => {
+    try {
+        const testDoc = await getDocs(query(collection(db, 'logs'), limit(1)));
+        return {
+            success: true,
+            status: 'healthy',
+            timestamp: new Date().toISOString(),
+            collections: {
+                logs: testDoc.size
+            }
+        };
+    } catch (error) {
+        return {
+            success: false,
+            status: 'unhealthy',
+            error: error.message,
+            timestamp: new Date().toISOString()
+        };
+    }
+};
+
 console.log('📊 Firebase Collections módulo carregado com todas as funcionalidades');
+console.log('✅ Versão 2.0 - Com verificações de segurança');

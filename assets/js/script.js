@@ -1,36 +1,7 @@
 /**
  * ============================================
- * MATHLAB - SCRIPT PRINCIPAL (ATUALIZADO)
+ * MATHLAB - SCRIPT PRINCIPAL (VERSÃO CORRIGIDA)
  * ============================================
- * 
- * 🚀 VISÃO GERAL:
- * =================
- * Script principal que orquestra todos os módulos do MathLab
- * Implementa inicialização segura e ordenada
- * Integra Firebase, Analytics, Logging e Environment
- * Fornece interface unificada para o sistema
- * 
- * 📦 MÓDULOS INTEGRADOS:
- * ========================
- * - Environment: Configurações e variáveis de ambiente
- * - Logger: Sistema completo de logs
- * - Firebase: Autenticação e banco de dados
- * - Analytics: Métricas e tracking
- * - Collections: Operações Firestore
- * - Theme: Sistema de temas
- * - Utils: Funções utilitárias
- * - Calculators: Todas as calculadoras
- * - Interface: Componentes UI
- * 
- * 🔧 FUNCIONALIDADES:
- * ===================
- * - Inicialização segura com validação
- * - Tracking automático de page views
- * - Sistema de logs centralizado
- * - Configurações dinâmicas
- * - Performance monitoring
- * - Error handling global
- * - Analytics integration
  */
 
 // ============================================
@@ -38,7 +9,7 @@
 // ============================================
 import { getFirebaseConfig, isDevelopment, getConfigSummary } from './modules/00-env.js';
 import { createLogger, setLevel, info, warn, error, logPerformance } from './modules/99-logger.js';
-import { trackPageView, trackPageLoad, setPrivacySettings } from './firebase/analytics-real.js';
+import { trackPageView, trackPageLoad, setPrivacySettings } from './firebase/analytics.js';
 
 // ============================================
 // MÓDULOS FIREBASE
@@ -88,6 +59,57 @@ let currentUser = null;
 let pageName = window.location.pathname.split('/').pop() || 'index';
 
 // ============================================
+// FUNÇÕES AUXILIARES FALTANTES
+// ============================================
+
+/**
+ * 📊 trackEvent - Registra eventos personalizados
+ */
+const trackEvent = (eventName, eventParams = {}) => {
+    try {
+        if (typeof trackPageView === 'function') {
+            trackPageView(eventName, eventParams);
+        }
+        
+        // Também registrar no logger
+        logger.debug(`Evento: ${eventName}`, eventParams);
+        
+        // Registrar métrica
+        recordMetric({
+            tipo: 'event',
+            evento: eventName,
+            params: eventParams,
+            page: pageName,
+            userId: currentUser?.uid
+        }).catch(err => warn('Erro ao registrar métrica de evento', err));
+        
+    } catch (err) {
+        warn('Erro ao registrar evento', { error: err.message });
+    }
+};
+
+/**
+ * ❌ trackError - Registra erros
+ */
+const trackError = (errorMessage, errorDetails = {}) => {
+    try {
+        logger.error('Erro rastreado:', { message: errorMessage, ...errorDetails });
+        
+        // Registrar erro como métrica
+        recordMetric({
+            tipo: 'error',
+            mensagem: errorMessage,
+            detalhes: errorDetails,
+            page: pageName,
+            userId: currentUser?.uid
+        }).catch(err => warn('Erro ao registrar erro', err));
+        
+    } catch (err) {
+        warn('Erro ao trackear erro', err);
+    }
+};
+
+// ============================================
 // FUNÇÕES DE INICIALIZAÇÃO
 // ============================================
 
@@ -110,12 +132,14 @@ const initializeSystem = async () => {
         }
         
         // 3. Configura Analytics e privacidade
-        setPrivacySettings({
-            analyticsEnabled: true,
-            personalizationEnabled: true,
-            dataSharingEnabled: false,
-            cookieConsent: true
-        });
+        if (typeof setPrivacySettings === 'function') {
+            setPrivacySettings({
+                analyticsEnabled: true,
+                personalizationEnabled: true,
+                dataSharingEnabled: false,
+                cookieConsent: true
+            });
+        }
         
         // 4. Inicializa Firebase (se configurado)
         if (configSummary.firebaseConfigured) {
@@ -135,7 +159,7 @@ const initializeSystem = async () => {
             duration: initTime,
             environment: configSummary.environment,
             timestamp: new Date().toISOString()
-        });
+        }).catch(err => warn('Erro ao registrar métrica de inicialização', err));
         
         logger.info(`Sistema inicializado com sucesso em ${initTime}ms`);
         
@@ -159,10 +183,12 @@ const initializeFirebase = async () => {
                 logger.info('Usuário autenticado', { uid: user.uid, email: user.email });
                 
                 // Carrega configurações do usuário
-                saveUserConfig(user.uid, {
-                    lastLogin: new Date().toISOString(),
-                    pageAccessed: pageName
-                });
+                if (typeof saveUserConfig === 'function') {
+                    saveUserConfig(user.uid, {
+                        lastLogin: new Date().toISOString(),
+                        pageAccessed: pageName
+                    }).catch(err => warn('Erro ao salvar config do usuário', err));
+                }
                 
             } else {
                 currentUser = null;
@@ -245,16 +271,36 @@ const setupGlobalEventTracking = () => {
         });
     });
     
+    // Tracking de promessas rejeitadas
+    window.addEventListener('unhandledrejection', (event) => {
+        error('Promessa rejeitada não tratada', {
+            reason: event.reason,
+            stack: event.reason?.stack
+        });
+        
+        trackError('unhandled_rejection', {
+            reason: event.reason?.toString()
+        });
+    });
+    
     // Tracking de performance
     if ('performance' in window) {
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const perfData = performance.getEntriesByType('navigation')[0];
                 if (perfData) {
-                    trackPageLoad(perfData.loadEventEnd - perfData.fetchStart);
-                    logger.info('Performance da página registrada', {
-                        loadTime: perfData.loadEventEnd - perfData.fetchStart
-                    });
+                    const loadTime = perfData.loadEventEnd - perfData.fetchStart;
+                    if (typeof trackPageLoad === 'function') {
+                        trackPageLoad(loadTime);
+                    }
+                    logger.info('Performance da página registrada', { loadTime });
+                    
+                    // Registrar métrica de performance
+                    recordMetric({
+                        tipo: 'page_performance',
+                        loadTime,
+                        page: pageName
+                    }).catch(err => warn('Erro ao registrar performance', err));
                 }
             }, 0);
         });
@@ -267,11 +313,13 @@ const setupGlobalEventTracking = () => {
 const trackPageAnalytics = () => {
     try {
         // Page view tracking
-        trackPageView(pageName, {
-            title: document.title,
-            referrer: document.referrer,
-            user_agent: navigator.userAgent
-        });
+        if (typeof trackPageView === 'function') {
+            trackPageView(pageName, {
+                title: document.title,
+                referrer: document.referrer,
+                user_agent: navigator.userAgent
+            });
+        }
         
         // User session tracking
         if (currentUser) {
@@ -280,7 +328,7 @@ const trackPageAnalytics = () => {
                 page: pageName,
                 userId: currentUser.uid,
                 timestamp: new Date().toISOString()
-            });
+            }).catch(err => warn('Erro ao registrar acesso de página', err));
         }
         
         logger.info('Analytics da página registrados', { page: pageName });
@@ -289,6 +337,7 @@ const trackPageAnalytics = () => {
         warn('Erro ao registrar analytics', { error: err.message });
     }
 };
+
 // ============================================
 // INICIALIZAÇÃO PRINCIPAL
 // ============================================
@@ -335,14 +384,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 if (isDevelopment()) {
     window.MathLab = {
         logger,
-        config: getConfigSummary(),
+        config: getConfigSummary,
         currentUser: () => currentUser,
         trackEvent,
         saveCalculation,
-        pageName
+        pageName,
+        version: '2.0'
     };
     
     console.log('🔧 Modo desenvolvimento: MathLab global disponível');
+    console.log('ℹ️ Use window.MathLab para acessar o sistema');
 }
 
-console.log('carregado')
+console.log('✅ MathLab script principal carregado com sucesso');

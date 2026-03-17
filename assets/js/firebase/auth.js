@@ -44,24 +44,33 @@
 // ============================================
 // IMPORTAÇÕES FIREBASE (SDK v12.10.0)
 // ============================================
-// Importa módulos essenciais do Firebase Authentication
-// Importa módulos do Firestore para gerenciamento de dados
-// Importa configuração do projeto Firebase
-//
-// 📦 MÓDULOS IMPORTADOS:
-// =========================
-// - getAuth: Serviço de autenticação
-// - createUserWithEmailAndPassword: Criação de usuários
-// - signInWithEmailAndPassword: Login tradicional
-// - signOut: Encerramento de sessão
-// - onAuthStateChanged: Listener de estado
-// - getFirestore, doc, setDoc, getDoc, updateDoc: Banco de dados
-//
-// 🔧 VARIÁVEIS GLOBAIS:
-// =========================
-// - auth: Instância do Auth Service
-// - db: Instância do Firestore
-// - app: Instância do Firebase App (do config.js)
+import { 
+    getAuth, 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword, 
+    signOut, 
+    onAuthStateChanged 
+} from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+
+import { 
+    getFirestore, 
+    doc, 
+    setDoc, 
+    getDoc, 
+    updateDoc 
+} from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+import app from './config.js';
+
+// ============================================
+// INICIALIZAÇÃO DOS SERVIÇOS
+// ============================================
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// ============================================
+// FUNÇÕES DE AUTENTICAÇÃO
+// ============================================
 
 /**
  * 📝 cadastrarUsuario - Cria nova conta de usuário
@@ -75,22 +84,6 @@
  *   - success: boolean - Status da operação
  *   - user: Object - Dados do usuário criado
  *   - error: string - Mensagem de erro (se houver)
- * 
- * 🔄 FLUXO DE EXECUÇÃO:
- * =========================
- * 1. Validação básica dos parâmetros
- * 2. Criação do usuário no Firebase Auth
- * 3. Salvamento dos dados no Firestore
- * 4. Tratamento de erros específicos
- * 5. Retorno padronizado
- * 
- * 🛡️ SEGURANÇA IMPLEMENTADA:
- * =========================
- * - Validação automática de email (Firebase)
- * - Verificação de força de senha
- * - Proteção contra emails duplicados
- * - Criptografia de senha em trânsito
- * - Rate limiting automático
  */
 export async function cadastrarUsuario(email, senha, nome) {
     try {
@@ -156,22 +149,6 @@ export async function cadastrarUsuario(email, senha, nome) {
  *   - success: boolean - Status da operação
  *   - user: Object - Dados do usuário autenticado
  *   - error: string - Mensagem de erro (se houver)
- * 
- * 🔄 FLUXO DE EXECUÇÃO:
- * =========================
- * 1. Validação dos parâmetros
- * 2. Autenticação com Firebase Auth
- * 3. Busca de dados adicionais no Firestore
- * 4. Atualização de último acesso
- * 5. Tratamento de erros específicos
- * 6. Retorno padronizado
- * 
- * 🔍 MÉTODOS DE SEGURANÇA:
- * =========================
- * - Verificação de credenciais em tempo real
- * - Proteção contra timing attacks
- * - Limite de tentativas de login
- * - Logs de tentativas fracassadas
  */
 export async function loginUsuario(email, senha) {
     try {
@@ -234,19 +211,6 @@ export async function loginUsuario(email, senha) {
  * @returns {Promise<Object>} Resultado da operação
  *   - success: boolean - Status da operação
  *   - error: string - Mensagem de erro (se houver)
- * 
- * 🔄 FLUXO DE EXECUÇÃO:
- * =========================
- * 1. Revogação de token do Firebase
- * 2. Limpeza de cache local
- * 3. Redirecionamento para página inicial
- * 4. Tratamento de erros
- * 
- * 🛡️ SEGURANÇA IMPLEMENTADA:
- * =========================
- * - Invalidação de todos os tokens ativos
- * - Limpeza segura de dados sensíveis
- * - Prevenção de session hijacking
  */
 export async function logoutUsuario() {
     try {
@@ -265,23 +229,6 @@ export async function logoutUsuario() {
  * @param {Function} callback - Função executada em mudanças
  * 
  * @returns {Function} Função unsubscribe do listener
- * 
- * 🔄 FLUXO DE EXECUÇÃO:
- * =========================
- * 1. Configura listener do Firebase Auth
- * 2. Busca dados completos do usuário
- * 3. Executa callback com dados atualizados
- * 4. Trata estados (logado/deslogado)
- * 5. Retorna função para limpeza
- * 
- * 📊 DADOS FORNECIDOS NO CALLBACK:
- * =====================================
- * - logado: boolean - Estado de autenticação
- * - uid: string - ID único do usuário
- * - email: string - Email do usuário
- * - nome: string - Nome de exibição
- * - cargo: string - Função no sistema
- * - aprovado: boolean - Status de aprovação
  */
 export function observarUsuario(callback) {
     return onAuthStateChanged(auth, async (user) => {
@@ -301,7 +248,15 @@ export function observarUsuario(callback) {
     });
 }
 
-// ==================== VERIFICAR SE ESTÁ LOGADO ====================
+/**
+ * ✅ verificarLogin - Verifica estado atual da sessão
+ * ================================================
+ * 
+ * @returns {Object} Estado da sessão atual
+ *   - logado: boolean - Usuário está autenticado
+ *   - uid: string - ID do usuário (se logado)
+ *   - email: string - Email do usuário (se logado)
+ */
 export function verificarLogin() {
     const user = auth.currentUser;
     if (user) {
@@ -313,29 +268,5 @@ export function verificarLogin() {
     }
     return { logado: false };
 }
-
-/**
- * ✅ verificarLogin - Verifica estado atual da sessão
- * ================================================
- * 
- * @returns {Object} Estado da sessão atual
- *   - logado: boolean - Usuário está autenticado
- *   - uid: string - ID do usuário (se logado)
- *   - email: string - Email do usuário (se logado)
- * 
- * 🔄 FLUXO DE EXECUÇÃO:
- * =========================
- * 1. Verifica usuário atual no Firebase Auth
- * 2. Retorna dados básicos se logado
- * 3. Retorna estado vazio se deslogado
- * 4. Uso síncrono (rápido)
- * 
- * 🎯 CASOS DE USO:
- * ===================
- * - Verificação em rotas protegidas
- * - Atualização de UI baseada em estado
- * - Validação de permissões
- * - Middleware de autenticação
- */
 
 console.log('📦 Firebase Auth modular carregado com segurança reforçada');

@@ -1,49 +1,30 @@
 // ============================================
+// CONFIGURAÇÃO DO FIREBASE - VERSÃO COM ENV
+// ============================================
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getFirebaseConfig, isDevelopment } from '../modules/00-env.js';
+
+// Obtém configurações do módulo de ambiente
+// ============================================
 // CONFIGURAÇÃO DO FIREBASE - MÓDULO PRINCIPAL
 // ============================================
-//
-// 📋 INFORMAÇÕES IMPORTANTES:
-// ================================
-// - Projeto: mathlab-7cfc8
-// - Ambiente: Produção
-// - Serviços ativos: Auth, Firestore, Storage, Analytics
-//
-// 🔐 CREDENCIAIS SENSÍVEIS - NÃO EXPOR PUBLICAMENTE
-// ========================================
 
-// ============================================
-// IMPORTAÇÕES FIREBASE MODULAR
-// ============================================
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+// 🔐 Em produção, use variáveis de ambiente do Vercel
+// Para desenvolvimento local, use import.meta.env
 
-// ============================================
-// CONFIGURAÇÃO DO PROJETO FIREBASE
-// ============================================
 export const firebaseConfig = {
-    // 🔑 AUTENTICAÇÃO E API
-    apiKey: "AIzaSyD-sRuXYG1WsNpcpp-IIbKPIn3wZq9zngY",
-
-    // 🌐 DOMÍNIOS AUTENTICADOS
-    authDomain: "mathlab-7cfc8.firebaseapp.com",
-
-    // 📁 IDENTIFICADORES DO PROJETO
-    projectId: "mathlab-7cfc8",
-
-    // 📦 STORAGE E ARQUIVOS
-    storageBucket: "mathlab-7cfc8.firebasestorage.app",
-
-    // 📨 MENSAGENS E NOTIFICAÇÕES
-    messagingSenderId: "213587626262",
-
-    // 📱 APLICAÇÃO WEB
-    appId: "1:213587626262:web:cbdc25419c5a9d4a772837",
-
-    // 📊 GOOGLE ANALYTICS
-    measurementId: "G-VTNZCMC1TB"
+    apiKey: import.meta.env?.VITE_FIREBASE_API_KEY || process.env?.FIREBASE_API_KEY,
+    authDomain: import.meta.env?.VITE_FIREBASE_AUTH_DOMAIN || process.env?.FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env?.VITE_FIREBASE_PROJECT_ID || process.env?.FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env?.VITE_FIREBASE_STORAGE_BUCKET || process.env?.FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env?.VITE_FIREBASE_MESSAGING_SENDER_ID || process.env?.FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env?.VITE_FIREBASE_APP_ID || process.env?.FIREBASE_APP_ID,
+    measurementId: import.meta.env?.VITE_FIREBASE_MEASUREMENT_ID || process.env?.FIREBASE_MEASUREMENT_ID
 };
 
 // ============================================
-// FUNÇÃO DE INICIALIZAÇÃO SEGURA
+// INICIALIZAÇÃO SEGURA
 // ============================================
 let app = null;
 
@@ -52,17 +33,28 @@ export function getFirebaseApp() {
         try {
             app = initializeApp(firebaseConfig);
             console.log('✅ Firebase App inicializado com sucesso!');
+            
+            // Log adicional em desenvolvimento
+            if (isDevelopment()) {
+                console.log('🔧 Modo desenvolvimento:', firebaseConfig.projectId);
+            }
+            
         } catch (error) {
             console.error('❌ Erro ao inicializar Firebase:', error);
+            
+            // Fallback para valores padrão em desenvolvimento
+            if (isDevelopment()) {
+                console.warn('⚠️ Usando configurações de fallback em desenvolvimento');
+                // Aqui você poderia carregar configurações de backup
+            }
         }
     }
     return app;
 }
 
-// Inicializar imediatamente
+// Inicializa
 app = getFirebaseApp();
 
-// Exportar como default
 export default app;
 
-console.log('📦 Módulo de configuração Firebase carregado');
+console.log('📦 Módulo de configuração Firebase carregado com segurança');
