@@ -1,26 +1,35 @@
 // ============================================
-// CONFIGURAÇÃO DO FIREBASE - VERSÃO COM ENV
+// CONFIGURAÇÃO DO FIREBASE - COM VARIÁVEIS DE AMBIENTE
 // ============================================
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-import { getFirebaseConfig, isDevelopment } from '../modules/00-env.js';
 
-// Obtém configurações do módulo de ambiente
 // ============================================
-// CONFIGURAÇÃO DO FIREBASE - MÓDULO PRINCIPAL
+// CARREGAR VARIÁVEIS DO AMBIENTE
 // ============================================
+// ✅ No navegador, usamos import.meta.env (Vite)
+//    ou process.env (se estiver usando Next.js)
 
-// 🔐 Em produção, use variáveis de ambiente do Vercel
-// Para desenvolvimento local, use import.meta.env
+const getEnv = (key, defaultValue) => {
+    // Tenta diferentes fontes de variáveis de ambiente
+    if (typeof import.meta !== 'undefined' && import.meta.env) {
+        return import.meta.env[key] || defaultValue;
+    }
+    if (typeof process !== 'undefined' && process.env) {
+        return process.env[key] || defaultValue;
+    }
+    // Fallback para valores diretos (apenas desenvolvimento)
+    return defaultValue;
+};
 
 export const firebaseConfig = {
-    apiKey: import.meta.env?.VITE_FIREBASE_API_KEY || process.env?.FIREBASE_API_KEY,
-    authDomain: import.meta.env?.VITE_FIREBASE_AUTH_DOMAIN || process.env?.FIREBASE_AUTH_DOMAIN,
-    projectId: import.meta.env?.VITE_FIREBASE_PROJECT_ID || process.env?.FIREBASE_PROJECT_ID,
-    storageBucket: import.meta.env?.VITE_FIREBASE_STORAGE_BUCKET || process.env?.FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: import.meta.env?.VITE_FIREBASE_MESSAGING_SENDER_ID || process.env?.FIREBASE_MESSAGING_SENDER_ID,
-    appId: import.meta.env?.VITE_FIREBASE_APP_ID || process.env?.FIREBASE_APP_ID,
-    measurementId: import.meta.env?.VITE_FIREBASE_MEASUREMENT_ID || process.env?.FIREBASE_MEASUREMENT_ID
+    apiKey: getEnv('VITE_FIREBASE_API_KEY', "AIzaSyD-sRuXYG1WsNpcpp-IIbKPIn3wZq9zngY"),
+    authDomain: getEnv('VITE_FIREBASE_AUTH_DOMAIN', "mathlab-7cfc8.firebaseapp.com"),
+    projectId: getEnv('VITE_FIREBASE_PROJECT_ID', "mathlab-7cfc8"),
+    storageBucket: getEnv('VITE_FIREBASE_STORAGE_BUCKET', "mathlab-7cfc8.firebasestorage.app"),
+    messagingSenderId: getEnv('VITE_FIREBASE_MESSAGING_SENDER_ID', "213587626262"),
+    appId: getEnv('VITE_FIREBASE_APP_ID', "1:213587626262:web:cbdc25419c5a9d4a772837"),
+    measurementId: getEnv('VITE_FIREBASE_MEASUREMENT_ID', "G-VTNZCMC1TB")
 };
 
 // ============================================
@@ -33,28 +42,17 @@ export function getFirebaseApp() {
         try {
             app = initializeApp(firebaseConfig);
             console.log('✅ Firebase App inicializado com sucesso!');
-            
-            // Log adicional em desenvolvimento
-            if (isDevelopment()) {
-                console.log('🔧 Modo desenvolvimento:', firebaseConfig.projectId);
-            }
-            
+            console.log('📊 Projeto:', firebaseConfig.projectId);
+            console.log('🔧 Ambiente:', getEnv('VITE_APP_ENVIRONMENT', 'development'));
         } catch (error) {
             console.error('❌ Erro ao inicializar Firebase:', error);
-            
-            // Fallback para valores padrão em desenvolvimento
-            if (isDevelopment()) {
-                console.warn('⚠️ Usando configurações de fallback em desenvolvimento');
-                // Aqui você poderia carregar configurações de backup
-            }
         }
     }
     return app;
 }
 
-// Inicializa
 app = getFirebaseApp();
 
 export default app;
 
-console.log('📦 Módulo de configuração Firebase carregado com segurança');
+console.log('📦 Módulo de configuração Firebase carregado');
