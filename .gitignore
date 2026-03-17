@@ -226,3 +226,5 @@ temp-scripts/
 .env
 .env
 .env.*
+.env
+.env.*
