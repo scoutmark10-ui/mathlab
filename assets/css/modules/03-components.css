@@ -94,6 +94,14 @@
     border-color: transparent;
 }
 
+#btnApple:hover {
+    background: #1a1a1a;
+}
+
+#btnApple i {
+    color: white;
+}
+
 /* Grupo de botões */
 .btn-group {
     display: flex;

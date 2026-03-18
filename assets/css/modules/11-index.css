@@ -202,6 +202,10 @@
     box-shadow: var(--accent-glow);
 }
 
+.tool-button i{
+  color: var(--accent-primary);
+}
+
 /* Calculadora Rápida */
 .calculator-preview {
     background: var(--glass-bg);

@@ -16,26 +16,6 @@ let usuarioNome = '';
 let usuarioEmail = '';
 let usuarioUid = '';
 
-// ==================== UTILITÁRIOS DE CAMINHO ====================
-/**
- * Resolve o caminho correto baseado na profundidade da página atual
- * @param {string} rootPath - Caminho relativo à raiz do projeto
- */
-function resolvePath(rootPath) {
-    const path = window.location.pathname;
-    let depth = 0;
-
-    if (path.includes('/pages/admin/')) depth = 2;
-    else if (path.includes('/pages/')) depth = 1;
-
-    if (depth === 1) {
-        return rootPath.replace('./pages/', '');
-    } else if (depth === 2) {
-        return rootPath.replace('./pages/', '../');
-    }
-    return rootPath;
-}
-
 // ==================== INICIALIZAÇÃO ====================
 document.addEventListener('DOMContentLoaded', () => {
     // Verificar se é o primeiro acesso (Welcome Page)
@@ -45,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /* 
     if (!welcomeSeen && !isWelcomePage) {
         console.log('🚀 Redirecionando para Boas-vindas (Primeiro acesso)');
-        window.location.href = resolvePath('./pages/welcome.html');
+        window.location.href = './pages/welcome.html';
         return;
     }
     */
@@ -87,9 +67,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             carregarInterface();
         });
+    }).catch(err => {
+        console.error('❌ Erro ao carregar auth.js:', err);
     });
 });
-
 
 // ==================== CARREGAR TEMA ====================
 function carregarTema() {
@@ -165,16 +146,16 @@ function fecharSidebar() {
 // ==================== PERFIL ====================
 function irParaPerfil() {
     if (usuarioLogado) {
-        window.location.href = resolvePath('./pages/perfil.html');
+        window.location.href = './pages/perfil.html';
     } else {
-        window.location.href = resolvePath('./pages/login.html');
+        window.location.href = './pages/login.html';
     }
 }
 
 // ==================== LOGOUT ====================
 function mostrarModalLogout() {
     if (!usuarioLogado) {
-        window.location.href = resolvePath('./pages/login.html');
+        window.location.href = './pages/login.html';
         return;
     }
     const modal = document.getElementById('logoutModal');
@@ -304,8 +285,8 @@ function carregarInterface() {
         // Dropdown
         if (dropdownContent) {
             dropdownContent.innerHTML = `
-                <a href="${resolvePath('./pages/perfil.html')}"><i class="fas fa-user-circle"></i> Perfil</a>
-                <a href="${resolvePath('./pages/definicoes.html')}"><i class="fas fa-cog"></i> Definições</a>
+                <a href="./pages/perfil.html"><i class="fas fa-user-circle"></i> Perfil</a>
+                <a href="./pages/definicoes.html"><i class="fas fa-cog"></i> Definições</a>
                 <button onclick="mudarTemaRapido()"><i class="fas fa-palette"></i> Tema Rápido</button>
                 <button onclick="mostrarModalLogout()"><i class="fas fa-sign-out-alt"></i> Sair</button>
             `;
@@ -330,7 +311,7 @@ function carregarInterface() {
         // Sidebar logout button (vira Entrar)
         if (sidebarLogoutBtn) {
             sidebarLogoutBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar';
-            sidebarLogoutBtn.onclick = () => window.location.href = resolvePath('./pages/login.html');
+            sidebarLogoutBtn.onclick = () => window.location.href = './pages/login.html';
         }
 
         // Guest banner (mostrar)
@@ -341,10 +322,10 @@ function carregarInterface() {
         // Dropdown
         if (dropdownContent) {
             dropdownContent.innerHTML = `
-                <a href="${resolvePath('./pages/login.html')}"><i class="fas fa-sign-in-alt"></i> Login</a>
-                <a href="${resolvePath('./pages/welcome.html')}"><i class="fas fa-star"></i> Welcome</a>
+                <a href="./pages/login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+                <a href="./pages/welcome.html"><i class="fas fa-star"></i> Welcome</a>
                 <button onclick="mudarTemaRapido()"><i class="fas fa-palette"></i> Tema Rápido</button>
-                <a href="${resolvePath('./pages/definicoes.html')}"><i class="fas fa-cog"></i> Definições</a>
+                <a href="./pages/definicoes.html"><i class="fas fa-cog"></i> Definições</a>
             `;
         }
     }
@@ -425,6 +406,9 @@ window.confirmarLogout = confirmarLogout;
 window.mudarTemaRapido = mudarTemaRapido;
 window.calcularQuickBhaskara = calcularQuickBhaskara;
 window.calcularQuickPercent = calcularQuickPercent;
-window.fazerLoginSimulado = fazerLoginSimulado; // Para testes
+window.fazerLoginSimulado = fazerLoginSimulado;
 
 console.log('📦 Módulo 15-index.js carregado com sucesso');
+console.log('✅ Funções disponíveis:', Object.keys(window).filter(k => 
+    ['toggleSidebar', 'calcularQuickBhaskara', 'mostrarModalLogout', 'irParaPerfil'].includes(k)
+));

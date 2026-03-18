@@ -7,7 +7,11 @@
 // ============================================
 // MÓDULOS DE CONFIGURAÇÃO E INFRAESTRUTURA
 // ============================================
-import { getFirebaseConfig, isDevelopment, getConfigSummary } from './modules/00-env.js';
+
+// LINHA 10 - CORRIGIDA
+import { isDevelopment, getConfigSummary } from './modules/00-env.js';
+// Removeu 'getFirebaseConfig' daqui
+
 import { createLogger, setLevel, info, warn, error, logPerformance } from './modules/99-logger.js';
 import { trackPageView, trackPageLoad, setPrivacySettings } from './firebase/analytics.js';
 
@@ -49,6 +53,7 @@ import './modules/16-login.js';
 import './modules/17-admin.js';
 import './modules/19-welcome.js';
 import './modules/29-contato.js';
+import './modules/30-perfil.js';
 
 // ============================================
 // VARIÁVEIS GLOBAIS DO SISTEMA

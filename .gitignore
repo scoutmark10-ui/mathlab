@@ -223,8 +223,3 @@ temp-scripts/
 # git commit -m "Add sensitive file to gitignore"
 #
 # ============================================
-.env
-.env
-.env.*
-.env
-.env.*

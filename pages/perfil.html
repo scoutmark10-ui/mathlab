@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/jpg" href="../assets/images/logo.png">
+  <title>Meu Perfil - MathLab</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <!-- CSS do Perfil -->
+  <link rel="stylesheet" href="../assets/css/32-perfil.css">
+</head>
+<body class="dark-mode">
+  <!-- Header Premium -->
+  <div class="page-header">
+    <a href="../index.html" class="back-arrow" aria-label="Voltar para a página inicial" title="Voltar ao Início">
+      <i class="fas fa-arrow-left"></i>
+      <span class="sr-only">Voltar</span>
+    </a>
+    <div class="header-logo">
+      <i class="fas fa-square-root-variable"></i>
+      <span>MathLab</span>
+    </div>
+    <div class="header-actions">
+      <button id="themeToggle" class="icon-btn" aria-label="Alternar tema">
+        <i class="fas fa-moon"></i>
+      </button>
+      <button id="btnLogout" class="icon-btn" aria-label="Sair">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="profile-container">
+    <!-- Sidebar do Perfil -->
+    <aside class="profile-sidebar glass-card">
+      <div class="profile-avatar-wrapper">
+        <div class="profile-avatar" id="profileAvatar">
+          <i class="fas fa-user"></i>
+        </div>
+        <button class="avatar-upload-btn" id="uploadAvatar" title="Alterar foto">
+          <i class="fas fa-camera"></i>
+        </button>
+      </div>
+
+      <h2 class="profile-name" id="profileName">Carregando...</h2>
+      <p class="profile-email" id="profileEmail">
+        carregando@email.com
+      </p>
+
+      <div class="profile-badge" id="profileBadge">
+        <i class="fas fa-user-check"></i>
+        <span>Usuário</span>
+      </div>
+
+      <div class="profile-stats">
+        <div class="stat-item">
+          <span class="stat-value" id="statCalculos">0</span>
+          <span class="stat-label">Cálculos</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="statDias">0</span>
+          <span class="stat-label">Dias</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="statFerramentas">0</span>
+          <span class="stat-label">Ferramentas</span>
+        </div>
+      </div>
+
+      <div class="profile-menu">
+        <button class="profile-menu-item active" data-tab="dados">
+          <i class="fas fa-user-circle"></i>
+          <span>Dados Pessoais</span>
+        </button>
+        <button class="profile-menu-item" data-tab="estatisticas">
+          <i class="fas fa-chart-line"></i>
+          <span>Estatísticas</span>
+        </button>
+        <button class="profile-menu-item" data-tab="historico">
+          <i class="fas fa-history"></i>
+          <span>Histórico</span>
+        </button>
+        <button class="profile-menu-item" data-tab="seguranca">
+          <i class="fas fa-shield-alt"></i>
+          <span>Segurança</span>
+        </button>
+      </div>
+
+      <div class="profile-footer">
+        <p>
+          Membro desde <span id="membroDesde">2024</span>
+        </p>
+      </div>
+    </aside>
+
+    <!-- Conteúdo Principal do Perfil -->
+    <main class="profile-content">
+      <!-- Aba: Dados Pessoais -->
+      <section class="profile-tab active" id="tab-dados">
+        <div class="profile-header">
+          <h2>Dados Pessoais</h2>
+          <button class="btn-edit" id="editDadosBtn">
+            <i class="fas fa-edit"></i>
+            Editar
+          </button>
+        </div>
+
+        <div class="profile-card glass-card">
+          <form id="dadosForm" class="profile-form">
+            <div class="form-group">
+              <label for="nomeCompleto">
+                <i class="fas fa-user"></i>
+                Nome Completo
+              </label>
+              <input type="text" id="nomeCompleto" value="Carregando..." disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="emailPerfil">
+                <i class="fas fa-envelope"></i>
+                Email
+              </label>
+              <input type="email" id="emailPerfil" value="carregando@email.com" disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="dataNascimento">
+                <i class="fas fa-calendar"></i>
+                Data de Nascimento
+              </label>
+              <input type="date" id="dataNascimento" disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="telefone">
+                <i class="fas fa-phone"></i>
+                Telefone
+              </label>
+              <input type="tel" id="telefone" placeholder="(00) 00000-0000" disabled>
+            </div>
+
+            <div class="form-actions" id="dadosActions" style="display: none;">
+              <button type="button" class="btn-cancel" id="cancelDados">
+                Cancelar
+              </button>
+              <button type="submit" class="btn-save">
+                <i class="fas fa-save"></i>
+                Salvar Alterações
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Aba: Estatísticas -->
+      <section class="profile-tab" id="tab-estatisticas">
+        <div class="profile-header">
+          <h2>Estatísticas de Uso</h2>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card glass-card">
+            <div class="stat-icon">
+              <i class="fas fa-calculator"></i>
+            </div>
+            <div class="stat-detail">
+              <span class="stat-detail-value" id="totalCalculos">0</span>
+              <span class="stat-detail-label">Total de Cálculos</span>
+            </div>
+          </div>
+
+          <div class="stat-card glass-card">
+            <div class="stat-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-detail">
+              <span class="stat-detail-value" id="tempoUso">0h</span>
+              <span class="stat-detail-label">Tempo de Uso</span>
+            </div>
+          </div>
+
+          <div class="stat-card glass-card">
+            <div class="stat-icon">
+              <i class="fas fa-star"></i>
+            </div>
+            <div class="stat-detail">
+              <span class="stat-detail-value" id="ferramentasUsadas">0</span>
+              <span class="stat-detail-label">Ferramentas Diferentes</span>
+            </div>
+          </div>
+
+          <div class="stat-card glass-card">
+            <div class="stat-icon">
+              <i class="fas fa-trophy"></i>
+            </div>
+            <div class="stat-detail">
+              <span class="stat-detail-value" id="conquistas">0</span>
+              <span class="stat-detail-label">Conquistas</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-header" style="margin-top: 32px;">
+          <h3>Ferramentas Mais Usadas</h3>
+        </div>
+
+        <div class="tools-ranking glass-card">
+          <div class="ranking-item" id="ranking1">
+            <span class="ranking-position">1</span>
+            <span class="ranking-name">Bhaskara</span>
+            <span class="ranking-count" id="count1">0 usos</span>
+          </div>
+          <div class="ranking-item" id="ranking2">
+            <span class="ranking-position">2</span>
+            <span class="ranking-name">Logaritmo</span>
+            <span class="ranking-count" id="count2">0 usos</span>
+          </div>
+          <div class="ranking-item" id="ranking3">
+            <span class="ranking-position">3</span>
+            <span class="ranking-name">Porcentagem</span>
+            <span class="ranking-count" id="count3">0 usos</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Aba: Histórico -->
+      <section class="profile-tab" id="tab-historico">
+        <div class="profile-header">
+          <h2>Histórico de Atividades</h2>
+          <button class="btn-edit" id="limparHistorico">
+            <i class="fas fa-trash-alt"></i>
+            Limpar
+          </button>
+        </div>
+
+        <div class="history-list glass-card" id="historyList">
+          <div class="history-item">
+            <div class="history-icon">
+              <i class="fas fa-check"></i>
+            </div>
+            <div class="history-details">
+              <div class="history-title">
+                Cálculo de Bhaskara
+              </div>
+              <div class="history-meta">
+                x² + 5x + 6 = 0 → x = -2, x = -3
+              </div>
+            </div>
+            <div class="history-time">
+              há 2 minutos
+            </div>
+          </div>
+          <div class="history-item">
+            <div class="history-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="history-details">
+              <div class="history-title">
+                Cálculo de Logaritmo
+              </div>
+              <div class="history-meta">
+                log₂ 32 = 5
+              </div>
+            </div>
+            <div class="history-time">
+              há 15 minutos
+            </div>
+          </div>
+          <div class="history-empty" id="historyEmpty" style="display: none;">
+            <i class="fas fa-history"></i>
+            <p>
+              Nenhum histórico encontrado
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Aba: Segurança -->
+      <section class="profile-tab" id="tab-seguranca">
+        <div class="profile-header">
+          <h2>Segurança</h2>
+        </div>
+
+        <div class="security-group glass-card">
+          <h3>Alterar Senha</h3>
+
+          <form id="senhaForm" class="security-form">
+            <div class="form-group">
+              <label for="senhaAtual">
+                <i class="fas fa-lock"></i>
+                Senha Atual
+              </label>
+              <div class="input-wrapper">
+                <input type="password" id="senhaAtual" placeholder="••••••••">
+                <i class="fas fa-eye toggle-password" onclick="toggleSenha('senhaAtual', this)"></i>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="novaSenha">
+                <i class="fas fa-key"></i>
+                Nova Senha
+              </label>
+              <div class="input-wrapper">
+                <input type="password" id="novaSenha" placeholder="••••••••">
+                <i class="fas fa-eye toggle-password" onclick="toggleSenha('novaSenha', this)"></i>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="confirmarSenha">
+                <i class="fas fa-check-circle"></i>
+                Confirmar Nova Senha
+              </label>
+              <div class="input-wrapper">
+                <input type="password" id="confirmarSenha" placeholder="••••••••">
+                <i class="fas fa-eye toggle-password" onclick="toggleSenha('confirmarSenha', this)"></i>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-save" id="btnAlterarSenha">
+              <i class="fas fa-save"></i>
+              Alterar Senha
+            </button>
+          </form>
+        </div>
+
+        <div class="security-group glass-card">
+          <h3>Sessões Ativas</h3>
+
+          <div class="session-item">
+            <div class="session-info">
+              <i class="fas fa-laptop"></i>
+              <div>
+                <div class="session-device">
+                  Chrome - Windows
+                </div>
+                <div class="session-location">
+                  São Paulo, Brasil
+                </div>
+              </div>
+            </div>
+            <div class="session-status current">
+              Atual
+            </div>
+          </div>
+
+          <div class="session-item">
+            <div class="session-info">
+              <i class="fas fa-mobile-alt"></i>
+              <div>
+                <div class="session-device">
+                  Safari - iPhone
+                </div>
+                <div class="session-location">
+                  São Paulo, Brasil
+                </div>
+              </div>
+            </div>
+            <div class="session-status">
+              Há 2 dias
+            </div>
+          </div>
+
+          <button class="btn-logout-all" id="logoutAll">
+            <i class="fas fa-sign-out-alt"></i>
+            Encerrar Todas as Sessões
+          </button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal de Edição de Avatar -->
+  <div class="modal" id="avatarModal">
+    <div class="modal-content glass-card">
+      <div class="modal-header">
+        <h3>Alterar Foto de Perfil</h3>
+        <button class="modal-close" id="closeAvatarModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="avatar-preview">
+          <div class="preview-circle" id="avatarPreview">
+            <i class="fas fa-user"></i>
+          </div>
+        </div>
+
+        <div class="avatar-options">
+          <button class="avatar-option" data-color="purple">
+            <div class="color-preview purple"></div>
+            <span>Roxo</span>
+          </button>
+          <button class="avatar-option" data-color="blue

@@ -29,6 +29,7 @@ function mostrarFeedback(mensagem, tipo, tempo = 3000) {
     
     feedbackDiv.className = `feedback-message ${tipo}`;
     feedbackDiv.innerHTML = `<i class="fas ${tipo === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${mensagem}`;
+    feedbackDiv.style.display = 'block';
 
     setTimeout(() => {
         feedbackDiv.style.display = 'none';
@@ -74,9 +75,8 @@ export async function enviarFeedback(event) {
 
     try {
         // Enviar para o Google Apps Script
-        await fetch(SCRIPT_URL, {
+        const response = await fetch(SCRIPT_URL, {
             method: 'POST',
-            mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -85,17 +85,28 @@ export async function enviarFeedback(event) {
                 email: email,
                 assunto: assunto,
                 mensagem: mensagem,
-                data: new Date().toLocaleString('pt-BR')
+                data: new Date().toLocaleString('pt-BR'),
+                userAgent: navigator.userAgent
             })
         });
+
+        // Verificar resposta
+        let result;
+        const contentType = response.headers.get('content-type');
+        
+        if (contentType && contentType.includes('application/json')) {
+            result = await response.json();
+        } else {
+            result = await response.text();
+        }
+
+        console.log('✅ Resposta do servidor:', result);
 
         // Feedback de sucesso
         mostrarFeedback('✅ Mensagem enviada com sucesso! Responderemos em breve.', 'success');
 
         // Limpar formulário
         document.getElementById('feedbackForm')?.reset();
-
-        console.log('📧 Mensagem enviada com sucesso');
 
     } catch (error) {
         console.error('❌ Erro ao enviar:', error);
@@ -116,8 +127,18 @@ export function initContato() {
     // Adicionar listener para o formulário
     const form = document.getElementById('feedbackForm');
     if (form) {
+        // Remover listener antigo para evitar duplicação
+        form.removeEventListener('submit', enviarFeedback);
         form.addEventListener('submit', enviarFeedback);
     }
+
+    // Adicionar listeners para botões de cópia (se existirem)
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const texto = btn.getAttribute('data-text') || btn.innerText;
+            copiarTexto(texto);
+        });
+    });
 }
 
 // Inicializar quando o DOM carregar
